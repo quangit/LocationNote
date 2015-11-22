@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_menu_home"
+            android:title="Trang chủ" />
+        <item
+            android:id="@+id/nav_friend"
+            android:icon="@drawable/ic_menu_group"
+            android:title="Bạn bè" />
+        <item
+            android:id="@+id/nav_messager"
+            android:icon="@drawable/ic_menu_mail"
+            android:title="Tin nhắn" />
+        <item
+            android:id="@+id/nav_send_messager"
+            android:icon="@drawable/ic_menu_cloud"
+            android:title="Tin nhắn đã gửi" />
+        <item
+            android:id="@+id/nav_information"
+            android:icon="@drawable/ic_menu_person"
+            android:title="Thông tin cá nhân" />
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_setting"
+                android:icon="@drawable/ic_menu_settings"
+                android:title="Cài đặt" />
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_logout"
+                android:title="Đăng xuất" />
+        </menu>
+    </item>
+
+</menu>
