@@ -73,6 +73,7 @@ public abstract class MapBase extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(getChildFragmentManager().findFragmentById(R.id.map)!= null)
         getFragmentManager().beginTransaction().remove(getChildFragmentManager().findFragmentById(R.id.map)).commit();
     }
 }
