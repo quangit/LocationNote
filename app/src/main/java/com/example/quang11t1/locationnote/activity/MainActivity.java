@@ -5,13 +5,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,11 +16,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quang11t1.locationnote.R;
+
 import com.example.quang11t1.locationnote.modle.Account;
 
 import java.net.URL;
@@ -32,16 +30,15 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    TextView textView_User;
-    ImageView imageView_avatar;
+    boolean isLoginValue=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-         textView_User= (TextView) findViewById(R.id.text_UserName);
-         imageView_avatar=(ImageView) findViewById(R.id.imageView_avatar);
+
+
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,12 +58,19 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // init fragment home
-        Fragment fragment = new Home();
-        displayView(fragment);
 
-        //check login
-        //isLogin();
+        // init fragment home
+        Fragment fragment = new Friend();
+        displayView(fragment);
+        //final TextView textView_User= (TextView) findViewById(R.id.text_UserName);
+        //textView_User.setText("adwa");
+        isLoginValue= isLogin(navigationView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     public void test()
@@ -114,27 +118,39 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Fragment fragment = new Home();
-            displayView(fragment);
+
+            //Fragment fragment = new Home();
+            //displayView(fragment);
             // Handle the camera action
         } else if (id == R.id.nav_friend) {
-            Fragment fragment = new Friend();
-            displayView(fragment);
-
+            if(!isLoginValue) moveLogin();
+            else {
+                Fragment fragment = new Friend();
+                displayView(fragment);
+            }
         } else if (id == R.id.nav_messager) {
-            Fragment fragment = new Messager();
-            displayView(fragment);
-
+            if(!isLoginValue) moveLogin();
+            else {
+                Fragment fragment = new Messager();
+                displayView(fragment);
+            }
         } else if (id == R.id.nav_send_messager) {
+            if(!isLoginValue) moveLogin();
+            else {
 
+            }
         } else if (id == R.id.nav_information) {
+            if(!isLoginValue) moveLogin();
+            else {
+
+            }
 
         } else if (id == R.id.nav_setting) {
 
 
         } else if (id == R.id.nav_logout) {
-            Intent intent =new Intent(this,Login_activity.class);
-            startActivityForResult(intent, 1);
+           if(!isLoginValue) moveLogin();
+            else Logout();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -142,36 +158,67 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    protected void moveLogin()
+    {
+        Intent intent =new Intent(this,Login.class);
+        startActivityForResult(intent, 1);
+    }
+    private void Logout(){
+        isLoginValue=false;
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        MenuItem item = navigationView.getMenu().getItem(6);
+        item.setTitle("Login");
+        item.setIcon(R.drawable.ic_login);
+        SharedPreferences preferences=getSharedPreferences("inforLogin", MODE_PRIVATE);
+        SharedPreferences.Editor editor=preferences.edit();
+        editor.clear();
+        editor.commit();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Account account = (Account) data.getSerializableExtra("account");
 
-        textView_User.setText(account.getUsername());
-        try {
+
+        ImageView imageView_avatar=(ImageView) findViewById(R.id.imageView_avatar);
+        Account account = (Account)data.getSerializableExtra("account");
+        if(account!=null)
+        {
+            TextView textView_User= (TextView) findViewById(R.id.text_UserName);
+            textView_User.setText(account.getUsername());
+        }
+
+        /*try {
             URL url = new URL("http://www.thehindu.com/multimedia/dynamic/02263/31_ronaldo_jpg_2263058f.jpg");
             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
             imageView_avatar.setImageBitmap(bmp);
-        }catch (Exception e){}
+        }catch (Exception e){}*/
 
 
-        Toast.makeText(this,"----"+account.getUsername(),Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this,"----"+account.getUsername(),Toast.LENGTH_SHORT).show();
     }
 
-    public  boolean isLogin()
-    {
-        SharedPreferences preferences=getSharedPreferences("inforLogin",MODE_PRIVATE);
-        boolean check_remember = preferences.getBoolean("check",false);
+    public  boolean isLogin(NavigationView view) {
+        SharedPreferences preferences=getSharedPreferences("inforLogin", MODE_PRIVATE);
+        boolean check_remember = preferences.getBoolean("check", false);
+        //TextView textView_User= (TextView) findViewById(R.id.text_UserName);
+        //view.getMenu().getItem(6).setChecked(true);
         if(check_remember)
         {
             String user = preferences.getString("user","");
             String pass = preferences.getString("pass","");
             String url = preferences.getString("url","");
             String email =preferences.getString("email","");
-            textView_User.setText(user);
+            //textView_User.setText("add");
+            MenuItem item = view.getMenu().getItem(6);
+            item.setTitle("Logout");
+            item.setIcon(R.drawable.ic_menu_logout);
             Toast.makeText(this,"da login",Toast.LENGTH_SHORT).show();
             return true;
         }
+        MenuItem item = view.getMenu().getItem(6);
+        item.setTitle("Login");
+        item.setIcon(R.drawable.ic_login);
         Toast.makeText(this,"chua login",Toast.LENGTH_SHORT).show();
         return false;
     }

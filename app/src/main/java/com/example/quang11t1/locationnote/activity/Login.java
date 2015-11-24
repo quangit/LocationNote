@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -24,31 +23,29 @@ import com.example.quang11t1.locationnote.modle.User;
 import com.example.quang11t1.locationnote.support.GetJson;
 import com.google.gson.Gson;
 
-public class Login_activity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 
     Handler handler;
     GetJson getJson =new GetJson();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_activity);
+        setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+       // getActionBar().setDisplayHomeAsUpEnabled(true);
         Button button = (Button) findViewById(R.id.button_login);
-        //final LoginController loginController=new LoginController(this);
-
         final EditText editText_user =(EditText) findViewById(R.id.editText_user);
         final EditText editText_pass=(EditText) findViewById(R.id.editText_password);
-
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 LoginController loginController=new LoginController(getApplicationContext());
+                LoginController loginController=new LoginController(getApplicationContext());
 
                 User user =new User(editText_user.getText().toString(),editText_pass.getText().toString());
                 //loginController.execute(user);
+                //Toast.makeText(getApplicationContext(),user.getUsername(),Toast.LENGTH_SHORT).show();
                 doStart(user);
             }
         });
@@ -57,8 +54,13 @@ public class Login_activity extends AppCompatActivity {
                 super.handleMessage(msg);
                 Account account = (Account)msg.obj;
                 if(account!=null){
-                    //saveInforLogin(account);
-                    sendToMain(3,account);
+                    saveInforLogin(account);
+                    sendToMain(1,account);
+                    Toast.makeText(getApplicationContext(),account.getUsername(),Toast.LENGTH_SHORT).show();
+                    /*Intent intent=getIntent();
+                    intent.putExtra("account", account);
+                    setResult(1, intent);
+                    finish();*/
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"Tài khoản hoặc mật khẩu không đúng",Toast.LENGTH_SHORT).show();
@@ -66,32 +68,33 @@ public class Login_activity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(),msg.arg1,Toast.LENGTH_SHORT).show();
             }
         };
-    }
 
+    }
     public  void saveInforLogin(Account account)
     {
         try{
-        //tạo đối tượng getSharedPreferences
-        SharedPreferences pre=getSharedPreferences("inforLogin", MODE_PRIVATE);
-        CheckBox checkBox_remember =(CheckBox) findViewById(R.id.checkBox_remember_login);
-        //tạo đối tượng Editor để lưu thay đổi
-        SharedPreferences.Editor editor=pre.edit();
-        boolean check_remember_login = checkBox_remember.isChecked();
-        if (check_remember_login)
-        {
-            editor.putString("user",account.getUsername());
-            editor.putString("pass",account.getPassword());
-            editor.putString("url",account.getImage());
-            editor.putString("email",account.getEmail());
-            editor.putBoolean("check", check_remember_login);
-           // Toast.makeText(this,"luu thong tin dang nhap",Toast.LENGTH_SHORT).show();
-        }
-        else {
-            editor.clear();
-            //Toast.makeText(this,"khong luu thong tin dang nhap",Toast.LENGTH_SHORT).show();
-        }
-        editor.commit();
-        }catch ( Throwable e){Toast.makeText(this,"khong luu thong tin dang nhap "+e,Toast.LENGTH_SHORT).show();}
+            //tạo đối tượng getSharedPreferences
+            SharedPreferences pre=getSharedPreferences("inforLogin", MODE_PRIVATE);
+            CheckBox checkBox_remember =(CheckBox) findViewById(R.id.checkBox_remember_login);
+            //tạo đối tượng Editor để lưu thay đổi
+            SharedPreferences.Editor editor=pre.edit();
+            boolean check_remember_login = checkBox_remember.isChecked();
+            if (check_remember_login)
+            {
+                editor.putString("user",account.getUsername());
+                editor.putString("pass",account.getPassword());
+                editor.putString("url",account.getImage());
+                editor.putString("email",account.getEmail());
+                editor.putBoolean("check", check_remember_login);
+                // Toast.makeText(this,"luu thong tin dang nhap",Toast.LENGTH_SHORT).show();
+            }
+            else {
+                editor.clear();
+                //Toast.makeText(this,"khong luu thong tin dang nhap",Toast.LENGTH_SHORT).show();
+            }
+            editor.commit();
+        }catch ( Throwable e){
+            Toast.makeText(this, "khong luu thong tin dang nhap " + e, Toast.LENGTH_SHORT).show();}
     }
     public void sendToMain(int resultcode,Account account)
     {
@@ -141,4 +144,8 @@ public class Login_activity extends AppCompatActivity {
         getInforAccount.start();
     }
 
+    @Override
+    public void onBackPressed() {
+        sendToMain(1,null);
+    }
 }
