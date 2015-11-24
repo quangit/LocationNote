@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:textSize="24dp"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Name user"
+        android:text="User Name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
 
