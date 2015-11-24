@@ -9,4 +9,11 @@
     <!-- avatar -->
     <dimen name="avatar_heigh">80dp</dimen>
     <dimen name="avatar_width">80dp</dimen>
+
+    <!-- login -->
+    <dimen name="edittext_width">300dp</dimen>
+    <dimen name="edittext_marginLeft">5dp</dimen>
+    <dimen name="button_width">320dp</dimen>
+    <dimen name="logo_panding_top">75dp</dimen>
+
 </resources>

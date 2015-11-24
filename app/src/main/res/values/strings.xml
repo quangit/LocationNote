@@ -8,4 +8,18 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- string layout -->
+
+    <string name="string_remember">Ghi nhớ</string>
+    <string name="string_forgotpassword">Quên mật khẩu</string>
+    <string name="string_login">Đăng nhập</string>
+    <string name="string_register">Đăng ký</string>
+    <string name="string_username">tên đăng nhập</string>
+    <string name="string_password">mật khẩu</string>
+    <string name="string_information">copyright by Viettel ICT</string>
+    <string name="title_activity_login_activity">Login_activity</string>
+    <string name="link">http://192.168.1.8:8081/LocationNote/</string>
+
+
 </resources>
