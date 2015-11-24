@@ -4,9 +4,11 @@
     android:layout_height="match_parent"
     tools:context="com.example.quang11t1.locationnote.activity.LocationNoteList">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/locationnote_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

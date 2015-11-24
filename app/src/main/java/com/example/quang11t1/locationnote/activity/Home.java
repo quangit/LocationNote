@@ -3,6 +3,8 @@ package com.example.quang11t1.locationnote.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -91,9 +93,14 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     @Override
     public boolean onClusterItemClick(LocationNote item) {
         System.out.println("thong tin chi tiet "+item.getTenDiaDiem()+"  "+item.getSoNote());
-        /*Intent intent = new Intent(this, LocationMessageListActivity.class);
-        startActivity(intent);*/
-        return false;
+        Fragment fragment = new LocationNoteList();
+        //MainActivity mainActivity = new MainActivity();
+        //mainActivity.displayView(fragment);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.container_body, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        return true;
     }
 
     @Override

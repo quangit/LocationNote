@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="100dp"
         android:layout_height="match_parent">
-        <android.support.v4.widget.CircleImageView
+        <com.pkmmte.view.CircularImageView
             android:id="@+id/img_profile"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="20h01 Hôm nay"
-                android:gravity="end"/>
+                android:gravity="right"/>
         </LinearLayout>
     </LinearLayout>
 
