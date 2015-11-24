@@ -74,11 +74,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void test()
-    {
-        Toast toast = Toast.makeText(this,"ssadadw",Toast.LENGTH_LONG);
-        toast.show();
-    }
+
 
     @Override
     public void onBackPressed() {
@@ -168,7 +164,7 @@ public class MainActivity extends AppCompatActivity
         isLoginValue=false;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         MenuItem item = navigationView.getMenu().getItem(6);
-        item.setTitle("Login");
+        item.setTitle("Đăng nhập");
         item.setIcon(R.drawable.ic_login);
         SharedPreferences preferences=getSharedPreferences("inforLogin", MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
@@ -187,6 +183,11 @@ public class MainActivity extends AppCompatActivity
         {
             TextView textView_User= (TextView) findViewById(R.id.text_UserName);
             textView_User.setText(account.getUsername());
+            isLoginValue=true;
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            MenuItem item = navigationView.getMenu().getItem(6);
+            item.setTitle("Đăng xuất");
+            item.setIcon(R.drawable.ic_menu_logout);
         }
 
         /*try {
@@ -212,13 +213,13 @@ public class MainActivity extends AppCompatActivity
             String email =preferences.getString("email","");
             //textView_User.setText("add");
             MenuItem item = view.getMenu().getItem(6);
-            item.setTitle("Logout");
+            item.setTitle("Đăng xuất");
             item.setIcon(R.drawable.ic_menu_logout);
             Toast.makeText(this,"da login",Toast.LENGTH_SHORT).show();
             return true;
         }
         MenuItem item = view.getMenu().getItem(6);
-        item.setTitle("Login");
+        item.setTitle("Đăng nhập");
         item.setIcon(R.drawable.ic_login);
         Toast.makeText(this,"chua login",Toast.LENGTH_SHORT).show();
         return false;
@@ -232,7 +233,6 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.container_body, fragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
-
         }
     }
 }
