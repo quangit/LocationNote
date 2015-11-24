@@ -14,8 +14,8 @@
     <string name="string_forgotpassword">Quên mật khẩu</string>
     <string name="string_login">Đăng nhập</string>
     <string name="string_register">Đăng ký</string>
-    <string name="string_information">tài khoản</string>
-    <string name="defaut_note_number">tài khoản</string>
+    <string name="string_information">Copyright by Viettel ICT</string>
+    <string name="defaut_note_number">0</string>
     <string name="link">http://192.168.1.8:8081/LocationNote/</string>
     <string name="title_activity_login">Login</string>
 

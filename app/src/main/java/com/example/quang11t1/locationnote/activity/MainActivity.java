@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity
 
 
         // init fragment home
-        Fragment fragment = new Friend();
+        Fragment fragment = new Home();
+        navigationView.getMenu().getItem(0).setChecked(true);
         displayView(fragment);
         //final TextView textView_User= (TextView) findViewById(R.id.text_UserName);
         //textView_User.setText("adwa");
