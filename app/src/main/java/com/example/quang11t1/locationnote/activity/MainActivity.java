@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.quang11t1.locationnote.R;
 
+import com.example.quang11t1.locationnote.activity.model.Information;
 import com.example.quang11t1.locationnote.modle.Account;
 
 import java.net.URL;
@@ -141,11 +142,11 @@ public class MainActivity extends AppCompatActivity
 
             }
         } else if (id == R.id.nav_information) {
-            if(!isLoginValue) moveLogin();
-            else {
-
-            }
-
+           // if(!isLoginValue) moveLogin();
+            //else {
+            //}
+            Fragment fragment = new Information();
+            displayView(fragment);
         } else if (id == R.id.nav_setting) {
 
 
