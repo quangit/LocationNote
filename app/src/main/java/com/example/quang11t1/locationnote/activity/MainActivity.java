@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -38,8 +39,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -117,9 +116,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
 
-            //Fragment fragment = new Home();
-            //displayView(fragment);
-            // Handle the camera action
+            Fragment fragment = new Home();
+            displayView(fragment);
         } else if (id == R.id.nav_friend) {
             if(!isLoginValue) moveLogin();
             else {
@@ -226,7 +224,7 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    private void displayView(Fragment fragment) {
+    public void displayView(Fragment fragment) {
 
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();

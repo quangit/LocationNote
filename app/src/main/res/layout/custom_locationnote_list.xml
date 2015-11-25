@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="110dp"
+    android:layout_marginBottom="1dp"
+    android:background="#FFFFFF"
     android:orientation="horizontal">
     <RelativeLayout
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="match_parent">
-        <android.support.v4.widget.CircleImageView
+        <com.pkmmte.view.CircularImageView
             android:id="@+id/img_profile"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/profile"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp"/>
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"/>
 
     </RelativeLayout>
 
@@ -21,8 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp">
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,21 +37,33 @@
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="titbk"
-                android:textColor="#FFFF00"
+                android:hint="titbk dfdss sdgsdf "
+                android:textColor="#FFCC00"
+                android:singleLine="true"
+                android:maxLength="15"
                 android:layout_weight="1"/>
             <TextView
                 android:id="@+id/location_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Molly Coffee"
+                android:textColor="#006600"
+                android:singleLine="true"
+                android:maxLength="15"
                 android:layout_weight="1"/>
-            <ImageButton
-                android:id="@+id/view_detail"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_gravity="right"/>
+                android:gravity="end|center_vertical">
+                <ImageButton
+                    android:id="@+id/view_detail"
+                    android:layout_width="14dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/keydown"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"/>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -57,45 +71,61 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="tuyet voi ong mat troi"
+            android:text="tuyet voi ong mat troifsd sdfsd sd g dsg s gsd g sg s gs g s"
+            android:singleLine="true"
             android:layout_weight="1"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:weightSum="2"
+            android:gravity="center_vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
 
-            <ImageView
-                android:id="@+id/icon_like"
+                <ImageView
+                    android:id="@+id/icon_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/like"/>
+                <TextView
+                    android:id="@+id/txt_number_of_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"/>
+                <ImageView
+                    android:id="@+id/icon_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/comment"/>
+                <TextView
+                    android:id="@+id/txt_number_of_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="10dp"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/like"/>
-            <TextView
-                android:id="@+id/txt_number_of_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"/>
-            <ImageView
-                android:id="@+id/icon_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/comment"/>
-            <TextView
-                android:id="@+id/txt_number_of_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"/>
-            <TextView
-                android:id="@+id/txt_time_post"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="20h01 Hôm nay"
-                android:gravity="end"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical"
+                android:layout_marginRight="15dp">
+                <TextView
+                    android:id="@+id/txt_time_post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="20h01 Hôm nay"/>
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 

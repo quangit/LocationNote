@@ -1,6 +1,5 @@
 package com.example.quang11t1.locationnote.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
@@ -11,7 +10,6 @@ import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.activity.map.MapBase;
 import com.example.quang11t1.locationnote.activity.model.LocationNote;
 import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -90,10 +88,10 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
     @Override
     public boolean onClusterItemClick(LocationNote item) {
-        System.out.println("thong tin chi tiet "+item.getTenDiaDiem()+"  "+item.getSoNote());
-        /*Intent intent = new Intent(this, LocationMessageListActivity.class);
-        startActivity(intent);*/
-        return false;
+        System.out.println("thong tin chi tiet " + item.getTenDiaDiem() + "  " + item.getSoNote());
+        Intent intent = new Intent(getActivity(), LocationNoteList.class);
+        startActivity(intent);
+        return true;
     }
 
     @Override
@@ -113,14 +111,6 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         locationNoteClusterManager.setOnClusterInfoWindowClickListener(this);
         locationNoteClusterManager.setOnClusterItemClickListener(this);
         locationNoteClusterManager.setOnClusterItemInfoWindowClickListener(this);
-        /*System.out.println("class mapmessage ======================================");
-        for(int i=0; i<danhSachDiaDiem.length; i++){
-            System.out.println("id :"+i+" = "+danhSachDiaDiem[i].getIdDiaDiem());
-            System.out.println("ten :"+i+" = "+danhSachDiaDiem[i].getTenDiaDiem());
-            System.out.println("loai :"+i+" = "+danhSachDiaDiem[i].getLoaiDiaDiem());
-            System.out.println("kinh do :"+i+" = "+danhSachDiaDiem[i].getKinhDo());
-            System.out.println("vi do :"+i+" = "+danhSachDiaDiem[i].getViDo());
-        }*/
         addItems();
         locationNoteClusterManager.cluster();
     }
