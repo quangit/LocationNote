@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.quang11t1.locationnote.activity.LocationNoteList1"
+    tools:context=".activity.LocationNoteList"
     tools:showIn="@layout/activity_location_note_list">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/locationnote_list"

@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.quang11t1.locationnote.R;
-import com.example.quang11t1.locationnote.activity.LocationNoteList;
 import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
 
 import java.util.Collections;
@@ -30,8 +29,7 @@ public class LocationNoteListAdapter extends RecyclerView.Adapter<LocationNoteLi
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate( R.layout.custom_locationnote_list, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
-        return holder;
+        return new MyViewHolder(view);
     }
 
     @Override

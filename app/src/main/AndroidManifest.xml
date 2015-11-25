@@ -36,7 +36,7 @@
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".activity.LocationNoteList1"
+            android:name=".activity.LocationNoteList"
             android:label="@string/title_activity_location_note_list1"
             android:theme="@style/AppTheme"></activity>
     </application>
