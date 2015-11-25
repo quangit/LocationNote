@@ -40,9 +40,13 @@
             android:label="@string/title_activity_location_note_list1"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".activity.detail_message"
+            android:label="@string/tittle_activity_detail"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".activity.Send_Messager"
             android:label="@string/title_activity_send__messager"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>
