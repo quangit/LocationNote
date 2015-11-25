@@ -18,6 +18,7 @@
     <string name="defaut_note_number">0</string>
     <string name="link">http://192.168.1.4:8081/LocationNote/</string>
     <string name="title_activity_login">Login</string>
+    <string name="title_activity_location_note_list1">LocationNoteList1</string>
 
 
 </resources>
