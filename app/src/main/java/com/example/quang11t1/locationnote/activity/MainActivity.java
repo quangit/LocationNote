@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,6 +18,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,11 +27,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.quang11t1.locationnote.Editphoto.CircleImage;
 import com.example.quang11t1.locationnote.R;
 
 import com.example.quang11t1.locationnote.activity.model.Information;
 import com.example.quang11t1.locationnote.modle.Account;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
@@ -70,6 +77,8 @@ public class MainActivity extends AppCompatActivity
         displayView(fragment);
         //final TextView textView_User= (TextView) findViewById(R.id.text_UserName);
         //textView_User.setText("adwa");
+         TextView textView =(TextView)  navigationView.findViewById(R.id.text_UserName);
+        //textView.setText("aaaaaaaa");
         isLoginValue= isLogin(navigationView);
     }
 
@@ -168,6 +177,10 @@ public class MainActivity extends AppCompatActivity
         isLoginValue=false;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         MenuItem item = navigationView.getMenu().getItem(6);
+        TextView textView =(TextView) findViewById(R.id.text_UserName);
+        textView.setText("");
+        ImageView imageView =(ImageView) findViewById(R.id.imageView_avatar);
+        imageView.setImageResource(R.drawable.ic_account_circle_48dp);
         item.setTitle("Đăng nhập");
         item.setIcon(R.drawable.ic_login);
         SharedPreferences preferences=getSharedPreferences("inforLogin", MODE_PRIVATE);
@@ -187,11 +200,17 @@ public class MainActivity extends AppCompatActivity
         {
             TextView textView_User= (TextView) findViewById(R.id.text_UserName);
             textView_User.setText(account.getUsername());
+            ImageView imageView = (ImageView) findViewById(R.id.imageView_avatar);
+            //imageView.setImageResource(R.drawable.ic_global);
+            DownloadImageTask downloadImageTask =new DownloadImageTask(imageView);
+            downloadImageTask.execute(account.getImage());
             isLoginValue=true;
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             MenuItem item = navigationView.getMenu().getItem(6);
             item.setTitle("Đăng xuất");
             item.setIcon(R.drawable.ic_menu_logout);
+
+
         }
 
         /*try {
@@ -215,7 +234,8 @@ public class MainActivity extends AppCompatActivity
             String pass = preferences.getString("pass","");
             String url = preferences.getString("url","");
             String email =preferences.getString("email","");
-            //textView_User.setText("add");
+
+
             MenuItem item = view.getMenu().getItem(6);
             item.setTitle("Đăng xuất");
             item.setIcon(R.drawable.ic_menu_logout);
@@ -237,6 +257,33 @@ public class MainActivity extends AppCompatActivity
             fragmentTransaction.replace(R.id.container_body, fragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
+        }
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            CircleImage circleImage=new CircleImage();
+            mIcon11=circleImage.getCircleBitmap(mIcon11);
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 }

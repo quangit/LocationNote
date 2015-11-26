@@ -61,6 +61,10 @@ public class Send_Messager extends AppCompatActivity  {
                     SendMessagerFriendFragment sendMessagerFriendFragment = new SendMessagerFriendFragment();
                     displayView(sendMessagerFriendFragment);
                 }
+                if(position ==1 ){
+                    sendMessagerGlobalFragment sendmessagerGlobalFragment = new sendMessagerGlobalFragment();
+                    displayView(sendmessagerGlobalFragment);
+                }
             }
 
             @Override
