@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/imageViewAvatarComment"
+        android:layout_alignParentLeft="true"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="5dp"
+        android:src="@drawable/vie"/>
+
+    <TextView
+        android:id="@+id/textViewComment"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="Đúng oy, tuyệt zời quá đi"
+         />
+
+
+        <TextView
+            android:id="@+id/textViewNameNick"
+            android:layout_toLeftOf="@id/textViewComment"
+            android:layout_toRightOf="@id/imageViewAvatarComment"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:text="Quang"
+            android:textColor="#ffc107" />
+
+
+</RelativeLayout>
