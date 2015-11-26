@@ -26,9 +26,13 @@
                 android:layout_height="wrap_content"
                 android:hint="Chọn địa điểm "
                 android:id="@+id/editText2" />
+
         </LinearLayout>
-
-
+        <ImageView
+            android:id="@+id/imgviewPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
     <LinearLayout

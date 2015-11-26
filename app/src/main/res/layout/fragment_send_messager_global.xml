@@ -28,6 +28,11 @@
                 android:id="@+id/editText2" />
         </LinearLayout>
 
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lol"/>
     </LinearLayout>
 
     <LinearLayout
@@ -69,7 +74,8 @@
                 android:background="@color/colorPrimary"
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/ic_send_24dp"
-                android:id="@+id/imageButton4" />
+                android:id="@+id/imageButtongloble4" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -84,7 +90,7 @@
                 android:background="@color/colorTextWhite"
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/ic_insert_emoticon_24dp"
-                android:id="@+id/imageButton" />
+                android:id="@+id/imageButtongloble" />
 
             <ImageButton
                 android:layout_width="50dp"
@@ -92,7 +98,7 @@
                 android:background="@color/colorTextWhite"
                 android:src="@drawable/ic_image"
                 android:layout_marginLeft="20dp"
-                android:id="@+id/imageButton2" />
+                android:id="@+id/imageButtongloble2" />
 
             <ImageButton
                 android:layout_width="50dp"
@@ -100,7 +106,7 @@
                 android:background="@color/colorTextWhite"
                 android:src="@drawable/ic_camera"
                 android:layout_marginLeft="20dp"
-                android:id="@+id/imageButton3" />
+                android:id="@+id/imageButtongloble3" />
 
             <ImageButton
                 android:layout_width="50dp"
@@ -108,7 +114,7 @@
                 android:background="@color/colorTextWhite"
                 android:src="@drawable/ic_gps_location"
                 android:layout_marginLeft="20dp"
-                android:id="@+id/imageView" />
+                android:id="@+id/imageViewgloble" />
 
         </LinearLayout>
 
