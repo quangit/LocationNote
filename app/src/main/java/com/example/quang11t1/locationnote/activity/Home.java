@@ -1,7 +1,18 @@
 package com.example.quang11t1.locationnote.activity;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.location.Criteria;
+import android.location.LocationManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -9,22 +20,42 @@ import android.widget.Toast;
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.activity.map.MapBase;
 import com.example.quang11t1.locationnote.activity.model.LocationNote;
+import com.example.quang11t1.locationnote.modle.Account;
+import com.example.quang11t1.locationnote.modle.Location;
+import com.example.quang11t1.locationnote.modle.User;
+import com.example.quang11t1.locationnote.support.GetJson;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 import com.google.maps.android.ui.IconGenerator;
 
+import java.util.List;
 import java.util.Random;
 public class Home extends MapBase implements ClusterManager.OnClusterClickListener<LocationNote>, ClusterManager.OnClusterInfoWindowClickListener<LocationNote>, ClusterManager.OnClusterItemClickListener<LocationNote>, ClusterManager.OnClusterItemInfoWindowClickListener<LocationNote> {
 
     private ClusterManager<LocationNote> locationNoteClusterManager;
     // private ClusterManager<DiaDiem> diaDiemClusterManager;
     private Random mRandom = new Random(1984);
-    // public static DiaDiem[] danhSachDiaDiem ;
+    public Location[] locationList;
+    private Gson gson = new Gson();
+    GetJson getJson  = new GetJson();
+    Handler handler;
+    LocationManager locationManager;
+    GoogleMap map;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        doStart();
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+    }
 
     private class LocationNoteRenderer extends DefaultClusterRenderer<LocationNote> {
 
@@ -47,8 +78,6 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
         @Override
         protected void onBeforeClusterItemRendered(LocationNote locationNote, MarkerOptions markerOptions) {
-            // Draw a single person.
-            // Set the info window to show their name.
             oneImageView.setImageResource(locationNote.getAnhDiaDiem());
             Bitmap icon = mIconGenerator.makeIcon(String.valueOf(locationNote.getSoNote()));
             markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(locationNote.getTenDiaDiem());
@@ -101,7 +130,34 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
     @Override
     protected void startDemo() {
-        getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(51.503186, -0.126446), 9.5f));
+        map = getMap();
+        android.location.Location lastLocation = getLastKnownLocation();
+        if(lastLocation != null){
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 13));
+
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))      // Sets the center of the map to location user
+                    .zoom(15)                   // Sets the zoom
+                    .bearing(90)                // Sets the orientation of the camera to east
+                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                    .build();                   // Creates a CameraPosition from the builder
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+        else{
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(0, 0), 13));
+
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(0, 0))      // Sets the center of the map to location user
+                    .zoom(15)                   // Sets the zoom
+                    .bearing(90)                // Sets the orientation of the camera to east
+                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                    .build();                   // Creates a CameraPosition from the builder
+            map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        }
+
+        //getMap().moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 9.5f));
         locationNoteClusterManager = new ClusterManager<>(getActivity(), getMap());
         locationNoteClusterManager.setRenderer(new LocationNoteRenderer());
         getMap().setOnCameraChangeListener(locationNoteClusterManager);
@@ -116,20 +172,19 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     }
 
     private void addItems() {
-        /*for(int i=0; i<danhSachDiaDiem.length; i++){
-            DiaDiem diaDiem = danhSachDiaDiem[i];
-            if(diaDiem.getLoaiDiaDiem().equals("Nha Hang")){
-                locationNoteClusterManager.addItem(new LocationNote(diaDiem.getTenDiaDiem(), (int)diaDiem.getSoNote(), position(diaDiem.getKinhDo(), diaDiem.getViDo()), R.drawable.restaurant));
+        for(Location location : locationList){
+            if(location.getTypelocation().equals("Nha Hang")){
+                locationNoteClusterManager.addItem(new LocationNote(location.getLocationName(), location.getNumberOfNote(), position(location.getLongitude(), location.getLatitude()), R.drawable.bell));
             }
             else {
-                if(diaDiem.getLoaiDiaDiem().equals("Cafe")){
-                    locationNoteClusterManager.addItem(new LocationNote(diaDiem.getTenDiaDiem(), (int)diaDiem.getSoNote(), position(diaDiem.getKinhDo(), diaDiem.getViDo()), R.drawable.cafe));
+                if(location.getTypelocation().equals("Cafe")){
+                    locationNoteClusterManager.addItem(new LocationNote(location.getLocationName(), location.getNumberOfNote(), position(location.getLongitude(), location.getLatitude()), R.drawable.tea));
                 }
                 else {
-                    locationNoteClusterManager.addItem(new LocationNote(diaDiem.getTenDiaDiem(), (int)diaDiem.getSoNote(), position(diaDiem.getKinhDo(), diaDiem.getViDo()), R.drawable.hotel));
+                    locationNoteClusterManager.addItem(new LocationNote(location.getLocationName(), location.getNumberOfNote(), position(location.getLongitude(), location.getLatitude()), R.drawable.muffin));
                 }
             }
-        }*/
+        }
         locationNoteClusterManager.addItem(new LocationNote("Molly", 10, position(),R.drawable.cafe));
         locationNoteClusterManager.addItem(new LocationNote("Hoan My", 10, position(),R.drawable.hospital));
         locationNoteClusterManager.addItem(new LocationNote("Phi Lu", 10, position(),R.drawable.restaurant));
@@ -149,5 +204,57 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
     private double random(double min, double max) {
         return mRandom.nextDouble() * (max - min) + min;
+    }
+
+    public class GetLocationList extends Thread{
+
+        //Location location;
+        Context context;
+        Gson gson=new Gson();
+        public GetLocationList(Context context)
+        {
+            //this.location = location;
+            this.context=context;
+        }
+
+        @Override
+        public void run() {
+            String locations= getString(R.string.link)+"Location/list?LONGITUDE=9&LATITUDE=9&RADIUS=5";
+            String result = getJson.getStringJson(locations);
+            System.out.println("chuoi lay ve duoc :"+result);
+            locationList = gson.fromJson(result,Location[].class);
+        }
+    }
+
+    public void doStart()
+    {
+        GetLocationList getLocationList =new GetLocationList(getActivity());
+        getLocationList.start();
+    }
+
+    private android.location.Location getLastKnownLocation() {
+        List<String> providers = locationManager.getProviders(true);
+        System.out.println(" provider :"+providers);
+        android.location.Location bestLocation = null;
+        for (String provider : providers) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED
+                    || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                System.out.println(" truy nhap internet thanh cong");
+                android.location.Location location = locationManager.getLastKnownLocation(provider);
+
+                if (location == null) {
+                    continue;
+                }
+                if (bestLocation == null
+                        || location.getAccuracy() < bestLocation.getAccuracy()) {
+                    bestLocation = location;
+                }
+            }
+
+        }
+        System.out.println(" lastLocation ====================================== :"+bestLocation);
+        return bestLocation;
     }
 }

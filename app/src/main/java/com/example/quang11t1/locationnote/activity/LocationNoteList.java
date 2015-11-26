@@ -15,7 +15,10 @@ import android.view.View;
 
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.adapter.LocationNoteListAdapter;
+import com.example.quang11t1.locationnote.modle.Location;
 import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
+import com.example.quang11t1.locationnote.support.GetJson;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +28,12 @@ public class LocationNoteList extends AppCompatActivity {
     private android.support.v7.widget.Toolbar toolbar;
     private RecyclerView recycleView;
     private LocationNoteListAdapter locationNoteListAdapter;
+    private Location[] locationList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_note_list);
+
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

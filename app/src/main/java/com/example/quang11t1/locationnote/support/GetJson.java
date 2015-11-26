@@ -7,16 +7,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by quang11t1 on 24/11/2015.
- */
 public class GetJson {
 
     HttpURLConnection urlConnection;
     public String getStringJson(String link) {
 
         StringBuilder result = new StringBuilder();
-
+        System.out.println("link receive :"+link);
         try {
             URL url = new URL(link);
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -30,6 +27,7 @@ public class GetJson {
             }
 
         }catch( Exception e) {
+            System.out.println(" khong the lay dw lieu thanh cong");
             e.printStackTrace();
         }
         finally {
