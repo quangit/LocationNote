@@ -1,68 +1,111 @@
 package com.example.quang11t1.locationnote.activity;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
 
+import com.example.quang11t1.locationnote.Editphoto.CircleImage;
+import com.example.quang11t1.locationnote.Entity.Myfriend;
 import com.example.quang11t1.locationnote.R;
+import com.example.quang11t1.locationnote.adapter.Adapter_Friends;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Friend.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Friend#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class Friend extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class Friend extends Fragment{
+    View rootview;
+    public ArrayList<Myfriend> arraylistComment = new ArrayList<Myfriend>();
+   Myfriend myfriend;
+   private ListView listViewFriend;
+   // ImageView imViewAndroid;
+   // ListView lv_friends;
+    CircleImage circleImage;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        rootview = inflater.inflate(R.layout.fragment_friend, container, false);
+        createtmpComment();
+        listViewFriend = (ListView)rootview.findViewById(R.id.lv_friends);
+        Adapter_Friends adapter_friends = new Adapter_Friends(getActivity(),arraylistComment);
+        //commentAdapter adapter=new commentAdapter(getActivity(),arraylistComment);
+        listViewFriend.setAdapter(adapter_friends);
+       // listViewComment.setAdapter(adapter);
+       // imViewAndroid = (ImageView) rootview.findViewById(R.id.imageviewAvarta);
+        //imViewAndroid.setImageBitmap(roundCornerImage(BitmapFactory.decodeResource(getResources(), R.drawable.vie),60));
+        //Bitmap bm = BitmapFactory.decodeResource(getResources(),
+             //   R.drawable.vie);
 
-    public Friend() {
-        // Required empty public constructor
+        //new DownloadImageTask((ImageView) rootview.findViewById(R.id.imageviewAvarta))
+              //  .execute("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
+        //circleImage=new CircleImage();
+        //imViewAndroid.setImageBitmap(circleImage.getCircleBitmap(bm));
+        return rootview;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Friend.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Friend newInstance(String param1, String param2) {
-        Friend fragment = new Friend();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public void createtmpComment(){
+        myfriend=new Myfriend("Nguyen Van A");
+        arraylistComment.add(myfriend);
+        myfriend=new Myfriend("Nguyen Van B");
+        arraylistComment.add(myfriend);
+        myfriend=new Myfriend("Nguyen Van C");
+        arraylistComment.add(myfriend);
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+       /* lv_friends = (ListView)getActivity().findViewById(R.id.lv_friends);
+        List<String> list = new ArrayList<String>();
+        list.add("Nguyen Van A");
+        list.add("Nguyen Van B");
+        list.add("Nguyen Van C");
+        list.add("Nguyen Van D");
+        list.add("Nguyen Van E");
+        list.add("Nguyen Van F");
+        list.add("Nguyen Van I");
+        list.add("Nguyen Van J");
+        list.add("Nguyen Van K");
+        list.add("Nguyen Van L");
+        list.add("Nguyen Van M");
+        list.add("Nguyen Van N");
+        adapter_friends = new Adapter_Friends(getActivity(),list);
+       lv_friends.setAdapter(adapter_friends);
+       // adapter_friends.notifyDataSetChanged();*/
+    }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            circleImage=new CircleImage();
+            mIcon11=circleImage.getCircleBitmap(mIcon11);
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_friend, container, false);
-    }
-
 }
