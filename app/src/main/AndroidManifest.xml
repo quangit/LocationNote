@@ -46,7 +46,11 @@
         <activity
             android:name=".activity.Send_Messager"
             android:label="@string/title_activity_send__messager"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateVisible|adjustResize">
+
+        </activity>
+
     </application>
 
 </manifest>

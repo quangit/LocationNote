@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/edittext_marginLeft"
             android:hint="@string/string_username"
-            android:backgroundTint="@color/colorPrimary"
+            android:singleLine="true"
 
             android:id="@+id/editText_user" />
     </LinearLayout>
@@ -64,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/edittext_marginLeft"
             android:inputType="textPassword"
-            android:backgroundTint="@color/colorPrimary"
             android:hint="@string/string_password"
             android:id="@+id/editText_password" />
 
