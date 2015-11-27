@@ -8,24 +8,24 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:gravity="top"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_height="match_parent">
+        android:gravity="top"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:padding="2dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="2dp">
 
             <EditText
+                android:id="@+id/editText2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Chọn địa điểm "
-                android:id="@+id/editText2" />
+                android:hint="Chọn địa điểm " />
         </LinearLayout>
 
 
@@ -36,13 +36,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorTextWhite"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorTextWhite"
+        android:orientation="vertical">
         <View
             android:id="@+id/background_shadow"
             android:layout_width="fill_parent"
@@ -52,69 +52,69 @@
         </View>
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:gravity="right"
-            android:layout_marginTop="10dp"
-            android:padding="2dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:padding="2dp">
 
             <EditText
+                android:id="@+id/editText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="4"
-                android:layout_weight="1"
                 android:layout_marginLeft="0dp"
                 android:layout_marginStart="0dp"
-                android:id="@+id/editText" />
+                android:layout_weight="1"
+                android:maxLines="4" />
 
             <ImageButton
+                android:id="@+id/imageButtongloblesend"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@color/colorPrimary"
                 android:layout_marginLeft="20dp"
-                android:src="@drawable/ic_send_24dp"
-                android:id="@+id/imageButtongloble4" />
+                android:background="@color/colorPrimary"
+                android:src="@drawable/ic_send_24dp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:padding="2dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:padding="2dp">
 
             <ImageButton
+                android:id="@+id/imageButtonglobleenomotion"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@color/colorTextWhite"
                 android:layout_marginLeft="20dp"
-                android:src="@drawable/ic_insert_emoticon_24dp"
-                android:id="@+id/imageButtongloble" />
+                android:background="@color/colorTextWhite"
+                android:src="@drawable/ic_insert_emoticon_24dp" />
 
             <ImageButton
+                android:id="@+id/imageButtongloblegallery"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@color/colorTextWhite"
-                android:src="@drawable/ic_image"
                 android:layout_marginLeft="20dp"
-                android:id="@+id/imageButtongloble2" />
+                android:background="@color/colorTextWhite"
+                android:src="@drawable/ic_image" />
 
             <ImageButton
+                android:id="@+id/imageButtongloblephoto"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@color/colorTextWhite"
-                android:src="@drawable/ic_camera"
                 android:layout_marginLeft="20dp"
-                android:id="@+id/imageButtongloble3" />
+                android:background="@color/colorTextWhite"
+                android:src="@drawable/ic_camera" />
 
             <ImageButton
+                android:id="@+id/imageViewgloble"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@color/colorTextWhite"
-                android:src="@drawable/ic_gps_location"
                 android:layout_marginLeft="20dp"
-                android:id="@+id/imageViewgloble" />
+                android:background="@color/colorTextWhite"
+                android:src="@drawable/ic_gps_location" />
 
         </LinearLayout>
 
