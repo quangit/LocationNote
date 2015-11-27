@@ -55,7 +55,6 @@ public class LocationNoteList extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("location note infor list :" + locationNoteInforList);
         locationNoteListAdapter = new LocationNoteListAdapter(this, getData());
         recycleView = (RecyclerView)findViewById(R.id.locationnote_list);
         recycleView.setAdapter(locationNoteListAdapter);
@@ -114,9 +113,7 @@ public class LocationNoteList extends AppCompatActivity {
             String result = getJson.getStringJson(inforLocationNoteList);
             System.out.println(" ket qua lay duoc :"+result);
             locationNoteInforList = gson.fromJson(result, LocationNoteInfor[].class);
-            if(locationNoteInforList ==null)
-                System.out.println(" khong tim thay danh sach note");
-            else System.out.println(" list tim duoc :"+locationNoteInforList);
+
         }
     }
 
