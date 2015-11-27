@@ -1,7 +1,9 @@
 package com.example.quang11t1.locationnote.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -15,12 +17,15 @@ import android.view.View;
 
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.adapter.LocationNoteListAdapter;
+import com.example.quang11t1.locationnote.modle.Account;
 import com.example.quang11t1.locationnote.modle.Location;
 import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
+import com.example.quang11t1.locationnote.modle.User;
 import com.example.quang11t1.locationnote.support.GetJson;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LocationNoteList extends AppCompatActivity {
@@ -29,37 +34,44 @@ public class LocationNoteList extends AppCompatActivity {
     private RecyclerView recycleView;
     private LocationNoteListAdapter locationNoteListAdapter;
     private Location[] locationList;
+    int idLocation = 0;
+    GetJson getJson =new GetJson();
+    LocationNoteInfor[] locationNoteInforList ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_note_list);
-
-
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+        idLocation = intent.getIntExtra("idLocation",0);
+        System.out.println("========= idlocation ======================= :" + idLocation);
+
+        doStartGetLocationNoteList(idLocation);
+        try {
+            System.out.println(" cho trong 5s");
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("location note infor list :" + locationNoteInforList);
         locationNoteListAdapter = new LocationNoteListAdapter(this, getData());
         recycleView = (RecyclerView)findViewById(R.id.locationnote_list);
         recycleView.setAdapter(locationNoteListAdapter);
         recycleView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    public static List<LocationNoteInfor> getData(){
+    public  List<LocationNoteInfor> getData(){
         System.out.println(" get data to display to screen");
         List<LocationNoteInfor> data = new ArrayList<>();
-        int[] iconProfiles = {R.drawable.profile, R.drawable.profile, R.drawable.profile, R.drawable.profile, R.drawable.profile};
-        String[] userNames = {"Chu Thien Tam", "Ngo Duc Quang", "Nguyen Van Quang Tan", "Le Luong Vien", "Bla bla bla"};
-        for(int i=0; i<iconProfiles.length && i< userNames.length; i++){
-            LocationNoteInfor information = new LocationNoteInfor();
-            information.setUserName(userNames[i]);
-            information.setAddress("Molly Coffee "+i);
-            information.setComment("Tuyet voi ong mat troi");
-            information.setNumberOfLike("10");
-            information.setGetNumberOfComment("20");
-            information.setIdImage(iconProfiles[i]);
-            information.setImageLike(R.drawable.like);
-            information.setImageComment(R.drawable.comment);
-            data.add(information);
+        System.out.println("dư lieu khoi tao ban dau :"+data);
+         data = Arrays.asList(locationNoteInforList);
+        for(int i=0; i<data.size(); i++){
+            System.out.println("id :"+data.get(i).getIdNote()+" account :"+data.get(i).getAccount());
         }
+
+
         return data;
     }
 
@@ -83,6 +95,35 @@ public class LocationNoteList extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public class GetLocationNoteList extends Thread{
+        Context context;
+        Gson gson=new Gson();
+        int idLocation;
+        public GetLocationNoteList(int idLocation, Context context)
+        {
+            this.idLocation = idLocation;
+            this.context=context;
+        }
+
+        @Override
+        public void run() {
+            String inforLocationNoteList= getString(R.string.link)+"Note/list?IDLOCATION="+idLocation;
+            System.out.println("link :"+inforLocationNoteList);
+            String result = getJson.getStringJson(inforLocationNoteList);
+            System.out.println(" ket qua lay duoc :"+result);
+            locationNoteInforList = gson.fromJson(result, LocationNoteInfor[].class);
+            if(locationNoteInforList ==null)
+                System.out.println(" khong tim thay danh sach note");
+            else System.out.println(" list tim duoc :"+locationNoteInforList);
+        }
+    }
+
+    public void doStartGetLocationNoteList(int idLocation)
+    {
+        GetLocationNoteList getLocationNoteList = new GetLocationNoteList(idLocation,this);
+        getLocationNoteList.start();
     }
 
 }

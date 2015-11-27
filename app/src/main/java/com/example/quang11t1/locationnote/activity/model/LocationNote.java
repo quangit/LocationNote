@@ -5,16 +5,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterItem;
 
 public class LocationNote implements ClusterItem {
+    int idLocation;
     private String tenDiaDiem;
     private long soNote;
     private LatLng viTri;
     private int anhDiaDiem;
 
-    public LocationNote(String tenDiaDiem, long soNote, LatLng viTri, int anhDiaDiem) {
+    public LocationNote(int idLocation, String tenDiaDiem, long soNote, LatLng viTri, int anhDiaDiem) {
+        this.idLocation = idLocation;
         this.tenDiaDiem = tenDiaDiem;
         this.soNote = soNote;
         this.viTri = viTri;
         this.anhDiaDiem = anhDiaDiem;
+    }
+
+    public int getIdLocation() {
+        return idLocation;
+    }
+
+    public void setIdLocation(int idLocation) {
+        this.idLocation = idLocation;
     }
 
     public int getAnhDiaDiem() {

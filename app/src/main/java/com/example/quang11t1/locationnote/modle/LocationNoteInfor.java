@@ -1,88 +1,75 @@
 package com.example.quang11t1.locationnote.modle;
 
-public class LocationNoteInfor {
-    int idImage;
-    String userName;
-    String address;
-    String comment;
-    int imageLike;
-    int imageComment;
-    String timePost;
-    String numberOfLike;
-    String getNumberOfComment;
+import java.util.Date;
+
+public class  LocationNoteInfor {
+
+    private int idNote;
+    private String account;
+    private String location;
+    private String content;
+    private Date time;
+    private int numberOfLike;
+    private int numberOfComment;
+
 
     public LocationNoteInfor() {
     }
 
-    public String getNumberOfLike() {
+    public int getIdNote() {
+        return idNote;
+    }
+
+    public void setIdNote(int idNote) {
+        this.idNote = idNote;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
+    }
+
+    public int getNumberOfLike() {
         return numberOfLike;
     }
 
-    public void setNumberOfLike(String numberOfLike) {
+    public void setNumberOfLike(int numberOfLike) {
         this.numberOfLike = numberOfLike;
     }
 
-    public String getGetNumberOfComment() {
-        return getNumberOfComment;
+    public int getNumberOfComment() {
+        return numberOfComment;
     }
 
-    public void setGetNumberOfComment(String getNumberOfComment) {
-        this.getNumberOfComment = getNumberOfComment;
+    public void setNumberOfComment(int numberOfComment) {
+        this.numberOfComment = numberOfComment;
     }
 
-    public int getIdImage() {
-        return idImage;
-    }
-
-    public void setIdImage(int idImage) {
-        this.idImage = idImage;
-    }
-
-    public String getTimePost() {
-        return timePost;
-    }
-
-    public void setTimePost(String timePost) {
-        this.timePost = timePost;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public int getImageLike() {
-        return imageLike;
-    }
-
-    public void setImageLike(int imageLike) {
-        this.imageLike = imageLike;
-    }
-
-    public int getImageComment() {
-        return imageComment;
-    }
-
-    public void setImageComment(int imageComment) {
-        this.imageComment = imageComment;
-    }
 }

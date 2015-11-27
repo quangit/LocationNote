@@ -67,6 +67,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
         public LocationNoteRenderer() {
             super(getActivity().getApplicationContext(), getMap(), locationNoteClusterManager);
+
             View oneLocation = getActivity().getLayoutInflater().inflate(R.layout.sigle_location,null);
             mIconGenerator.setContentView(oneLocation);
             oneImageView = (ImageView)oneLocation.findViewById(R.id.image);
@@ -119,6 +120,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     public boolean onClusterItemClick(LocationNote item) {
         System.out.println("thong tin chi tiet " + item.getTenDiaDiem() + "  " + item.getSoNote());
         Intent intent = new Intent(getActivity(), LocationNoteList.class);
+        intent.putExtra("idLocation",item.getIdLocation());
         startActivity(intent);
         return true;
     }
@@ -132,19 +134,21 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     protected void startDemo() {
         map = getMap();
         android.location.Location lastLocation = getLastKnownLocation();
+        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(16, 108), 9.5f));
         if(lastLocation != null){
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 13));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))      // Sets the center of the map to location user
-                    .zoom(15)                   // Sets the zoom
-                    .bearing(90)                // Sets the orientation of the camera to east
-                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
+                    .zoom(5)                   // Sets the zoom
+                    .bearing(0)                // Sets the orientation of the camera to east
+                    .tilt(0)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
         else{
+            System.out.println("========== display location default ===========");
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(0, 0), 13));
 
@@ -172,30 +176,34 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     }
 
     private void addItems() {
+        System.out.println(" ======================= length of location list :"+locationList.length);
+        if(locationList != null)
         for(Location location : locationList){
+            System.out.println(" lay du lieu chuyen qua ban do lan :");
             if(location.getTypelocation().equals("Nha Hang")){
-                locationNoteClusterManager.addItem(new LocationNote(location.getLocationName(), location.getNumberOfNote(), position(location.getLongitude(), location.getLatitude()), R.drawable.bell));
+                System.out.println(" nha hang :");
+                locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.bell));
+                System.out.println(" nha hang === :");
             }
             else {
                 if(location.getTypelocation().equals("Cafe")){
-                    locationNoteClusterManager.addItem(new LocationNote(location.getLocationName(), location.getNumberOfNote(), position(location.getLongitude(), location.getLatitude()), R.drawable.tea));
+                    System.out.println(" ca fe :");
+                    locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.tea));
+                    System.out.println(" ca fe === :");
                 }
                 else {
-                    locationNoteClusterManager.addItem(new LocationNote(location.getLocationName(), location.getNumberOfNote(), position(location.getLongitude(), location.getLatitude()), R.drawable.muffin));
+                    locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.muffin));
                 }
             }
         }
-        locationNoteClusterManager.addItem(new LocationNote("Molly", 10, position(),R.drawable.cafe));
-        locationNoteClusterManager.addItem(new LocationNote("Hoan My", 10, position(),R.drawable.hospital));
-        locationNoteClusterManager.addItem(new LocationNote("Phi Lu", 10, position(),R.drawable.restaurant));
-        locationNoteClusterManager.addItem(new LocationNote("Molly1", 10, position(),R.drawable.cafe));
-        locationNoteClusterManager.addItem(new LocationNote("Hoan My 1", 10, position(),R.drawable.hospital));
-        locationNoteClusterManager.addItem(new LocationNote("Phi Lu 1", 10, position(),R.drawable.restaurant));
+        /*locationNoteClusterManager.addItem(new LocationNote(10000, "Molly 1", 10, position(),R.drawable.tea));
+        locationNoteClusterManager.addItem(new LocationNote(10001, "Hoan My 1", 10, position(),R.drawable.muffin));
+        locationNoteClusterManager.addItem(new LocationNote(10002, "Phi Lu 1", 10, position(), R.drawable.bell));*/
 
     }
 
     private LatLng position() {
-        return new LatLng(random(51.6723432, 51.38494009999999), random(0.148271, -0.3514683));
+        return new LatLng(random(16, 17), random(108, 109));
     }
 
     private LatLng position(float kinhDo, float viDo){
@@ -207,20 +215,17 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     }
 
     public class GetLocationList extends Thread{
-
-        //Location location;
         Context context;
         Gson gson=new Gson();
         public GetLocationList(Context context)
         {
-            //this.location = location;
             this.context=context;
         }
 
         @Override
         public void run() {
-            String locations= getString(R.string.link)+"Location/list?LONGITUDE=9&LATITUDE=9&RADIUS=5";
-            String result = getJson.getStringJson(locations);
+            String locationslink= getString(R.string.link)+"Location/list?LONGITUDE=108&LATITUDE=16&RADIUS=5";
+            String result = getJson.getStringJson(locationslink);
             System.out.println("chuoi lay ve duoc :"+result);
             locationList = gson.fromJson(result,Location[].class);
         }
@@ -234,14 +239,12 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
     private android.location.Location getLastKnownLocation() {
         List<String> providers = locationManager.getProviders(true);
-        System.out.println(" provider :"+providers);
         android.location.Location bestLocation = null;
         for (String provider : providers) {
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED
                     || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
-                System.out.println(" truy nhap internet thanh cong");
                 android.location.Location location = locationManager.getLastKnownLocation(provider);
 
                 if (location == null) {
@@ -252,9 +255,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
                     bestLocation = location;
                 }
             }
-
         }
-        System.out.println(" lastLocation ====================================== :"+bestLocation);
         return bestLocation;
     }
 }

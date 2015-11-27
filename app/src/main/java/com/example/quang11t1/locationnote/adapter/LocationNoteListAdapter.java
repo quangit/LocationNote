@@ -35,15 +35,11 @@ public class LocationNoteListAdapter extends RecyclerView.Adapter<LocationNoteLi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         LocationNoteInfor currentInformation = data.get(position);
-        holder.userName.setText(currentInformation.getUserName());
-        holder.locationName.setText(currentInformation.getAddress());
-        holder.content.setText(currentInformation.getComment());
-        holder.numberOfLike.setText(currentInformation.getNumberOfLike());
-        holder.numberOfComment.setText(currentInformation.getGetNumberOfComment());
-        Bitmap icon = BitmapFactory.decodeResource(context.getResources(), currentInformation.getIdImage());
-        holder.iconProfile.setImageBitmap(icon);
-        holder.imgLike.setImageResource(currentInformation.getImageLike());
-        holder.imgComment.setImageResource(currentInformation.getImageComment());
+        holder.userName.setText(currentInformation.getAccount());
+        holder.locationName.setText(currentInformation.getLocation());
+        holder.content.setText(currentInformation.getContent());
+        holder.numberOfLike.setText(""+currentInformation.getNumberOfLike());
+        holder.numberOfComment.setText(""+currentInformation.getNumberOfComment());
 
     }
 
