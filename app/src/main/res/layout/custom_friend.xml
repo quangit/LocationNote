@@ -7,9 +7,9 @@
         android:layout_height="fill_parent"
         android:background="@android:drawable/editbox_background">
 
-        <ImageView
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:id="@+id/imV_profile"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"

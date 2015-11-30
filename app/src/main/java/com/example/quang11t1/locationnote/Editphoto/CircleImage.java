@@ -17,7 +17,10 @@ public class CircleImage {
         Bitmap conv_bm=getCircleBitmap(resizedBitmap,100);
         return conv_bm;
     }
-    private Bitmap getCircleBitmap(Bitmap bitmap , int pixels) {
+
+
+
+    public Bitmap getCircleBitmap(Bitmap bitmap , int radius) {
         final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(output);
@@ -28,7 +31,7 @@ public class CircleImage {
         paint.setAntiAlias(true);
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);
-        canvas.drawCircle(100,100, 90, paint);
+        canvas.drawCircle(radius,radius, 90, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
         bitmap.recycle();

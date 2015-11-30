@@ -41,6 +41,8 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    int idAccount=0;
+    String userName;
     boolean isLoginValue=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +57,11 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                Intent intent = new Intent(getApplicationContext(),Send_Messager.class);
-                startActivity(intent);
+                if(isLoginValue) {
+                    Intent intent = new Intent(getApplicationContext(), Send_Messager.class);
+                    intent.putExtra("idAccount", idAccount);
+                    startActivity(intent);
+                }
 
             }
         });
@@ -127,6 +132,9 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Bundle bundle = new Bundle();
+        bundle.putInt("idAccount",idAccount);
+        bundle.putString("userName",userName);
 
         if (id == R.id.nav_home) {
 
@@ -136,6 +144,7 @@ public class MainActivity extends AppCompatActivity
             if(!isLoginValue) moveLogin();
             else {
                 Fragment fragment = new Friend();
+                fragment.setArguments(bundle);
                 displayView(fragment);
             }
         } else if (id == R.id.nav_messager) {
@@ -186,6 +195,8 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences preferences=getSharedPreferences("inforLogin", MODE_PRIVATE);
         SharedPreferences.Editor editor=preferences.edit();
         editor.clear();
+        idAccount=0;
+        userName="";
         editor.commit();
     }
 
@@ -205,6 +216,8 @@ public class MainActivity extends AppCompatActivity
             DownloadImageTask downloadImageTask =new DownloadImageTask(imageView);
             downloadImageTask.execute(account.getImage());
             isLoginValue=true;
+            idAccount =account.getIdAccount();
+            userName=account.getUsername();
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             MenuItem item = navigationView.getMenu().getItem(6);
             item.setTitle("Đăng xuất");
@@ -230,7 +243,8 @@ public class MainActivity extends AppCompatActivity
         //view.getMenu().getItem(6).setChecked(true);
         if(check_remember)
         {
-            String user = preferences.getString("user","");
+            idAccount = preferences.getInt("id",0);
+            userName = preferences.getString("user","");
             String pass = preferences.getString("pass","");
             String url = preferences.getString("url","");
             String email =preferences.getString("email","");
@@ -277,8 +291,7 @@ public class MainActivity extends AppCompatActivity
                 Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
-            CircleImage circleImage=new CircleImage();
-            mIcon11=circleImage.getCircleBitmap(mIcon11);
+
             return mIcon11;
         }
 

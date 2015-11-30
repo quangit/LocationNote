@@ -7,14 +7,14 @@
     android:orientation="horizontal">
     <RelativeLayout
         android:layout_width="80dp"
+        android:gravity="center"
         android:layout_height="match_parent">
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/img_profile"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/profile"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="15dp"/>
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+
+            android:src="@drawable/profile" />
 
     </RelativeLayout>
 
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="titbk dfdss sdgsdf "
-                android:textColor="#FFCC00"
+                android:textColor="@color/colorPrimary"
                 android:singleLine="true"
                 android:maxLength="15"
                 android:layout_weight="1"/>
@@ -73,6 +73,7 @@
             android:layout_height="wrap_content"
             android:text="tuyet voi ong mat troifsd sdfsd sd g dsg s gsd g sg s gs g s"
             android:singleLine="true"
+            android:textColor="@color/colorTextGray"
             android:layout_weight="1"/>
 
         <LinearLayout

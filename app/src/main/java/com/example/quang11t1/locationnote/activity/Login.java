@@ -111,6 +111,7 @@ public class Login extends AppCompatActivity {
             boolean check_remember_login = checkBox_remember.isChecked();
             if (check_remember_login)
             {
+                editor.putInt("id",account.getIdAccount());
                 editor.putString("user",account.getUsername());
                 editor.putString("pass",account.getPassword());
                 editor.putString("url",account.getImage());

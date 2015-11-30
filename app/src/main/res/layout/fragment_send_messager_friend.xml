@@ -22,10 +22,10 @@
             android:padding="2dp">
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/editText_friend"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Chọn địa điểm " />
+                android:hint="Chọn bạn bè" />
 
         </LinearLayout>
         <ImageView
@@ -65,7 +65,7 @@
             android:padding="2dp">
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/editText_context"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="0dp"
@@ -74,7 +74,7 @@
                 android:maxLines="4" />
 
             <ImageButton
-                android:id="@+id/imageButton4"
+                android:id="@+id/imageButton_send"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginLeft="20dp"

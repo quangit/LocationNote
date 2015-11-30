@@ -4,108 +4,113 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 
-import com.example.quang11t1.locationnote.Editphoto.CircleImage;
-import com.example.quang11t1.locationnote.Entity.Myfriend;
+import android.widget.ListView;
+import android.widget.Toast;
+
+
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.adapter.Adapter_Friends;
+import com.example.quang11t1.locationnote.modle.Account;
+import com.example.quang11t1.locationnote.modle.FriendBean;
+import com.example.quang11t1.locationnote.modle.Location;
+import com.example.quang11t1.locationnote.support.GetJson;
+import com.google.gson.Gson;
+import com.google.gson.internal.bind.ReflectiveTypeAdapterFactory;
 
-import java.io.InputStream;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Friend extends Fragment{
-    View rootview;
-    public ArrayList<Myfriend> arraylistComment = new ArrayList<Myfriend>();
-   Myfriend myfriend;
-   private ListView listViewFriend;
-   // ImageView imViewAndroid;
-   // ListView lv_friends;
-    CircleImage circleImage;
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        rootview = inflater.inflate(R.layout.fragment_friend, container, false);
-        createtmpComment();
-        listViewFriend = (ListView)rootview.findViewById(R.id.lv_friends);
-        Adapter_Friends adapter_friends = new Adapter_Friends(getActivity(),arraylistComment);
-        //commentAdapter adapter=new commentAdapter(getActivity(),arraylistComment);
-        listViewFriend.setAdapter(adapter_friends);
-       // listViewComment.setAdapter(adapter);
-       // imViewAndroid = (ImageView) rootview.findViewById(R.id.imageviewAvarta);
-        //imViewAndroid.setImageBitmap(roundCornerImage(BitmapFactory.decodeResource(getResources(), R.drawable.vie),60));
-        //Bitmap bm = BitmapFactory.decodeResource(getResources(),
-             //   R.drawable.vie);
-
-        //new DownloadImageTask((ImageView) rootview.findViewById(R.id.imageviewAvarta))
-              //  .execute("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
-        //circleImage=new CircleImage();
-        //imViewAndroid.setImageBitmap(circleImage.getCircleBitmap(bm));
-        return rootview;
-    }
-
-    public void createtmpComment(){
-        myfriend=new Myfriend("Nguyen Van A");
-        arraylistComment.add(myfriend);
-        myfriend=new Myfriend("Nguyen Van B");
-        arraylistComment.add(myfriend);
-        myfriend=new Myfriend("Nguyen Van C");
-        arraylistComment.add(myfriend);
-    }
+    ListView lv_friends;
+    Adapter_Friends adapter_friends;
+    List<Account> listAccount;
+    int idAccount;
+    String userName;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       /* lv_friends = (ListView)getActivity().findViewById(R.id.lv_friends);
-        List<String> list = new ArrayList<String>();
-        list.add("Nguyen Van A");
-        list.add("Nguyen Van B");
-        list.add("Nguyen Van C");
-        list.add("Nguyen Van D");
-        list.add("Nguyen Van E");
-        list.add("Nguyen Van F");
-        list.add("Nguyen Van I");
-        list.add("Nguyen Van J");
-        list.add("Nguyen Van K");
-        list.add("Nguyen Van L");
-        list.add("Nguyen Van M");
-        list.add("Nguyen Van N");
-        adapter_friends = new Adapter_Friends(getActivity(),list);
-       lv_friends.setAdapter(adapter_friends);
-       // adapter_friends.notifyDataSetChanged();*/
-    }
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
 
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
+        idAccount=getArguments().getInt("idAccount", 0);
+        userName = getArguments().getString("userName");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view=inflater.inflate(R.layout.fragment_friend, container, false);
+
+
+        lv_friends = (ListView) view.findViewById(R.id.lv_friends);
+
+       GetListAccount getListAccount =new GetListAccount(lv_friends);
+        getListAccount.execute("");
+        Toast.makeText(getContext(),"--------"+idAccount+" ----"+userName,Toast.LENGTH_LONG).show();
+
+
+        return view;
+    }
+
+    public class GetListAccount extends AsyncTask<String,List<Account>,List<Account>>{
+        Gson gson=new Gson();
+        GetJson getJson=new GetJson();
+
+        ListView listView;
+
+        public GetListAccount(ListView listView) {
+            this.listView = listView;
         }
 
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(List<Account> accounts) {
+            super.onPostExecute(accounts);
+
+            //Adapter_Friends adapter =new Adapter_Friends(getContext(),accounts);
+            String[] list =new String[]{"awdaw","adwa","hbrth","asjgsc"};
+           // ArrayAdapter<String> adapter=new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,list);
+            Adapter_Friends adapter =new Adapter_Friends(getContext(),accounts);
+            listView.setAdapter(adapter);
+        }
+
+        @Override
+        protected void onProgressUpdate(List<Account>... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected List<Account> doInBackground(String... params) {
+            String getFriendLink= getString(R.string.link)+"Friend/myFriend?IDACCOUNT="+idAccount;
+            String result = getJson.getStringJson(getFriendLink);
+            System.out.println("chuoi lay ve duoc :" + result);
+            FriendBean[] friendList = gson.fromJson(result,FriendBean[].class);
+            List<Account> listAcount =new ArrayList<>();
+            for (FriendBean friendBean:friendList)
+            {
+                String user = friendBean.getAccount1();
+                if(user.equals(userName)) user=friendBean.getAccount2();
+                String getAccountLink =getString(R.string.link)+"login/user?USERNAME="+user;
+                String resultAccount = getJson.getStringJson(getAccountLink);
+                Account account =gson.fromJson(resultAccount, Account.class);
+                listAcount.add(account);
             }
-            circleImage=new CircleImage();
-            mIcon11=circleImage.getCircleBitmap(mIcon11);
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+            return listAcount;
         }
     }
+
 }

@@ -29,12 +29,9 @@ import java.util.ArrayList;
 
 public class Send_Messager extends AppCompatActivity  {
 
-    String arr[]={
-            "Hàng điện tử",
-            "Hàng hóa chất",
-            "Hàng gia dụng"};
     ArrayList<ItemSpinner> navSpinner;
 
+    int idAccount=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +41,10 @@ public class Send_Messager extends AppCompatActivity  {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         Spinner spinner=(Spinner) findViewById(R.id.spinner_nav);
+
+        Bundle infoLogin = getIntent().getExtras();
+        idAccount=infoLogin.getInt("idAccount",0);
+
 
         navSpinner =new ArrayList<>();
         navSpinner.add(new ItemSpinner("Bạn Bè", R.drawable.ic_people_24dp));
@@ -57,12 +58,16 @@ public class Send_Messager extends AppCompatActivity  {
             @Override
             public void onItemSelected(AdapterView<?> adapter, View v,
                                        int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("idAccount",idAccount);
                 if (position == 0) {
                     SendMessagerFriendFragment sendMessagerFriendFragment = new SendMessagerFriendFragment();
+                    sendMessagerFriendFragment.setArguments(bundle);
                     displayView(sendMessagerFriendFragment);
                 }
                 if(position ==1 ){
                     sendMessagerGlobalFragment sendmessagerGlobalFragment = new sendMessagerGlobalFragment();
+                    sendmessagerGlobalFragment.setArguments(bundle);
                     displayView(sendmessagerGlobalFragment);
                 }
             }

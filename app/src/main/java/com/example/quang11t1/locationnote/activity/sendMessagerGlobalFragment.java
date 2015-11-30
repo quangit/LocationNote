@@ -1,6 +1,10 @@
 package com.example.quang11t1.locationnote.activity;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -46,7 +50,12 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
         btnTakephotofromgallery.setOnClickListener(this);
         // Inflate the layout for this fragment
         return rootview;
+
     }
+
+
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -88,4 +97,6 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
         }
 
     }
+
+
 }
