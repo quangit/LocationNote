@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.adapter.Adapter_Friends;
+import com.example.quang11t1.locationnote.adapter.ArrayAdapterCustom;
 import com.example.quang11t1.locationnote.modle.Account;
 import com.example.quang11t1.locationnote.modle.FriendBean;
 import com.example.quang11t1.locationnote.modle.Location;
@@ -83,8 +84,9 @@ public class Friend extends Fragment{
 
             //Adapter_Friends adapter =new Adapter_Friends(getContext(),accounts);
             String[] list =new String[]{"awdaw","adwa","hbrth","asjgsc"};
-           // ArrayAdapter<String> adapter=new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,list);
-            Adapter_Friends adapter =new Adapter_Friends(getContext(),accounts);
+            //ArrayAdapter<String> adapter=new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1,list);
+            //Adapter_Friends adapter =new Adapter_Friends(getContext(),accounts);
+            ArrayAdapterCustom adapter =new ArrayAdapterCustom(getActivity(),R.layout.custom_friend,accounts);
             listView.setAdapter(adapter);
         }
 

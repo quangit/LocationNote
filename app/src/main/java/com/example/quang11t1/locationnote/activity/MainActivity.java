@@ -143,8 +143,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_friend) {
             if(!isLoginValue) moveLogin();
             else {
-                Fragment fragment = new Friend();
-                fragment.setArguments(bundle);
+                //Fragment fragment = new Friend();
+                //fragment.setArguments(bundle);
+                FriendFragment fragment =new FriendFragment();
                 displayView(fragment);
             }
         } else if (id == R.id.nav_messager) {

@@ -14,7 +14,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -59,6 +61,11 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         super.onCreate(savedInstanceState);
         doStart();
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     private class LocationNoteRenderer extends DefaultClusterRenderer<LocationNote> {
