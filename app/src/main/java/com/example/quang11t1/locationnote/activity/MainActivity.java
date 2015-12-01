@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity
     int idAccount=0;
     String userName;
     boolean isLoginValue=false;
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +52,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_send_messager);
+        fab = (FloatingActionButton) findViewById(R.id.fab_send_messager);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                if(isLoginValue) {
+                if (isLoginValue) {
                     Intent intent = new Intent(getApplicationContext(), Send_Messager.class);
                     intent.putExtra("idAccount", idAccount);
                     startActivity(intent);
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -133,8 +135,8 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Bundle bundle = new Bundle();
-        bundle.putInt("idAccount",idAccount);
-        bundle.putString("userName",userName);
+        bundle.putInt("id",idAccount);
+        bundle.putString("user",userName);
 
         if (id == R.id.nav_home) {
 
@@ -144,8 +146,10 @@ public class MainActivity extends AppCompatActivity
             if(!isLoginValue) moveLogin();
             else {
                 //Fragment fragment = new Friend();
-                //fragment.setArguments(bundle);
+                //
+                fab.setVisibility(View.GONE);
                 FriendFragment fragment =new FriendFragment();
+                fragment.setArguments(bundle);
                 displayView(fragment);
             }
         } else if (id == R.id.nav_messager) {
@@ -199,6 +203,10 @@ public class MainActivity extends AppCompatActivity
         idAccount=0;
         userName="";
         editor.commit();
+
+       // Fragment fragment = new Home();
+      //  navigationView.getMenu().getItem(0).setChecked(true);
+       // displayView(fragment);
     }
 
     @Override
