@@ -7,9 +7,9 @@
     android:orientation="horizontal">
     <RelativeLayout
         android:layout_width="80dp"
-        android:gravity="center"
-        android:layout_height="match_parent">
-        <com.mikhaellopez.circularimageview.CircularImageView
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <ImageView
             android:id="@+id/img_profile"
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -22,35 +22,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_weight="1"
+            android:orientation="horizontal"
             android:weightSum="3">
 
             <TextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="titbk dfdss sdgsdf "
-                android:textColor="@color/colorPrimary"
-                android:singleLine="true"
                 android:maxLength="15"
-                android:layout_weight="1"/>
+                android:singleLine="true"
+                android:textColor="@color/colorPrimary"/>
             <TextView
                 android:id="@+id/location_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Molly Coffee"
-                android:textColor="#006600"
-                android:singleLine="true"
                 android:maxLength="15"
-                android:layout_weight="1"/>
+                android:singleLine="true"
+                android:textColor="#006600"/>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,9 +60,9 @@
                     android:id="@+id/view_detail"
                     android:layout_width="14dp"
                     android:layout_height="22dp"
-                    android:src="@drawable/keydown"
                     android:layout_weight="1"
-                    android:background="@android:color/transparent"/>
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/keydown"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -71,18 +71,18 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="tuyet voi ong mat troifsd sdfsd sd g dsg s gsd g sg s gs g s"
+            android:layout_weight="1"
             android:singleLine="true"
-            android:textColor="@color/colorTextGray"
-            android:layout_weight="1"/>
+            android:text="tuyet voi ong mat troifsd sdfsd sd g dsg s gsd g sg s gs g s"
+            android:textColor="@color/colorTextGray"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_weight="1"
-            android:weightSum="2"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="2">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -98,9 +98,9 @@
                     android:id="@+id/txt_number_of_like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp"
+                    android:text="10"/>
                 <ImageView
                     android:id="@+id/icon_comment"
                     android:layout_width="wrap_content"
@@ -110,16 +110,16 @@
                     android:id="@+id/txt_number_of_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="10dp"/>
+                    android:layout_marginRight="10dp"
+                    android:text="10"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginRight="15dp"
                 android:layout_weight="1"
-                android:gravity="end|center_vertical"
-                android:layout_marginRight="15dp">
+                android:gravity="end|center_vertical">
                 <TextView
                     android:id="@+id/txt_time_post"
                     android:layout_width="wrap_content"

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +21,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,13 +28,9 @@ import android.widget.Toast;
 import com.example.quang11t1.locationnote.Editphoto.CircleImage;
 import com.example.quang11t1.locationnote.R;
 
-import com.example.quang11t1.locationnote.activity.model.Information;
 import com.example.quang11t1.locationnote.modle.Account;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -164,11 +158,12 @@ public class MainActivity extends AppCompatActivity
 
             }
         } else if (id == R.id.nav_information) {
-           // if(!isLoginValue) moveLogin();
-            //else {
-            //}
-            Fragment fragment = new Information();
-            displayView(fragment);
+           if(!isLoginValue) moveLogin();
+            else {
+               Fragment fragment = new Information();
+               fragment.setArguments(bundle);
+               displayView(fragment);
+            }
         } else if (id == R.id.nav_setting) {
 
 

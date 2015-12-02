@@ -6,28 +6,13 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".activity.LocationNoteList">
-
-    <LinearLayout
-        android:id="@+id/container_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <include
-            layout="@layout/toobar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <include layout="@layout/content_location_note_list1" />
-    </LinearLayout>
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_dialog_email" />
+        android:text="lol"/>
+<ListView
+    android:id="@+id/listView_location"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"></ListView>
 
 </android.support.design.widget.CoordinatorLayout>
