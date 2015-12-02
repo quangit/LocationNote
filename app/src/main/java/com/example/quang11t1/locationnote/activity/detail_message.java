@@ -12,12 +12,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.quang11t1.locationnote.Editphoto.CircleImage;
 import com.example.quang11t1.locationnote.Entity.Comment;
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.adapter.commentAdapter;
 import com.example.quang11t1.locationnote.modle.Account;
+import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
 import com.example.quang11t1.locationnote.support.GetJson;
 import com.google.gson.Gson;
 
@@ -30,12 +32,13 @@ import java.util.ArrayList;
  */
 public class detail_message extends AppCompatActivity {
     public ArrayList<Comment> arraylistComment = new ArrayList<Comment>();
+    TextView txtViewAvartaDetail,txtViewLocationDetail,txtViewContentDetail;
     View rootview;
     Comment comment;
     ImageView imViewAndroid;
     CircleImage circleImage;
     GetJson getJson =new GetJson();
-    LocationNoteList locastionNoteList;
+    LocationNoteInfor locationNoteInfor;
     int id;
     String username;
     private ListView listViewComment;
@@ -45,18 +48,25 @@ public class detail_message extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_message);
-        //Bundle bundle = getIntent().getBundleExtra("data");
-        //locastionNoteList=(LocationNoteList)bundle.getSerializable("locationNoteList");
+        Bundle bundle = getIntent().getBundleExtra("data");
+        locationNoteInfor=(LocationNoteInfor)bundle.getSerializable("locationNoteInfo");
         //Bundle bundle =this.getArguments();
         //id=bundle.getInt("id");
         //username=bundle.getString("user");
         doStartGet();
         createtmpComment();
+        txtViewAvartaDetail= (TextView) findViewById(R.id.textViewNameNickDetail);
+        txtViewLocationDetail=(TextView) findViewById(R.id.textViewLocationDetail);
+        txtViewContentDetail=(TextView) findViewById(R.id.textViewContentDetail);
        listViewComment = (ListView) findViewById(R.id.listviewComment);
         commentAdapter adapter=new commentAdapter(detail_message.this,arraylistComment);
         listViewComment.setAdapter(adapter);
+
         imViewAndroid = (ImageView) findViewById(R.id.imageviewAvarta);
-        //imViewAndroid.setImageBitmap(roundCornerImage(BitmapFactory.decodeResource(getResources(), R.drawable.vie),60));
+        txtViewAvartaDetail.setText(locationNoteInfor.getAccount());
+        txtViewLocationDetail.setText(locationNoteInfor.getLocation());
+        txtViewContentDetail.setText(locationNoteInfor.getContent());
+        //imViewAndroid.setImageBitmap(rountdCornerImage(BitmapFactory.decodeResource(getResources(), R.drawable.vie),60));
         Bitmap bm = BitmapFactory.decodeResource(getResources(),
                 R.drawable.vie);
 
