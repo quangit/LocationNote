@@ -40,6 +40,7 @@ public class LocationNoteListAdapter extends RecyclerView.Adapter<LocationNoteLi
         holder.content.setText(currentInformation.getContent());
         holder.numberOfLike.setText(""+currentInformation.getNumberOfLike());
         holder.numberOfComment.setText(""+currentInformation.getNumberOfComment());
+        holder.postTime.setText(""+currentInformation.getTime().toString());
 
     }
 

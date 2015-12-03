@@ -77,8 +77,6 @@ public class LocationNoteList extends AppCompatActivity {
         for(int i=0; i<data.size(); i++){
             System.out.println("id :"+data.get(i).getIdNote()+" account :"+data.get(i).getAccount());
         }
-
-
         return data;
     }
 

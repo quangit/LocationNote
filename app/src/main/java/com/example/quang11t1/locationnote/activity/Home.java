@@ -147,12 +147,13 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         android.location.Location lastLocation = getLastKnownLocation();
         //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(16, 108), 9.5f));
         if(lastLocation != null){
+            System.out.println(" "+lastLocation.getLatitude()+" "+lastLocation.getLongitude());
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 13));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))      // Sets the center of the map to location user
-                    .zoom(5)                   // Sets the zoom
+                    .zoom(15)                   // Sets the zoom
                     .bearing(0)                // Sets the orientation of the camera to east
                     .tilt(0)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
@@ -187,29 +188,31 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     }
 
     private void addItems() {
-        System.out.println(" ======================= length of location list :"+locationList.length);
-        if(locationList != null)
-        for(Location location : locationList){
-            System.out.println(" lay du lieu chuyen qua ban do lan :");
-            if(location.getTypelocation().equals("Nha Hang")){
-                System.out.println(" nha hang :");
-                locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.bell));
-                System.out.println(" nha hang === :");
-            }
-            else {
-                if(location.getTypelocation().equals("Cafe")){
-                    System.out.println(" ca fe :");
-                    locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.tea));
-                    System.out.println(" ca fe === :");
-                }
-                else {
-                    locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.muffin));
+
+        if(locationList != null) {
+            for (Location location : locationList) {
+                System.out.println(" lay du lieu chuyen qua ban do lan :");
+                if (location.getTypelocation().equals("Nha Hang")) {
+                    System.out.println(" nha hang :");
+                    locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.bell));
+                    System.out.println(" nha hang === :");
+                } else {
+                    if (location.getTypelocation().equals("Cafe")) {
+                        System.out.println(" ca fe :");
+                        locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.tea));
+                        System.out.println(" ca fe === :");
+                    } else {
+                        locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.muffin));
+                    }
                 }
             }
         }
-        /*locationNoteClusterManager.addItem(new LocationNote(10000, "Molly 1", 10, position(),R.drawable.tea));
-        locationNoteClusterManager.addItem(new LocationNote(10001, "Hoan My 1", 10, position(),R.drawable.muffin));
-        locationNoteClusterManager.addItem(new LocationNote(10002, "Phi Lu 1", 10, position(), R.drawable.bell));*/
+        else{
+            locationNoteClusterManager.addItem(new LocationNote(10000, "Molly 1", 10, position(),R.drawable.tea));
+            locationNoteClusterManager.addItem(new LocationNote(10001, "Hoan My 1", 10, position(),R.drawable.muffin));
+            locationNoteClusterManager.addItem(new LocationNote(10002, "Phi Lu 1", 10, position(), R.drawable.bell));
+
+        }
 
     }
 
