@@ -1,6 +1,5 @@
 package com.example.quang11t1.locationnote.activity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.quang11t1.locationnote.Editphoto.CircleImage;
-import com.example.quang11t1.locationnote.Entity.Comment;
+import com.example.quang11t1.locationnote.modle.Comment;
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.adapter.commentAdapter;
 import com.example.quang11t1.locationnote.modle.Account;
@@ -41,6 +40,7 @@ public class detail_message extends AppCompatActivity {
     LocationNoteInfor locationNoteInfor;
     int id;
     String username;
+    Comment[] commentList ;
     private ListView listViewComment;
 
     @Nullable
@@ -54,6 +54,7 @@ public class detail_message extends AppCompatActivity {
         //id=bundle.getInt("id");
         //username=bundle.getString("user");
         doStartGet();
+        doStartGetLocationNoteList();
         createtmpComment();
         txtViewAvartaDetail= (TextView) findViewById(R.id.textViewNameNickDetail);
         txtViewLocationDetail=(TextView) findViewById(R.id.textViewLocationDetail);
@@ -61,7 +62,7 @@ public class detail_message extends AppCompatActivity {
        listViewComment = (ListView) findViewById(R.id.listviewComment);
         commentAdapter adapter=new commentAdapter(detail_message.this,arraylistComment);
         listViewComment.setAdapter(adapter);
-
+        System.out.println("then vien id "+locationNoteInfor.getIdNote());
         imViewAndroid = (ImageView) findViewById(R.id.imageviewAvarta);
         txtViewAvartaDetail.setText(locationNoteInfor.getAccount());
         txtViewLocationDetail.setText(locationNoteInfor.getLocation());
@@ -75,6 +76,25 @@ public class detail_message extends AppCompatActivity {
         circleImage=new CircleImage();
         imViewAndroid.setImageBitmap(circleImage.getCircleBitmap(bm));
     }
+    public void doStartGetLocationNoteList()
+    {
+        GetCommentList getCommentList = new GetCommentList(this);
+        getCommentList.start();
+    }
+    public ArrayList<Comment> getData(){
+        System.out.println(" get data to display to screen");
+        ArrayList<Comment> data = new ArrayList<Comment>();
+      //  System.out.println("dư lieu khoi tao ban dau :"+data);
+        for(int i=0;i<commentList.length;i++){
+            data.add(commentList[i]);
+        }
+
+        //for(int i=0; i<data.size(); i++){
+           // System.out.println("id :"+data.get(i).getIdComment()+" account :"+data.get(i).getAccount());
+        //}
+        return data;
+    }
+
     /*
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -96,11 +116,11 @@ public class detail_message extends AppCompatActivity {
         return rootview;
     }*/
     public void createtmpComment(){
-        comment=new Comment("tuyet zoi");
+        comment=new Comment();
         arraylistComment.add(comment);
-        comment=new Comment("ua cho nao ma co may mon nay ngon vay, chi vs");
+        comment=new Comment();
         arraylistComment.add(comment);
-        comment=new Comment("cung thuong thoi");
+        comment=new Comment();
         arraylistComment.add(comment);
     }
 
@@ -108,6 +128,25 @@ public class detail_message extends AppCompatActivity {
     {
         GetDetail_Account getLocationNoteList = new GetDetail_Account(this);
         getLocationNoteList.start();
+    }
+
+    public class GetCommentList extends Thread{
+        Context context;
+        Gson gson=new Gson();
+        public GetCommentList(Context context)
+        {
+            this.context=context;
+        }
+
+        @Override
+        public void run() {
+            String inforCommentList= getString(R.string.link)+"Comment/list?IDNOTE="+locationNoteInfor.getIdNote();
+            System.out.println("link :"+inforCommentList);
+            String result = getJson.getStringJson(inforCommentList);
+            System.out.println(" ket qua lay duoc :"+result);
+            commentList = gson.fromJson(result, Comment[].class);
+
+        }
     }
 
     /*

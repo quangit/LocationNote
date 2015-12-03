@@ -12,8 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quang11t1.locationnote.R;
-import com.example.quang11t1.locationnote.activity.LocationNoteList;
-import com.example.quang11t1.locationnote.activity.Login;
 import com.example.quang11t1.locationnote.activity.detail_message;
 import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
 
@@ -29,11 +27,11 @@ public class Location_list_Adapter extends ArrayAdapter<LocationNoteInfor> {
     LocationNoteInfor locationNoteInfor;
     TextView userName, locationName, content, numberOfLike, numberOfComment, postTime;
     ImageView iconProfile, imgLike, imgComment;
-    ArrayList<LocationNoteInfor> mlistcomment=new ArrayList<LocationNoteInfor>();
+    ArrayList<LocationNoteInfor> mlistlocationinfor=new ArrayList<LocationNoteInfor>();
     public Location_list_Adapter(Context context, ArrayList<LocationNoteInfor> objects) {
         super(context, R.layout.custom_locationnote_list, objects);
         this.mcontext=context;
-        this.mlistcomment=new ArrayList<LocationNoteInfor>(objects);
+        this.mlistlocationinfor=new ArrayList<LocationNoteInfor>(objects);
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -51,7 +49,7 @@ public class Location_list_Adapter extends ArrayAdapter<LocationNoteInfor> {
         iconProfile = (ImageView)convertView.findViewById(R.id.img_profile);
         imgLike = (ImageView)convertView.findViewById(R.id.icon_like);
         imgComment = (ImageView)convertView.findViewById(R.id.icon_comment);
-        locationNoteInfor=mlistcomment.get(position);
+        locationNoteInfor=mlistlocationinfor.get(position);
         userName.setText(locationNoteInfor.getAccount());
         locationName.setText(locationNoteInfor.getLocation());
         content.setText(locationNoteInfor.getContent());
@@ -59,6 +57,7 @@ public class Location_list_Adapter extends ArrayAdapter<LocationNoteInfor> {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"thihi",Toast.LENGTH_LONG).show();
+                locationNoteInfor=mlistlocationinfor.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("locationNoteInfo", locationNoteInfor);
                 Intent intent=new Intent(mcontext, detail_message.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

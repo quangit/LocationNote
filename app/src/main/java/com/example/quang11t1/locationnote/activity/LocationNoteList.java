@@ -38,6 +38,7 @@ public class LocationNoteList extends AppCompatActivity {
     int idLocation = 0;
     GetJson getJson =new GetJson();
     LocationNoteInfor[] locationNoteInforList ;
+   // Account[] accountList;
     private android.support.v7.widget.Toolbar toolbar;
     private ListView recycleView;
     private Location_list_Adapter locationNoteListAdapter;
@@ -116,4 +117,25 @@ public class LocationNoteList extends AppCompatActivity {
         }
     }
 
+
+    public class GetAccountList extends Thread{
+        Context context;
+        Gson gson=new Gson();
+        int idLocation;
+        public GetAccountList(int idLocation, Context context)
+        {
+            this.idLocation = idLocation;
+            this.context=context;
+        }
+
+        @Override
+        public void run() {
+            String inforLocationNoteList= getString(R.string.link)+"Note/list?IDLOCATION="+idLocation;
+            System.out.println("link :"+inforLocationNoteList);
+            String result = getJson.getStringJson(inforLocationNoteList);
+            System.out.println(" ket qua lay duoc :"+result);
+            locationNoteInforList = gson.fromJson(result, LocationNoteInfor[].class);
+
+        }
+    }
 }
