@@ -2,15 +2,14 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:gravity="center_horizontal">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toStartOf="@+id/textView"
-        android:layout_toLeftOf="@+id/textView">
+        android:orientation="vertical"
+       >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,20 +20,21 @@
                 android:id="@+id/imageviewAvarta"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                android:src="@drawable/vie"
                 android:adjustViewBounds="false"
+                android:baselineAlignBottom="false"
                 android:clickable="false"
 
-                android:baselineAlignBottom="false"
-                android:cropToPadding="false" />
+                android:cropToPadding="false"
+                android:src="@drawable/vie" />
             <TextView
+                android:id="@+id/textViewNameNickDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:autoText="false"
-                android:text="Luong vien"
                 android:layout_gravity="center"
-                android:textColor="#ffc107"
-                android:ellipsize="none" />
+                android:autoText="false"
+                android:ellipsize="none"
+                android:text="Luong vien"
+                android:textColor="#ffc107" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
@@ -42,14 +42,16 @@
                 android:text="      tại"
                 android:textColor="#bdbdbd" />
             <TextView
+                android:id="@+id/textViewLocationDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
-                android:text="Da Nang"
                 android:layout_gravity="center"
-                android:textColor="#64dd17"
-                android:autoLink="map" />
+                android:autoLink="map"
+                android:text="Da Nang"
+                android:textColor="#64dd17" />
         </LinearLayout>
         <TextView
+            android:id="@+id/textViewContentDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -57,8 +59,8 @@
             android:textColor="#000000" />
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_marginLeft="16dp"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp" >
                 <ImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
@@ -79,13 +81,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="9h01 Hôm nay"
-            android:gravity="right"/>
+            android:gravity="right"
+            android:text="9h01 Hôm nay"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -93,28 +95,28 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#ffc107"
-                android:text="Gấu " />
+                android:text="Gấu "
+                android:textColor="#ffc107" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="thích điều này"/>
         </LinearLayout>
         <ListView
+            android:id="@+id/listviewComment"
             android:layout_width="match_parent"
-            android:layout_marginLeft="16dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
-            android:id="@+id/listviewComment">
+            android:layout_marginLeft="16dp">
         </ListView>
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff3e0"
+        android:layout_alignParentBottom="true"
 
-        android:layout_alignParentBottom="true">
+        android:background="#fff3e0">
         <Button
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -136,8 +138,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
+            android:background="#fff3e0"
             android:text="GỬI"
-            android:textColor="#ffc107"
-            android:background="#fff3e0"/>
+            android:textColor="#ffc107"/>
     </LinearLayout>
 </RelativeLayout>

@@ -1,8 +1,11 @@
 package com.example.quang11t1.locationnote.modle;
 
+import com.example.quang11t1.locationnote.activity.LocationNoteList;
+
+import java.io.Serializable;
 import java.util.Date;
 
-public class  LocationNoteInfor {
+public class  LocationNoteInfor implements Serializable {
 
     private int idNote;
     private String account;

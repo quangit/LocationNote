@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +21,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,13 +28,9 @@ import android.widget.Toast;
 import com.example.quang11t1.locationnote.Editphoto.CircleImage;
 import com.example.quang11t1.locationnote.R;
 
-import com.example.quang11t1.locationnote.activity.model.Information;
 import com.example.quang11t1.locationnote.modle.Account;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     int idAccount=0;
     String userName;
     boolean isLoginValue=false;
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +46,13 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_send_messager);
+        fab = (FloatingActionButton) findViewById(R.id.fab_send_messager);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                if(isLoginValue) {
+                if (isLoginValue) {
                     Intent intent = new Intent(getApplicationContext(), Send_Messager.class);
                     intent.putExtra("idAccount", idAccount);
                     startActivity(intent);
@@ -65,6 +60,7 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -133,8 +129,8 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Bundle bundle = new Bundle();
-        bundle.putInt("idAccount",idAccount);
-        bundle.putString("userName",userName);
+        bundle.putInt("id",idAccount);
+        bundle.putString("user",userName);
 
         if (id == R.id.nav_home) {
 
@@ -144,8 +140,10 @@ public class MainActivity extends AppCompatActivity
             if(!isLoginValue) moveLogin();
             else {
                 //Fragment fragment = new Friend();
-                //fragment.setArguments(bundle);
+                //
+                fab.setVisibility(View.GONE);
                 FriendFragment fragment =new FriendFragment();
+                fragment.setArguments(bundle);
                 displayView(fragment);
             }
         } else if (id == R.id.nav_messager) {
@@ -160,11 +158,12 @@ public class MainActivity extends AppCompatActivity
 
             }
         } else if (id == R.id.nav_information) {
-           // if(!isLoginValue) moveLogin();
-            //else {
-            //}
-            Fragment fragment = new Information();
-            displayView(fragment);
+           if(!isLoginValue) moveLogin();
+            else {
+               Fragment fragment = new Information();
+               fragment.setArguments(bundle);
+               displayView(fragment);
+            }
         } else if (id == R.id.nav_setting) {
 
 
@@ -199,6 +198,10 @@ public class MainActivity extends AppCompatActivity
         idAccount=0;
         userName="";
         editor.commit();
+
+       // Fragment fragment = new Home();
+      //  navigationView.getMenu().getItem(0).setChecked(true);
+       // displayView(fragment);
     }
 
     @Override

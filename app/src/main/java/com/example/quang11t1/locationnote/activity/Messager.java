@@ -26,5 +26,4 @@ public class Messager extends Fragment {
         return inflater.inflate(R.layout.fragment_messager, container, false);
     }
 
-
 }

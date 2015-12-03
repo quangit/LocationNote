@@ -3,16 +3,19 @@
     android:layout_width="match_parent"
     android:orientation="horizontal"
     android:gravity="center_vertical"
+    android:background="@android:drawable/editbox_background_normal"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:id="@+id/imageView_avarta_friend" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textSize="22dp"
         android:text="New Text"
         android:id="@+id/textView_name_friend" />
 </LinearLayout>

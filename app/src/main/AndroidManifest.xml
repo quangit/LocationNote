@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/key_map_google_api" />
+            android:value="AIzaSyAPRpcCBNjIGtE3dee1MypPaRUOWPyKFqA" />
 
         <activity
             android:name=".activity.MainActivity"
@@ -31,18 +31,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.Login"
-            android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".activity.Login" android:icon="@drawable/default_profile">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.LocationNoteList"
             android:label="@string/title_activity_location_note_list1"
             android:theme="@style/AppTheme" />
-        <activity
-            android:name=".activity.detail_message"
-            android:label="@string/tittle_activity_detail"
-            android:theme="@style/AppTheme" />
+        <activity android:name=".activity.detail_message" android:icon="@drawable/default_profile">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activity.Send_Messager"
             android:label="@string/title_activity_send__messager"

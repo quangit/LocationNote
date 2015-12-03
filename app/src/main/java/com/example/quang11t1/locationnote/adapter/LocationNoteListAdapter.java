@@ -1,6 +1,8 @@
 package com.example.quang11t1.locationnote.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
@@ -9,17 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.quang11t1.locationnote.R;
+import com.example.quang11t1.locationnote.activity.MainActivity;
+import com.example.quang11t1.locationnote.activity.detail_message;
 import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
 
 import java.util.Collections;
 import java.util.List;
 
+import static android.support.v4.app.ActivityCompat.startActivity;
+
 public class LocationNoteListAdapter extends RecyclerView.Adapter<LocationNoteListAdapter.MyViewHolder>{
-    private LayoutInflater inflater;
     List<LocationNoteInfor> data = Collections.emptyList();
     Context context;
+    private LayoutInflater inflater;
     public LocationNoteListAdapter(Context context, List<LocationNoteInfor> data){
         inflater = LayoutInflater.from(context);
         this.data = data;
@@ -49,7 +56,7 @@ public class LocationNoteListAdapter extends RecyclerView.Adapter<LocationNoteLi
         return data.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView userName, locationName, content, numberOfLike, numberOfComment, postTime;
         ImageView iconProfile, imgLike, imgComment;
         public MyViewHolder(View itemView) {
@@ -63,6 +70,14 @@ public class LocationNoteListAdapter extends RecyclerView.Adapter<LocationNoteLi
             iconProfile = (ImageView)itemView.findViewById(R.id.img_profile);
             imgLike = (ImageView)itemView.findViewById(R.id.icon_like);
             imgComment = (ImageView)itemView.findViewById(R.id.icon_comment);
+            itemView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context.getApplicationContext(),detail_message.class);
+           context.startActivity(intent);
         }
     }
 }
