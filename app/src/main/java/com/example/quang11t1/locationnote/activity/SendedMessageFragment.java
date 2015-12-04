@@ -1,11 +1,10 @@
 package com.example.quang11t1.locationnote.activity;
 
-
+import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +12,7 @@ import android.widget.ListView;
 
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.adapter.ArrayAdapterCustomMessage;
-import com.example.quang11t1.locationnote.adapter.ArrayAdapterFriend;
-import com.example.quang11t1.locationnote.adapter.CustomRecycleMessageAdapter;
-import com.example.quang11t1.locationnote.modle.Account;
-import com.example.quang11t1.locationnote.modle.FriendBean;
+import com.example.quang11t1.locationnote.adapter.ArrayAdapterCustomSendedMessage;
 import com.example.quang11t1.locationnote.modle.Message;
 import com.example.quang11t1.locationnote.support.GetJson;
 import com.google.gson.Gson;
@@ -26,11 +22,16 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link SendedMessageFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link SendedMessageFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class SendedMessageFragment extends Fragment {
 
-public class Messager extends Fragment {
-
-    CustomRecycleMessageAdapter customRecycleMessageAdapter;
-    RecyclerView recyclerView_Message;
     ListView listView_message;
     int idAccount ;
     String userName;
@@ -47,22 +48,9 @@ public class Messager extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_messager, container, false);
+        View view= inflater.inflate(R.layout.fragment_sended_message, container, false);
 
-        listView_message =(ListView) view.findViewById(R.id.listView_message);
-        /*recyclerView_Message =(RecyclerView) view.findViewById(R.id.recycler_message);
-        recyclerView_Message.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView_Message.setLayoutManager(linearLayoutManager);*/
-
-        Message message =new Message(1,"awdaw","dawdaw","adwawd",new Date());
-        List<Message> list=new ArrayList<>();
-        list.add(message);
-
-
-        //customRecycleMessageAdapter =new CustomRecycleMessageAdapter(list,getContext());
-        //recyclerView_Message.setAdapter(customRecycleMessageAdapter);
+        listView_message =(ListView) view.findViewById(R.id.listView_sended_message);
 
         GetListMessage getListMessage =new GetListMessage(listView_message);
         getListMessage.execute("a");
@@ -74,7 +62,7 @@ public class Messager extends Fragment {
         Gson gson=new Gson();
         GetJson getJson=new GetJson();
 
-      //  RecyclerView recyclerView;
+        //  RecyclerView recyclerView;
         ListView listView;
 
         public GetListMessage(ListView listView) {
@@ -92,8 +80,8 @@ public class Messager extends Fragment {
 
             //customRecycleMessageAdapter =new CustomRecycleMessageAdapter(messages);
             //recyclerView.setAdapter(customRecycleMessageAdapter);
-            ArrayAdapterCustomMessage arrayAdapterCustomMessage =new ArrayAdapterCustomMessage(getActivity(),messages);
-            listView_message.setAdapter(arrayAdapterCustomMessage);
+            ArrayAdapterCustomSendedMessage arrayAdapterCustomSendedMessage =new ArrayAdapterCustomSendedMessage(getActivity(),messages);
+            listView_message.setAdapter(arrayAdapterCustomSendedMessage);
 
         }
 
@@ -104,7 +92,7 @@ public class Messager extends Fragment {
 
         @Override
         protected List<Message> doInBackground(String... params) {
-            String getMessageLink= getString(R.string.link)+"Message/GetMessage?IDRECEIVER="+idAccount;
+            String getMessageLink= getString(R.string.link)+"Message/GetSendMessage?IDSENDER="+idAccount;
             String result = getJson.getStringJson(getMessageLink);
             System.out.println("chuoi lay ve duoc :" + result);
             Message[] messages = gson.fromJson(result,Message[].class);
@@ -112,6 +100,4 @@ public class Messager extends Fragment {
             return messageList;
         }
     }
-
-
 }

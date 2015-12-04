@@ -32,6 +32,7 @@ public class Send_Messager extends AppCompatActivity  {
     ArrayList<ItemSpinner> navSpinner;
 
     int idAccount=0;
+    String userName ="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,8 @@ public class Send_Messager extends AppCompatActivity  {
         Spinner spinner=(Spinner) findViewById(R.id.spinner_nav);
 
         Bundle infoLogin = getIntent().getExtras();
-        idAccount=infoLogin.getInt("idAccount",0);
+        idAccount=infoLogin.getInt("id",0);
+        userName=infoLogin.getString("user");
 
 
         navSpinner =new ArrayList<>();
@@ -59,7 +61,8 @@ public class Send_Messager extends AppCompatActivity  {
             public void onItemSelected(AdapterView<?> adapter, View v,
                                        int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putInt("idAccount",idAccount);
+                bundle.putInt("id",idAccount);
+                bundle.putString("user",userName);
                 if (position == 0) {
                     SendMessagerFriendFragment sendMessagerFriendFragment = new SendMessagerFriendFragment();
                     sendMessagerFriendFragment.setArguments(bundle);

@@ -62,6 +62,8 @@ public class FriendFragment extends Fragment implements ArrayAdapterAcceptFriend
     TextView textViewNameFriend;
     EditText editTextSearch;
     Button buttonAdd;
+    ListView listView_listFriend;
+    LinearLayout layout_accept_friend;
 
 
 
@@ -79,8 +81,10 @@ public class FriendFragment extends Fragment implements ArrayAdapterAcceptFriend
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view= inflater.inflate(R.layout.fragment_friend2, container, false);
-        ListView listView=(ListView) view.findViewById(R.id.listView_friend);
-        LinearLayout layout_accept_friend =(LinearLayout) view.findViewById(R.id.layout_Accept_Friend);
+        listView_listFriend=(ListView) view.findViewById(R.id.listView_friend);
+        layout_accept_friend =(LinearLayout) view.findViewById(R.id.layout_Accept_Friend);
+        IsAcceptFriend isAcceptFriend =new IsAcceptFriend(layout_accept_friend);
+        isAcceptFriend.execute("awdaw");
         layout_accept_friend.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -101,7 +105,7 @@ public class FriendFragment extends Fragment implements ArrayAdapterAcceptFriend
             }
         });
 
-        GetListAccount getListAccount =new GetListAccount(listView);
+        GetListAccount getListAccount =new GetListAccount(listView_listFriend);
         getListAccount.execute("a");
 
 
@@ -150,11 +154,17 @@ public class FriendFragment extends Fragment implements ArrayAdapterAcceptFriend
     public   void acceptFriend(int position){
         Toast.makeText(getContext(),"Accept"+arrayFriend[position].getIdFriend(),Toast.LENGTH_LONG).show();
         AcceptFriend acceptFriend =new AcceptFriend();
-
         acceptFriend.execute(arrayFriend[position].getIdFriend());
+
         GetListAcceptAccount getListAcceptAccount =new GetListAcceptAccount(listView_accept_friend);
         //getListAcceptAccount.execute("a");
-        getListAcceptAccount.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR,"a");
+        getListAcceptAccount.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, "a");
+
+        GetListAccount getListAccount =new GetListAccount(listView_listFriend);
+        getListAccount.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, "a");
+
+        IsAcceptFriend isAcceptFriend =new IsAcceptFriend(layout_accept_friend);
+        isAcceptFriend.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, "a");
     }
 
     @Override
@@ -166,6 +176,9 @@ public class FriendFragment extends Fragment implements ArrayAdapterAcceptFriend
         GetListAcceptAccount getListAcceptAccount =new GetListAcceptAccount(listView_accept_friend);
         //getListAcceptAccount.execute("a");
         getListAcceptAccount.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, "a");
+
+        IsAcceptFriend isAcceptFriend =new IsAcceptFriend(layout_accept_friend);
+        isAcceptFriend.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, "a");
     }
 
 
@@ -284,7 +297,7 @@ public class FriendFragment extends Fragment implements ArrayAdapterAcceptFriend
         protected void onPostExecute(Boolean bolean) {
             super.onPostExecute(bolean);
             if(bolean) Toast.makeText(getContext(),"Thanh cong",Toast.LENGTH_LONG).show();
-            Toast.makeText(getContext(),"that bai",Toast.LENGTH_LONG).show();
+            else Toast.makeText(getContext(),"that bai",Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -318,7 +331,7 @@ public class FriendFragment extends Fragment implements ArrayAdapterAcceptFriend
         protected void onPostExecute(Boolean bolean) {
             super.onPostExecute(bolean);
             if(bolean) Toast.makeText(getContext(),"Thanh cong",Toast.LENGTH_LONG).show();
-            Toast.makeText(getContext(),"that bai",Toast.LENGTH_LONG).show();
+            else Toast.makeText(getContext(),"that bai",Toast.LENGTH_LONG).show();
         }
 
         @Override
@@ -504,6 +517,46 @@ public class FriendFragment extends Fragment implements ArrayAdapterAcceptFriend
         protected Boolean doInBackground(Void... params) {
             GetJson getJson=new GetJson();
             String addNote= getString(R.string.link)+"Friend/AddFriend?IDACCOUNT1="+idAccount+"&IDACCOUNT2="+idAccount_2;
+            String result = getJson.getStringJson(addNote);
+            if (result.equals("1"))
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    }
+
+    private class IsAcceptFriend extends AsyncTask<String,Void,Boolean>{
+
+        LinearLayout linearLayout;
+
+        public IsAcceptFriend(LinearLayout linearLayout) {
+            this.linearLayout = linearLayout;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean bolean) {
+            super.onPostExecute(bolean);
+            if(bolean) linearLayout.setVisibility(View.VISIBLE);
+            else linearLayout.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            GetJson getJson=new GetJson();
+            String addNote= getString(R.string.link)+"Friend/isAcceptFriend?IDACCOUNT="+idAccount;
             String result = getJson.getStringJson(addNote);
             if (result.equals("1"))
             {
