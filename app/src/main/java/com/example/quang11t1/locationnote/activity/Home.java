@@ -101,7 +101,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         map.getUiSettings().setZoomControlsEnabled(true);
         map.setMyLocationEnabled(true);
         android.location.Location lastLocation = getLastKnownLocation();
-       // map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(11, 18), 9.5f));
+       //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(11, 18), 9.5f));
 
         if(lastLocation != null){
             System.out.println(" "+lastLocation.getLatitude()+" "+lastLocation.getLongitude());
@@ -110,9 +110,9 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))      // Sets the center of the map to location user
-                    .zoom(15)                   // Sets the zoom
+                    .zoom(17)                   // Sets the zoom
                     .bearing(0)                // Sets the orientation of the camera to east
-                    .tilt(0)                   // Sets the tilt of the camera to 30 degrees
+                    .tilt(40)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
