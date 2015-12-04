@@ -46,15 +46,15 @@ import java.util.List;
 import java.util.Random;
 public class Home extends MapBase implements ClusterManager.OnClusterClickListener<LocationNote>, ClusterManager.OnClusterInfoWindowClickListener<LocationNote>, ClusterManager.OnClusterItemClickListener<LocationNote>, ClusterManager.OnClusterItemInfoWindowClickListener<LocationNote> {
 
-    private ClusterManager<LocationNote> locationNoteClusterManager;
-    // private ClusterManager<DiaDiem> diaDiemClusterManager;
-    private Random mRandom = new Random(1984);
     public Location[] locationList;
-    private Gson gson = new Gson();
     GetJson getJson  = new GetJson();
     Handler handler;
     LocationManager locationManager;
     GoogleMap map;
+    private ClusterManager<LocationNote> locationNoteClusterManager;
+    // private ClusterManager<DiaDiem> diaDiemClusterManager;
+    private Random mRandom = new Random(1984);
+    private Gson gson = new Gson();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,53 +66,6 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    private class LocationNoteRenderer extends DefaultClusterRenderer<LocationNote> {
-
-        private final IconGenerator mIconGenerator = new IconGenerator(getActivity().getApplicationContext());
-        private final IconGenerator mClusterGernerator = new IconGenerator(getActivity().getApplicationContext());
-
-        private final ImageView oneImageView;
-        private final ImageView multiImageView;
-
-        public LocationNoteRenderer() {
-            super(getActivity().getApplicationContext(), getMap(), locationNoteClusterManager);
-
-            View oneLocation = getActivity().getLayoutInflater().inflate(R.layout.sigle_location,null);
-            mIconGenerator.setContentView(oneLocation);
-            oneImageView = (ImageView)oneLocation.findViewById(R.id.image);
-
-            View multiLocation = getActivity().getLayoutInflater().inflate(R.layout.multi_location,null);
-            mClusterGernerator.setContentView(multiLocation);
-            multiImageView = (ImageView)oneLocation.findViewById(R.id.image);
-        }
-
-        @Override
-        protected void onBeforeClusterItemRendered(LocationNote locationNote, MarkerOptions markerOptions) {
-            oneImageView.setImageResource(locationNote.getAnhDiaDiem());
-            Bitmap icon = mIconGenerator.makeIcon(String.valueOf(locationNote.getSoNote()));
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(locationNote.getTenDiaDiem());
-        }
-
-        @Override
-        protected void onBeforeClusterRendered(Cluster<LocationNote> cluster, MarkerOptions markerOptions) {
-            // Draw multiple people.
-            // Note: this method runs on the UI thread. Don't spend too much time in here (like in this example).
-            /*for(LocationNote locationNote : cluster.getItems()){
-                multiImageView.setImageResource(locationNote.getAnhDiaDiem());
-                break;
-            }*/
-            /*multiImageView.setImageResource(cluster.getItems().iterator().next().getAnhDiaDiem());
-            Bitmap icon = mIconGenerator.makeIcon(String.valueOf(cluster.getSize()));
-            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));*/
-        }
-
-        @Override
-        protected boolean shouldRenderAsCluster(Cluster cluster) {
-            // Always render clusters.
-            return cluster.getSize() > 1;
-        }
     }
 
     @Override
@@ -144,8 +97,12 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     @Override
     protected void startDemo() {
         map = getMap();
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        map.getUiSettings().setZoomControlsEnabled(true);
+        map.setMyLocationEnabled(true);
         android.location.Location lastLocation = getLastKnownLocation();
-        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(16, 108), 9.5f));
+       // map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(11, 18), 9.5f));
+
         if(lastLocation != null){
             System.out.println(" "+lastLocation.getLatitude()+" "+lastLocation.getLongitude());
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(
@@ -228,23 +185,6 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         return mRandom.nextDouble() * (max - min) + min;
     }
 
-    public class GetLocationList extends Thread{
-        Context context;
-        Gson gson=new Gson();
-        public GetLocationList(Context context)
-        {
-            this.context=context;
-        }
-
-        @Override
-        public void run() {
-            String locationslink= getString(R.string.link)+"Location/list?LONGITUDE=108&LATITUDE=16&RADIUS=5";
-            String result = getJson.getStringJson(locationslink);
-            System.out.println("chuoi lay ve duoc :"+result);
-            locationList = gson.fromJson(result,Location[].class);
-        }
-    }
-
     public void doStart()
     {
         GetLocationList getLocationList =new GetLocationList(getActivity());
@@ -271,6 +211,70 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
             }
         }
         return bestLocation;
+    }
+
+    private class LocationNoteRenderer extends DefaultClusterRenderer<LocationNote> {
+
+        private final IconGenerator mIconGenerator = new IconGenerator(getActivity().getApplicationContext());
+        private final IconGenerator mClusterGernerator = new IconGenerator(getActivity().getApplicationContext());
+
+        private final ImageView oneImageView;
+        private final ImageView multiImageView;
+
+        public LocationNoteRenderer() {
+            super(getActivity().getApplicationContext(), getMap(), locationNoteClusterManager);
+
+            View oneLocation = getActivity().getLayoutInflater().inflate(R.layout.sigle_location,null);
+            mIconGenerator.setContentView(oneLocation);
+            oneImageView = (ImageView)oneLocation.findViewById(R.id.image);
+
+            View multiLocation = getActivity().getLayoutInflater().inflate(R.layout.multi_location,null);
+            mClusterGernerator.setContentView(multiLocation);
+            multiImageView = (ImageView)oneLocation.findViewById(R.id.image);
+        }
+
+        @Override
+        protected void onBeforeClusterItemRendered(LocationNote locationNote, MarkerOptions markerOptions) {
+            oneImageView.setImageResource(locationNote.getAnhDiaDiem());
+            Bitmap icon = mIconGenerator.makeIcon(String.valueOf(locationNote.getSoNote()));
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon)).title(locationNote.getTenDiaDiem());
+        }
+
+        @Override
+        protected void onBeforeClusterRendered(Cluster<LocationNote> cluster, MarkerOptions markerOptions) {
+            // Draw multiple people.
+            // Note: this method runs on the UI thread. Don't spend too much time in here (like in this example).
+            /*for(LocationNote locationNote : cluster.getItems()){
+                multiImageView.setImageResource(locationNote.getAnhDiaDiem());
+                break;
+            }*/
+            /*multiImageView.setImageResource(cluster.getItems().iterator().next().getAnhDiaDiem());
+            Bitmap icon = mIconGenerator.makeIcon(String.valueOf(cluster.getSize()));
+            markerOptions.icon(BitmapDescriptorFactory.fromBitmap(icon));*/
+        }
+
+        @Override
+        protected boolean shouldRenderAsCluster(Cluster cluster) {
+            // Always render clusters.
+            return cluster.getSize() > 1;
+        }
+    }
+
+    public class GetLocationList extends Thread{
+        Context context;
+        Gson gson=new Gson();
+        public GetLocationList(Context context)
+        {
+            this.context=context;
+        }
+
+        @Override
+        public void run() {
+            String locationslink= getString(R.string.link)+"Location/list?LONGITUDE=108&LATITUDE=16&RADIUS=5";
+            String result = getJson.getStringJson(locationslink);
+            System.out.println("chuoi lay ve duoc :"+result);
+            locationList = gson.fromJson(result,Location[].class);
+        }
     }
 
 }

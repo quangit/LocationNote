@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.quang11t1.locationnote.Editphoto.CircleImage;
+import com.example.quang11t1.locationnote.adapter.Location_list_Adapter;
 import com.example.quang11t1.locationnote.modle.Comment;
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.adapter.commentAdapter;
@@ -24,6 +25,8 @@ import com.google.gson.Gson;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -41,6 +44,8 @@ public class detail_message extends AppCompatActivity {
     int id;
     String username;
     Comment[] commentList ;
+    List<Account> listAcount =new ArrayList<>();
+    Date date=new Date();
     private ListView listViewComment;
 
     @Nullable
@@ -60,13 +65,16 @@ public class detail_message extends AppCompatActivity {
         txtViewLocationDetail=(TextView) findViewById(R.id.textViewLocationDetail);
         txtViewContentDetail=(TextView) findViewById(R.id.textViewContentDetail);
        listViewComment = (ListView) findViewById(R.id.listviewComment);
-        commentAdapter adapter=new commentAdapter(detail_message.this,arraylistComment);
+       commentAdapter adapter=new commentAdapter(detail_message.this,arraylistComment);
         listViewComment.setAdapter(adapter);
-        System.out.println("then vien id "+locationNoteInfor.getIdNote());
+        //GetListAccount getListAccount =new GetListAccount();
+        //getListAccount.execute("a");
+        System.out.println("then vien id " + locationNoteInfor.getIdNote());
         imViewAndroid = (ImageView) findViewById(R.id.imageviewAvarta);
         txtViewAvartaDetail.setText(locationNoteInfor.getAccount());
         txtViewLocationDetail.setText(locationNoteInfor.getLocation());
         txtViewContentDetail.setText(locationNoteInfor.getContent());
+
         //imViewAndroid.setImageBitmap(rountdCornerImage(BitmapFactory.decodeResource(getResources(), R.drawable.vie),60));
         Bitmap bm = BitmapFactory.decodeResource(getResources(),
                 R.drawable.vie);
@@ -116,18 +124,67 @@ public class detail_message extends AppCompatActivity {
         return rootview;
     }*/
     public void createtmpComment(){
-        comment=new Comment();
+        comment=new Comment(1,"vien","Ngon that do",date);
         arraylistComment.add(comment);
-        comment=new Comment();
+        comment=new Comment(1,"quang","uhm Ngon that do",date);
         arraylistComment.add(comment);
-        comment=new Comment();
-        arraylistComment.add(comment);
+       // comment=new Comment();
+      //  arraylistComment.add(comment);
     }
 
     public void doStartGet()
     {
         GetDetail_Account getLocationNoteList = new GetDetail_Account(this);
         getLocationNoteList.start();
+    }
+
+    private class GetListAccount extends AsyncTask<String,List<Account>,List<Account>> {
+        Gson gson=new Gson();
+        GetJson getJson=new GetJson();
+
+        ListView listView;
+
+        public GetListAccount() {
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(List<Account> accounts) {
+            super.onPostExecute(accounts);
+
+            //commentAdapter adapter=new commentAdapter(detail_message.this,arraylistComment,accounts);
+            //listViewComment.setAdapter(adapter);
+            //locationNoteListAdapter = new Location_list_Adapter(LocationNoteList.this, getData(),accounts);
+            //recycleView.setAdapter(locationNoteListAdapter);
+            //recycleView.setItemsCanFocus(true);
+            //ArrayAdapterFriend adapter =new ArrayAdapterFriend(getActivity(),R.layout.custom_row_friends,accounts);
+            //listView.setAdapter(adapter);
+        }
+
+        @Override
+        protected void onProgressUpdate(List<Account>... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected List<Account> doInBackground(String... params) {
+
+            for (Comment comment:commentList)
+            {
+                String user = comment.getAccount();
+                //if(user.equals(userName)) user=friendBean.getAccount2();
+                String getAccountLink =getString(R.string.link)+"login/user?USERNAME="+user;
+                String resultAccount = getJson.getStringJson(getAccountLink);
+                Account account =gson.fromJson(resultAccount, Account.class);
+                listAcount.add(account);
+            }
+            return listAcount;
+        }
     }
 
     public class GetCommentList extends Thread{
@@ -140,7 +197,7 @@ public class detail_message extends AppCompatActivity {
 
         @Override
         public void run() {
-            String inforCommentList= getString(R.string.link)+"Comment/list?IDNOTE="+locationNoteInfor.getIdNote();
+            String inforCommentList= getString(R.string.link)+"Comment/list?IDNOTE=1";
             System.out.println("link :"+inforCommentList);
             String result = getJson.getStringJson(inforCommentList);
             System.out.println(" ket qua lay duoc :"+result);
@@ -225,4 +282,5 @@ public class detail_message extends AppCompatActivity {
             Account account = gson.fromJson(inforAccount,Account.class);
         }
     }
+
 }

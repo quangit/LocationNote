@@ -10,8 +10,14 @@ public class Comment {
     private  String account;
     private String content;
     private Date time;
-public Comment(){
+    public Comment(){
 
+    }
+public Comment(int idComment, String account, String content,Date time){
+this.idComment=idComment;
+    this.account=account;
+    this.content=content;
+    this.time=time;
 }
 
     public int getIdComment() {
