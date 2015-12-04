@@ -2,7 +2,11 @@ package com.example.quang11t1.locationnote.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +18,9 @@ import android.widget.Toast;
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.activity.detail_message;
 import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
+import com.example.quang11t1.locationnote.support.GetJson;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -46,10 +52,15 @@ public class Location_list_Adapter extends ArrayAdapter<LocationNoteInfor> {
         numberOfLike = (TextView)convertView.findViewById(R.id.txt_number_of_like);
         numberOfComment = (TextView)convertView.findViewById(R.id.txt_number_of_comment);
         postTime = (TextView)convertView.findViewById(R.id.txt_time_post);
+        locationNoteInfor=mlistlocationinfor.get(position);
         iconProfile = (ImageView)convertView.findViewById(R.id.img_profile);
+
+        DownloadImageTask downloadImageTask =new DownloadImageTask(iconProfile);
+        downloadImageTask.executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, locationNoteInfor.getAccount());
+
         imgLike = (ImageView)convertView.findViewById(R.id.icon_like);
         imgComment = (ImageView)convertView.findViewById(R.id.icon_comment);
-        locationNoteInfor=mlistlocationinfor.get(position);
+
         userName.setText(locationNoteInfor.getAccount());
         locationName.setText(locationNoteInfor.getLocation());
         content.setText(locationNoteInfor.getContent());
@@ -66,5 +77,33 @@ public class Location_list_Adapter extends ArrayAdapter<LocationNoteInfor> {
             }
         });
         return convertView;
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+        GetJson getJson =new GetJson();
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String user = urls[0];
+            String getMessageLink=  mcontext.getString(R.string.link)+"login/getLinkAvatar?USERNAME="+user;
+            String result = getJson.getStringJson(getMessageLink);
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(result).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.example.quang11t1.locationnote.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
@@ -19,9 +20,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.quang11t1.locationnote.R;
+import com.example.quang11t1.locationnote.adapter.ArrayAdapterFriend;
 import com.example.quang11t1.locationnote.adapter.LocationNoteListAdapter;
 import com.example.quang11t1.locationnote.adapter.Location_list_Adapter;
 import com.example.quang11t1.locationnote.modle.Account;
+import com.example.quang11t1.locationnote.modle.FriendBean;
 import com.example.quang11t1.locationnote.modle.Location;
 import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
 import com.example.quang11t1.locationnote.modle.User;
@@ -48,24 +51,26 @@ public class LocationNoteList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_note_list);
-       // toolbar = (Toolbar)findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         Intent intent = getIntent();
         idLocation = intent.getIntExtra("idLocation",0);
         System.out.println("========= idlocation ======================= :" + idLocation);
 
-        doStartGetLocationNoteList(idLocation);
+        /*doStartGetLocationNoteList(idLocation);
         try {
             System.out.println(" cho trong 5s");
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         recycleView = (ListView)findViewById(R.id.listView_location);
-        locationNoteListAdapter = new Location_list_Adapter(LocationNoteList.this, getData());
-        recycleView.setAdapter(locationNoteListAdapter);
+        GetListNote getListNote =new GetListNote(recycleView);
+        getListNote.execute("a");
         recycleView.setItemsCanFocus(true);
     }
 
@@ -83,11 +88,67 @@ public class LocationNoteList extends AppCompatActivity {
         return data;
     }
 
+    private class GetListNote extends AsyncTask<String,List<LocationNoteInfor>,List<LocationNoteInfor>> {
+        Gson gson=new Gson();
+        GetJson getJson=new GetJson();
+
+        ListView listView;
+
+        public GetListNote(ListView listView) {
+            this.listView = listView;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(List<LocationNoteInfor> locationNoteInfors) {
+            super.onPostExecute(locationNoteInfors);
+            locationNoteListAdapter = new Location_list_Adapter(getApplicationContext(),getData());
+            listView.setAdapter(locationNoteListAdapter);
+        }
+
+        @Override
+        protected void onProgressUpdate(List<LocationNoteInfor>... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected List<LocationNoteInfor> doInBackground(String... params) {
+            String inforLocationNoteList= getString(R.string.link)+"Note/list?IDLOCATION="+idLocation;
+            System.out.println("link :"+inforLocationNoteList);
+            String result = getJson.getStringJson(inforLocationNoteList);
+            System.out.println(" ket qua lay duoc :"+result);
+            locationNoteInforList = gson.fromJson(result, LocationNoteInfor[].class);
+            return Arrays.asList(locationNoteInforList);
+        }
+    }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void doStartGetLocationNoteList(int idLocation)

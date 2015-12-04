@@ -7,7 +7,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -48,20 +50,24 @@ public class detail_message extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_message);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         Bundle bundle = getIntent().getBundleExtra("data");
         locationNoteInfor=(LocationNoteInfor)bundle.getSerializable("locationNoteInfo");
         //Bundle bundle =this.getArguments();
         //id=bundle.getInt("id");
         //username=bundle.getString("user");
-        doStartGet();
-        doStartGetLocationNoteList();
-        createtmpComment();
+       // doStartGet();
+        //doStartGetLocationNoteList();
+       // createtmpComment();
         txtViewAvartaDetail= (TextView) findViewById(R.id.textViewNameNickDetail);
         txtViewLocationDetail=(TextView) findViewById(R.id.textViewLocationDetail);
         txtViewContentDetail=(TextView) findViewById(R.id.textViewContentDetail);
        listViewComment = (ListView) findViewById(R.id.listviewComment);
-        commentAdapter adapter=new commentAdapter(detail_message.this,arraylistComment);
-        listViewComment.setAdapter(adapter);
+       // commentAdapter adapter=new commentAdapter(detail_message.this,arraylistComment);
+        //listViewComment.setAdapter(adapter);
         System.out.println("then vien id "+locationNoteInfor.getIdNote());
         imViewAndroid = (ImageView) findViewById(R.id.imageviewAvarta);
         txtViewAvartaDetail.setText(locationNoteInfor.getAccount());
@@ -93,6 +99,22 @@ public class detail_message extends AppCompatActivity {
            // System.out.println("id :"+data.get(i).getIdComment()+" account :"+data.get(i).getAccount());
         //}
         return data;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /*
