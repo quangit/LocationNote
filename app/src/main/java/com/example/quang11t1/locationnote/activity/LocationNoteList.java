@@ -2,6 +2,7 @@ package com.example.quang11t1.locationnote.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
@@ -19,9 +20,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.quang11t1.locationnote.R;
+import com.example.quang11t1.locationnote.adapter.ArrayAdapterFriend;
 import com.example.quang11t1.locationnote.adapter.LocationNoteListAdapter;
 import com.example.quang11t1.locationnote.adapter.Location_list_Adapter;
 import com.example.quang11t1.locationnote.modle.Account;
+import com.example.quang11t1.locationnote.modle.FriendBean;
 import com.example.quang11t1.locationnote.modle.Location;
 import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
 import com.example.quang11t1.locationnote.modle.User;
@@ -38,6 +41,7 @@ public class LocationNoteList extends AppCompatActivity {
     int idLocation = 0;
     GetJson getJson =new GetJson();
     LocationNoteInfor[] locationNoteInforList ;
+    List<Account> listAcount =new ArrayList<>();
    // Account[] accountList;
     private android.support.v7.widget.Toolbar toolbar;
     private ListView recycleView;
@@ -64,9 +68,9 @@ public class LocationNoteList extends AppCompatActivity {
         }
 
         recycleView = (ListView)findViewById(R.id.listView_location);
-        locationNoteListAdapter = new Location_list_Adapter(LocationNoteList.this, getData());
-        recycleView.setAdapter(locationNoteListAdapter);
-        recycleView.setItemsCanFocus(true);
+
+        GetListAccount getListAccount =new GetListAccount();
+        getListAccount.execute("a");
     }
 
     public ArrayList<LocationNoteInfor> getData(){
@@ -94,6 +98,53 @@ public class LocationNoteList extends AppCompatActivity {
     {
         GetLocationNoteList getLocationNoteList = new GetLocationNoteList(idLocation,this);
         getLocationNoteList.start();
+    }
+
+    private class GetListAccount extends AsyncTask<String,List<Account>,List<Account>> {
+        Gson gson=new Gson();
+        GetJson getJson=new GetJson();
+
+        ListView listView;
+
+        public GetListAccount() {
+
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(List<Account> accounts) {
+            super.onPostExecute(accounts);
+
+            locationNoteListAdapter = new Location_list_Adapter(LocationNoteList.this, getData(),accounts);
+            recycleView.setAdapter(locationNoteListAdapter);
+            recycleView.setItemsCanFocus(true);
+            //ArrayAdapterFriend adapter =new ArrayAdapterFriend(getActivity(),R.layout.custom_row_friends,accounts);
+            //listView.setAdapter(adapter);
+        }
+
+        @Override
+        protected void onProgressUpdate(List<Account>... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected List<Account> doInBackground(String... params) {
+
+            for (LocationNoteInfor locationNoteInfor:locationNoteInforList)
+            {
+                String user = locationNoteInfor.getAccount();
+                //if(user.equals(userName)) user=friendBean.getAccount2();
+                String getAccountLink =getString(R.string.link)+"login/user?USERNAME="+user;
+                String resultAccount = getJson.getStringJson(getAccountLink);
+                Account account =gson.fromJson(resultAccount, Account.class);
+                listAcount.add(account);
+            }
+            return listAcount;
+        }
     }
 
     public class GetLocationNoteList extends Thread{
