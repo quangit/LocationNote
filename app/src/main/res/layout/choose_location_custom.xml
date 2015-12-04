@@ -12,7 +12,7 @@
         android:layout_weight="0.00" />
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="352dp"
         android:id="@+id/listView_location"
         android:layout_weight="0.01" />

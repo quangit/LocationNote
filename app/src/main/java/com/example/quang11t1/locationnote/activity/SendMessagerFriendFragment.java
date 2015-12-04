@@ -27,7 +27,9 @@ import android.widget.Toast;
 
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.activity.model.LocationNote;
+import com.example.quang11t1.locationnote.adapter.ArrayAdapterFriend;
 import com.example.quang11t1.locationnote.modle.Account;
+import com.example.quang11t1.locationnote.modle.FriendBean;
 import com.example.quang11t1.locationnote.modle.Location;
 import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
 import com.example.quang11t1.locationnote.modle.User;
@@ -37,6 +39,7 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,9 +55,10 @@ public class SendMessagerFriendFragment extends Fragment implements View.OnClick
     String imagepath="";
     EditText editText_content;
     int idAccount=0;
+    String userName="";
     Handler handler;
-    int idLocal=2;
-    List<Location> locationList;
+    int idFriend=0;
+    List<Account> listAccount;
     EditText editText_friend;
 
     @Override
@@ -79,7 +83,8 @@ public class SendMessagerFriendFragment extends Fragment implements View.OnClick
         editText_friend.setOnClickListener(this);
         ImageButton imageButton_send = (ImageButton) rootview.findViewById(R.id.imageButton_send);
         imageButton_send.setOnClickListener(this);
-        idAccount=getArguments().getInt("idAccount",0);
+        idAccount=getArguments().getInt("id",0);
+        userName=getArguments().getString("user");
         Toast.makeText(getContext(),""+idAccount,Toast.LENGTH_LONG).show();
 
         handler=new Handler() {
@@ -157,8 +162,10 @@ public class SendMessagerFriendFragment extends Fragment implements View.OnClick
             if(!editText_content.getText().toString().trim().equals(""))
             {
                 contextMessager=editText_content.getText().toString();
-                AddNote addNote =new AddNote(contextMessager,idLocal,getContext());
-                addNote.start();
+                //AddNote addNote =new AddNote(contextMessager,idLocal,getContext());
+                //addNote.start();
+                SendMesage sendMesage =new SendMesage(contextMessager,idFriend,getContext());
+                sendMesage.start();
                 Toast.makeText(getActivity(),contextMessager, Toast.LENGTH_LONG).show();
             }
 
@@ -170,7 +177,7 @@ public class SendMessagerFriendFragment extends Fragment implements View.OnClick
             dialog.setContentView(R.layout.choose_location_custom);
             dialog.setTitle("Chọn vị trí");
             ListView listView =(ListView) dialog.findViewById(R.id.listView_location);
-            GetListLocation getListLocation =new GetListLocation(listView);
+            GetListAccount getListLocation =new GetListAccount(listView);
             getListLocation.execute("a");
 
             // set the custom dialog components - text, image and button
@@ -180,33 +187,37 @@ public class SendMessagerFriendFragment extends Fragment implements View.OnClick
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    idLocal=locationList.get(position).getIdLocation();
-                    Toast.makeText(getActivity(),"location:"+idLocal, Toast.LENGTH_LONG).show();
-                    editText_friend.setText(locationList.get(position).getLocationName());
+                    //idFriend =listAccount.get(position).getIdAccount();
+                    Account account =(Account) parent.getItemAtPosition(position);
+                    idFriend=account.getIdAccount();
+                    Toast.makeText(getActivity(),"location:"+account.getUsername(), Toast.LENGTH_LONG).show();
+                    editText_friend.setText("" + account.getUsername());
                     dialog.cancel();
                 }
             });
 
         }
     }
-    public class AddNote extends Thread{
+
+
+    private class SendMesage extends Thread{
 
         String content;
-        int idLocation;
+        int idFriend;
         Context context;
         Gson gson=new Gson();
         GetJson getJson=new GetJson();
 
-        public AddNote(String content,int idLocation,Context context)
+        public SendMesage(String content,int idFriend,Context context)
         {
             this.content=content;
-            this.idLocation=idLocation;
+            this.idFriend=idFriend;
             this.context=context;
         }
 
         @Override
         public void run() {
-            String addNote= getString(R.string.link)+"Note/addNote?IDACCOUNT="+idAccount+"&IDLOCATION="+idLocation+"&CONTENT="+content;
+            String addNote= getString(R.string.link)+"Message/AddMessage?IDSENDER="+idAccount+"&IDRECEIVER="+idFriend+"&CONTENT="+content;
             String result = getJson.getStringJson(addNote);
             Message msg=handler.obtainMessage();
 
@@ -223,13 +234,13 @@ public class SendMessagerFriendFragment extends Fragment implements View.OnClick
         }
     }
 
-    public class GetListLocation extends AsyncTask<String,List<Location>,List<Location>>{
+    private class GetListAccount extends AsyncTask<String,List<Account>,List<Account>> {
         Gson gson=new Gson();
         GetJson getJson=new GetJson();
 
         ListView listView;
 
-        public GetListLocation(ListView listView) {
+        public GetListAccount(ListView listView) {
             this.listView = listView;
         }
 
@@ -239,39 +250,38 @@ public class SendMessagerFriendFragment extends Fragment implements View.OnClick
         }
 
         @Override
-        protected void onPostExecute(List<Location> locations) {
-            super.onPostExecute(locations);
-            String []arrayString = new String[locations.size()];
-            locationList=locations;
-            int i=0;
-            for(Location location:locations)
-            {
-                arrayString[i]=location.getLocationName();
-                i++;
-            }
-            ArrayAdapter<String> adapter=new ArrayAdapter<String>
-                    (getContext(), android.R.layout.simple_list_item_1,arrayString);
+        protected void onPostExecute(List<Account> accounts) {
+            super.onPostExecute(accounts);
+
+            ArrayAdapterFriend adapter =new ArrayAdapterFriend(getActivity(),R.layout.custom_row_friends,accounts);
             listView.setAdapter(adapter);
-
-
         }
 
         @Override
-        protected void onProgressUpdate(List<Location>... values) {
+        protected void onProgressUpdate(List<Account>... values) {
             super.onProgressUpdate(values);
-
-
         }
 
         @Override
-        protected List<Location> doInBackground(String... params) {
-            String locationslink= getString(R.string.link)+"Location/list?LONGITUDE=108&LATITUDE=16&RADIUS=5";
-            String result = getJson.getStringJson(locationslink);
+        protected List<Account> doInBackground(String... params) {
+            String getFriendLink= getString(R.string.link)+"Friend/myFriend?IDACCOUNT="+idAccount;
+            String result = getJson.getStringJson(getFriendLink);
             System.out.println("chuoi lay ve duoc :" + result);
-            Location[] locationList = gson.fromJson(result,Location[].class);
-            return Arrays.asList(locationList);
+            FriendBean[] friendList = gson.fromJson(result,FriendBean[].class);
+            List<Account> listAcount =new ArrayList<>();
+            for (FriendBean friendBean:friendList)
+            {
+                String user = friendBean.getAccount1();
+                if(user.equals(userName)) user=friendBean.getAccount2();
+                String getAccountLink =getString(R.string.link)+"login/user?USERNAME="+user;
+                String resultAccount = getJson.getStringJson(getAccountLink);
+                Account account =gson.fromJson(resultAccount, Account.class);
+                listAcount.add(account);
+            }
+            return listAcount;
         }
     }
+
 
 
 

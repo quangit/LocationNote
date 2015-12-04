@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
                 if (isLoginValue) {
                     Intent intent = new Intent(getApplicationContext(), Send_Messager.class);
-                    intent.putExtra("idAccount", idAccount);
+                    intent.putExtra("id", idAccount);
+                    intent.putExtra("user", userName);
                     startActivity(intent);
                 }
 
@@ -134,6 +135,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
 
+            fab.setVisibility(View.VISIBLE);
             Fragment fragment = new Home();
             displayView(fragment);
         } else if (id == R.id.nav_friend) {
@@ -149,13 +151,18 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_messager) {
             if(!isLoginValue) moveLogin();
             else {
+                fab.setVisibility(View.VISIBLE);
                 Fragment fragment = new Messager();
+                fragment.setArguments(bundle);
                 displayView(fragment);
             }
         } else if (id == R.id.nav_send_messager) {
             if(!isLoginValue) moveLogin();
             else {
-
+                fab.setVisibility(View.VISIBLE);
+                Fragment fragment =new SendedMessageFragment();
+                fragment.setArguments(bundle);
+                displayView(fragment);
             }
         } else if (id == R.id.nav_information) {
            if(!isLoginValue) moveLogin();
