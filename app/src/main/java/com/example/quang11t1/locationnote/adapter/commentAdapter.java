@@ -1,10 +1,7 @@
 package com.example.quang11t1.locationnote.adapter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.quang11t1.locationnote.Entity.Comment;
+import com.example.quang11t1.locationnote.modle.Comment;
 import com.example.quang11t1.locationnote.R;
 
 /**
@@ -44,7 +41,7 @@ public class commentAdapter extends ArrayAdapter<Comment>{
         ImageView imgviewAvatar=(ImageView) convertView.findViewById(R.id.imageViewAvatarComment);
         TextView txtviewComment=(TextView) convertView.findViewById(R.id.textViewComment);
         Comment comment = mlistcomment.get(position);
-        txtviewComment.setText(comment.getContent());
+        //txtviewComment.setText(comment.getContent());
         imgviewAvatar.setImageResource(R.drawable.vie);
         txtviewNameNick.setText("Luongvien");
         return convertView;

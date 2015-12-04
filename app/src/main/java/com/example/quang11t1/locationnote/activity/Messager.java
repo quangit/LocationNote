@@ -113,5 +113,4 @@ public class Messager extends Fragment {
         }
     }
 
-
 }
