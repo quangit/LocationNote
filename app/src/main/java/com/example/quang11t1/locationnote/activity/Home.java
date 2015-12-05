@@ -34,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.maps.android.clustering.Cluster;
@@ -101,10 +102,11 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         map.getUiSettings().setZoomControlsEnabled(true);
         map.setMyLocationEnabled(true);
         android.location.Location lastLocation = getLastKnownLocation();
-       //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(11, 18), 9.5f));
+       //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(16.0678, 108.153), 9.5f));
 
         if(lastLocation != null){
             System.out.println(" "+lastLocation.getLatitude()+" "+lastLocation.getLongitude());
+            LatLng latLng=new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 13));
 
@@ -115,6 +117,12 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
                     .tilt(40)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            MarkerOptions option=new MarkerOptions();
+            option.title("Vị trí của bạn");
+            option.snippet("Near");
+            option.position(latLng);
+            Marker currentMarker= map.addMarker(option);
+            currentMarker.showInfoWindow();
         }
         else{
             System.out.println("========== display location default ===========");
