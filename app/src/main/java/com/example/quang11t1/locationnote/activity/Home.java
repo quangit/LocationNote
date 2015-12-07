@@ -1,11 +1,13 @@
 package com.example.quang11t1.locationnote.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Criteria;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -17,9 +19,11 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.quang11t1.locationnote.R;
@@ -45,28 +49,120 @@ import com.google.maps.android.ui.IconGenerator;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+@SuppressLint("ValidFragment")
 public class Home extends MapBase implements ClusterManager.OnClusterClickListener<LocationNote>, ClusterManager.OnClusterInfoWindowClickListener<LocationNote>, ClusterManager.OnClusterItemClickListener<LocationNote>, ClusterManager.OnClusterItemInfoWindowClickListener<LocationNote> {
 
     public Location[] locationList;
-    GetJson getJson  = new GetJson();
+    GetJson getJson = new GetJson();
     Handler handler;
     LocationManager locationManager;
     GoogleMap map;
+    android.location.Location locationStatus;
+    LatLng latLngLocation = null;
+    float Latitude, Longitude, Latitude1, Latitude2, Longitude1, Longitude2;
+    String provider = LocationManager.GPS_PROVIDER;
+    int t = 5000; // milliseconds
+    int distance = 5; // meters
     private ClusterManager<LocationNote> locationNoteClusterManager;
+    LocationListener myLocationListener = new LocationListener() {
+
+        public void onProviderDisabled(String provider) {
+            // Update application if provider disabled.
+        }
+
+        public void onProviderEnabled(String provider) {
+            // Update application if provider enabled.
+        }
+
+        @Override
+        public void onLocationChanged(android.location.Location location) {
+            startDemo();
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            // Update application if provider hardware status changed.
+        }
+
+    };
     // private ClusterManager<DiaDiem> diaDiemClusterManager;
     private Random mRandom = new Random(1984);
     private Gson gson = new Gson();
 
+    @SuppressLint("ValidFragment")
+    Home(float Latitude, float Longitude) {
+        this.Latitude = Latitude;
+        this.Longitude = Longitude;
+        System.out.println("========== Home ===========" + Latitude + " " + Longitude);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Longitude1 = getArguments().getFloat("Longitude");
+        Latitude1 = getArguments().getFloat("Latitude");
+        System.out.println("========== Home1 ===========" + Latitude1 + " " + Longitude1);
         doStart();
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(provider, t, distance, myLocationListener);
+        Spinner spinner_maps_type=(Spinner) getActivity().findViewById(R.id.spinner_map_type);
+       // String arrMap[]=getResources().getStringArray(R.array.maps_type);
+        ArrayAdapter<CharSequence> adapterMap=ArrayAdapter.createFromResource(getActivity().getBaseContext(), R.array.maps_type,android.R.layout.simple_list_item_1);
+        adapterMap.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //spinner_maps_type.setAdapter(adapterMap);
+       /* spinner_maps_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int arg2, long arg3) {
+                int type=GoogleMap.MAP_TYPE_NORMAL;
+                switch(arg2)
+                {
+                    case 0:
+                        type=GoogleMap.MAP_TYPE_NONE;
+                        break;
+                    case 1:
+                        type=GoogleMap.MAP_TYPE_NORMAL;
+                        break;
+                    case 2:
+                        type=GoogleMap.MAP_TYPE_SATELLITE;
+                        break;
+                    case 3:
+                        type=GoogleMap.MAP_TYPE_TERRAIN;
+                        break;
+                    case 4:
+                        type=GoogleMap.MAP_TYPE_HYBRID;
+                        break;
+                }
+                map.setMapType(type);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Longitude2 = getArguments().getFloat("Longitude");
+        Latitude2 = getArguments().getFloat("Latitude");
+        System.out.println("========== Home2==========="+Latitude2+" "+Longitude2);
         return super.onCreateView(inflater, container, savedInstanceState);
+
     }
 
     @Override
@@ -101,7 +197,10 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.getUiSettings().setZoomControlsEnabled(true);
         map.setMyLocationEnabled(true);
+
         android.location.Location lastLocation = getLastKnownLocation();
+        locationStatus=lastLocation;
+        latLngLocation= new LatLng(Latitude,Longitude);
        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(16.0678, 108.153), 9.5f));
 
         if(lastLocation != null){
@@ -109,7 +208,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
             LatLng latLng=new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 13));
-
+            System.out.println("========== display location ===========" + Latitude + " " + Longitude);
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()))      // Sets the center of the map to location user
                     .zoom(17)                   // Sets the zoom
@@ -117,22 +216,22 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
                     .tilt(40)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-            MarkerOptions option=new MarkerOptions();
-            option.title("Vị trí của bạn");
-            option.snippet("Near");
-            option.position(latLng);
-            Marker currentMarker= map.addMarker(option);
-            currentMarker.showInfoWindow();
+            //MarkerOptions option=new MarkerOptions();
+            //option.title("Vị trí của bạn");
+            //option.snippet("Near");
+           // option.position(latLng);
+            //Marker currentMarker= map.addMarker(option);
+            //currentMarker.showInfoWindow();
         }
         else{
-            System.out.println("========== display location default ===========");
+            System.out.println("========== display location default ==========="+Latitude+" "+Longitude);
             map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(0, 0), 13));
+                    new LatLng(Latitude, Longitude), 13));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
-                    .target(new LatLng(16, 108))      // Sets the center of the map to location user
-                    .zoom(15)                   // Sets the zoom
-                    .bearing(90)                // Sets the orientation of the camera to east
+                    .target(new LatLng(Latitude, Longitude))      // Sets the center of the map to location user
+                    .zoom(17)                   // Sets the zoom
+                    .bearing(0)                // Sets the orientation of the camera to east
                     .tilt(40)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
             map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
@@ -203,12 +302,14 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         List<String> providers = locationManager.getProviders(true);
         android.location.Location bestLocation = null;
         for (String provider : providers) {
+
             if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED
-                    || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
+                    && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)
                     == PackageManager.PERMISSION_GRANTED) {
                 android.location.Location location = locationManager.getLastKnownLocation(provider);
 
+                Toast.makeText(getContext(),"Ok",Toast.LENGTH_LONG).show();
                 if (location == null) {
                     continue;
                 }
@@ -219,6 +320,10 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
             }
         }
         return bestLocation;
+    }
+
+    public  android.location.Location getLocation(){
+        return locationStatus;
     }
 
     private class LocationNoteRenderer extends DefaultClusterRenderer<LocationNote> {

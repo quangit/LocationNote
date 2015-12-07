@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.quang11t1.locationnote.R;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
 
 
@@ -45,6 +46,11 @@ public abstract class MapBase extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         setUpMapIfNeeded();
@@ -59,6 +65,7 @@ public abstract class MapBase extends Fragment {
             startDemo();
         }
     }
+
 
     protected GoogleMap getMap() {
         setUpMapIfNeeded();

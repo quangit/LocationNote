@@ -29,16 +29,21 @@ import com.example.quang11t1.locationnote.Editphoto.CircleImage;
 import com.example.quang11t1.locationnote.R;
 
 import com.example.quang11t1.locationnote.modle.Account;
+import com.example.quang11t1.locationnote.modle.Location;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+//Bien
     int idAccount=0;
     String userName;
     boolean isLoginValue=false;
     FloatingActionButton fab;
+    android.location.Location location;
+    float Latitude, Longitude;
+    //Constructor
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +77,15 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
+        SharedPreferences pre=getSharedPreferences("location", MODE_PRIVATE);
+        Latitude = pre.getFloat("Latitude", (float) 16.056);
+        Longitude = pre.getFloat("Longitude",(float) 108.208);
         // init fragment home
-        Fragment fragment = new Home();
+        Fragment fragment = new Home(Latitude,Longitude);
+        Bundle bundle=new Bundle();
+        bundle.putFloat("Longitude",Longitude);
+        bundle.putFloat("Latitude",Latitude);
+        fragment.setArguments(bundle);
         navigationView.getMenu().getItem(0).setChecked(true);
         displayView(fragment);
         //final TextView textView_User= (TextView) findViewById(R.id.text_UserName);
@@ -84,14 +95,31 @@ public class MainActivity extends AppCompatActivity
         isLoginValue= isLogin(navigationView);
     }
 
+    // Resume
     @Override
     protected void onResume() {
         super.onResume();
+        SharedPreferences pre=getSharedPreferences("location", MODE_PRIVATE);
+        Latitude = pre.getFloat("Latitude", (float) 16.056);
+        Longitude = pre.getFloat("Longitude",(float) 108.208);
+        System.out.println("========== display  ==========="+Latitude+" "+Longitude);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Home home= new Home(Latitude,Longitude);
+        location=home.getLocation();
+        if(location!=null){
+        SharedPreferences pre=getSharedPreferences("location", MODE_PRIVATE);
+        SharedPreferences.Editor editor=pre.edit();
+        editor.putFloat("Latitude",(float)location.getLatitude());
+        editor.putFloat("Longitude",(float) location.getLongitude());
+        editor.commit();}
     }
 
 
-
+    //Back onlick
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -132,11 +160,14 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putInt("id",idAccount);
         bundle.putString("user",userName);
-
+        bundle.putFloat("Longitude", Longitude);
+        bundle.putFloat("Latitude", Latitude);
         if (id == R.id.nav_home) {
 
             fab.setVisibility(View.VISIBLE);
-            Fragment fragment = new Home();
+            Fragment fragment = new Home(Latitude,Longitude);
+            Bundle bundle1=new Bundle();
+            fragment.setArguments(bundle);
             displayView(fragment);
         } else if (id == R.id.nav_friend) {
             if(!isLoginValue) moveLogin();
