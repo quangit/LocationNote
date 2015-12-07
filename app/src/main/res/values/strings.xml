@@ -22,6 +22,12 @@
     <string name="title_activity_send__messager">Send_Messager</string>
     <string name="tittle_activity_detail">Detail</string>
     <string name="key_map_google_api">AIzaSyC9_IRFXiCAnOLH_edErpJrKY_PLPJVuGw</string>
-
+    <string-array name="maps_type">
+        <item >MAP_TYPE_NONE</item>
+        <item >MAP_TYPE_NORMAL</item>
+        <item >MAP_TYPE_SATELLITE</item>
+        <item >MAP_TYPE_HYBRID</item>
+        <item >MAP_TYPE_TERRAIN</item>
+    </string-array>
 
 </resources>
