@@ -6,13 +6,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:background="#ffcc80">
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Chọn kiểu Map:" />
+            android:text="Chọn kiểu Map:"
+            />
 
         <Spinner
             android:id="@+id/spinner_map_type"

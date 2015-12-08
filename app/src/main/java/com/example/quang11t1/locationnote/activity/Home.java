@@ -115,52 +115,17 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
             return;
         }
         locationManager.requestLocationUpdates(provider, t, distance, myLocationListener);
-        Spinner spinner_maps_type=(Spinner) getActivity().findViewById(R.id.spinner_map_type);
-       // String arrMap[]=getResources().getStringArray(R.array.maps_type);
-        ArrayAdapter<CharSequence> adapterMap=ArrayAdapter.createFromResource(getActivity().getBaseContext(), R.array.maps_type,android.R.layout.simple_list_item_1);
-        adapterMap.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //spinner_maps_type.setAdapter(adapterMap);
-       /* spinner_maps_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int arg2, long arg3) {
-                int type=GoogleMap.MAP_TYPE_NORMAL;
-                switch(arg2)
-                {
-                    case 0:
-                        type=GoogleMap.MAP_TYPE_NONE;
-                        break;
-                    case 1:
-                        type=GoogleMap.MAP_TYPE_NORMAL;
-                        break;
-                    case 2:
-                        type=GoogleMap.MAP_TYPE_SATELLITE;
-                        break;
-                    case 3:
-                        type=GoogleMap.MAP_TYPE_TERRAIN;
-                        break;
-                    case 4:
-                        type=GoogleMap.MAP_TYPE_HYBRID;
-                        break;
-                }
-                map.setMapType(type);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-
-        });
-*/
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+       // View rootView = inflater.inflate(R.layout.fragment_home,
+           //     container, false);
         Longitude2 = getArguments().getFloat("Longitude");
         Latitude2 = getArguments().getFloat("Latitude");
-        System.out.println("========== Home2==========="+Latitude2+" "+Longitude2);
+        System.out.println("========== Home2===========" + Latitude2 + " " + Longitude2);
+
         return super.onCreateView(inflater, container, savedInstanceState);
 
     }
@@ -197,6 +162,8 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.getUiSettings().setZoomControlsEnabled(true);
         map.setMyLocationEnabled(true);
+        map.getUiSettings().setMapToolbarEnabled(true);
+        map.setPadding(10,10,10,120);
 
         android.location.Location lastLocation = getLastKnownLocation();
         locationStatus=lastLocation;
@@ -309,7 +276,6 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
                     == PackageManager.PERMISSION_GRANTED) {
                 android.location.Location location = locationManager.getLastKnownLocation(provider);
 
-                Toast.makeText(getContext(),"Ok",Toast.LENGTH_LONG).show();
                 if (location == null) {
                     continue;
                 }
