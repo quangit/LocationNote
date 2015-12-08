@@ -43,7 +43,7 @@ public class ArrayAdapterCustomMessage extends ArrayAdapter<Message> {
         tv_sender.setText(message.getAccountByIdSender());
         TextView tv_content =(TextView) convertView.findViewById(R.id.textView_messager_receiver);
         tv_content.setText(message.getContent());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         TextView tv_time =(TextView) convertView.findViewById(R.id.textView_time_receive);
         tv_time.setText(sdf.format(message.getTime()).toString());
         ImageView imageView =(ImageView) convertView.findViewById(R.id.imageView_avarta_sender);

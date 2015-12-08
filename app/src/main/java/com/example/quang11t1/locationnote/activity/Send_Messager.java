@@ -33,6 +33,7 @@ public class Send_Messager extends AppCompatActivity  {
 
     int idAccount=0;
     String userName ="";
+    float Longitude,Latitude;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +47,8 @@ public class Send_Messager extends AppCompatActivity  {
         Bundle infoLogin = getIntent().getExtras();
         idAccount=infoLogin.getInt("id",0);
         userName=infoLogin.getString("user");
+        Longitude =infoLogin.getFloat("long",0);
+        Latitude=infoLogin.getFloat("lat",0);
 
 
         navSpinner =new ArrayList<>();
@@ -63,6 +66,8 @@ public class Send_Messager extends AppCompatActivity  {
                 Bundle bundle = new Bundle();
                 bundle.putInt("id",idAccount);
                 bundle.putString("user",userName);
+                bundle.putFloat("long",Longitude);
+                bundle.putFloat("lat",Latitude);
                 if (position == 0) {
                     SendMessagerFriendFragment sendMessagerFriendFragment = new SendMessagerFriendFragment();
                     sendMessagerFriendFragment.setArguments(bundle);

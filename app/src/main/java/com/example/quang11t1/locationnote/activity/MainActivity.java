@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity
                     Intent intent = new Intent(getApplicationContext(), Send_Messager.class);
                     intent.putExtra("id", idAccount);
                     intent.putExtra("user", userName);
+                    intent.putExtra("long",Longitude);
+                    intent.putExtra("lat",Latitude);
                     startActivity(intent);
                 }
 
@@ -85,6 +87,7 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle=new Bundle();
         bundle.putFloat("Longitude",Longitude);
         bundle.putFloat("Latitude",Latitude);
+
         fragment.setArguments(bundle);
         navigationView.getMenu().getItem(0).setChecked(true);
         displayView(fragment);
@@ -240,6 +243,18 @@ public class MainActivity extends AppCompatActivity
         userName="";
         editor.commit();
 
+        navigationView.getMenu().getItem(0).setChecked(true);
+        Bundle bundle = new Bundle();
+        bundle.putInt("id",idAccount);
+        bundle.putString("user",userName);
+        bundle.putFloat("Longitude", Longitude);
+        bundle.putFloat("Latitude", Latitude);
+        fab.setVisibility(View.VISIBLE);
+        Fragment fragment = new Home(Latitude,Longitude);
+        Bundle bundle1=new Bundle();
+        fragment.setArguments(bundle);
+        displayView(fragment);
+
        // Fragment fragment = new Home();
       //  navigationView.getMenu().getItem(0).setChecked(true);
        // displayView(fragment);
@@ -268,6 +283,17 @@ public class MainActivity extends AppCompatActivity
             item.setTitle("Đăng xuất");
             item.setIcon(R.drawable.ic_menu_logout);
 
+            navigationView.getMenu().getItem(0).setChecked(true);
+            Bundle bundle = new Bundle();
+            bundle.putInt("id",idAccount);
+            bundle.putString("user",userName);
+            bundle.putFloat("Longitude", Longitude);
+            bundle.putFloat("Latitude", Latitude);
+            fab.setVisibility(View.VISIBLE);
+            Fragment fragment = new Home(Latitude,Longitude);
+            Bundle bundle1=new Bundle();
+            fragment.setArguments(bundle);
+            displayView(fragment);
 
         }
 

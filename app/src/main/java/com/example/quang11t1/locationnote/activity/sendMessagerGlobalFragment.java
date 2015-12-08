@@ -75,7 +75,7 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
         editText_friend.setOnClickListener(this);
         ImageButton imageButton_send = (ImageButton) rootview.findViewById(R.id.imageButton_send);
         imageButton_send.setOnClickListener(this);
-        idAccount=getArguments().getInt("idAccount",0);
+        idAccount=getArguments().getInt("id",0);
         Toast.makeText(getContext(),""+idAccount,Toast.LENGTH_LONG).show();
 
         handler=new Handler() {

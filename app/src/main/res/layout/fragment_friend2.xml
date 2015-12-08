@@ -15,7 +15,7 @@
             android:background="@color/colorAccent"
             android:gravity="center"
             android:id="@+id/layout_Accept_Friend"
-            android:visibility="visible"
+            android:visibility="gone"
             android:layout_height="60dp">
 
             <TextView
