@@ -59,7 +59,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     Handler handler;
     LocationManager locationManager;
     GoogleMap map;
-    android.location.Location locationStatus;
+    android.location.Location locationStatus=null;
     LatLng latLngLocation = null;
     float Latitude, Longitude, Latitude1, Latitude2, Longitude1, Longitude2;
     String provider = LocationManager.GPS_PROVIDER;
@@ -164,7 +164,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         map.getUiSettings().setZoomControlsEnabled(true);
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMapToolbarEnabled(true);
-        map.setPadding(10, 10, 10, 120);
+        map.setPadding(10,10,10,120);
 
         android.location.Location lastLocation = getLastKnownLocation();
         locationStatus=lastLocation;
@@ -295,11 +295,12 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     }
 
     public void saveStatus(){
+        if(locationStatus!=null){
         SharedPreferences pre=this.getActivity().getSharedPreferences("location", getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor=pre.edit();
         editor.putFloat("Latitude",(float)locationStatus.getLatitude());
         editor.putFloat("Longitude",(float) locationStatus.getLongitude());
-        editor.commit();}
+        editor.commit();}}
 
     private class LocationNoteRenderer extends DefaultClusterRenderer<LocationNote> {
 
