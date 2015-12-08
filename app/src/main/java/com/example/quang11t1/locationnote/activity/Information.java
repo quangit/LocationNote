@@ -28,6 +28,8 @@ import java.util.List;
  * Created by luongvien_binhson on 24-Nov-15.
  */
 public class Information extends Fragment {
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     TextView txtViewuserInfor,editTextEmail;
     EditText editTextpass,editTextpass1,editTextpass2;
     GetJson getJson =new GetJson();
@@ -71,6 +73,8 @@ public class Information extends Fragment {
 
         @Override
         public void run() {
+
+
 
 
                 String getInforAccount = context.getString(R.string.link)+"login/user?USERNAME="+username;

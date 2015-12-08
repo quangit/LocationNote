@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Criteria;
@@ -163,10 +164,11 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         map.getUiSettings().setZoomControlsEnabled(true);
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMapToolbarEnabled(true);
-        map.setPadding(10,10,10,120);
+        map.setPadding(10, 10, 10, 120);
 
         android.location.Location lastLocation = getLastKnownLocation();
         locationStatus=lastLocation;
+        saveStatus();
         latLngLocation= new LatLng(Latitude,Longitude);
        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(16.0678, 108.153), 9.5f));
 
@@ -292,6 +294,13 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         return locationStatus;
     }
 
+    public void saveStatus(){
+        SharedPreferences pre=this.getActivity().getSharedPreferences("location", getContext().MODE_PRIVATE);
+        SharedPreferences.Editor editor=pre.edit();
+        editor.putFloat("Latitude",(float)locationStatus.getLatitude());
+        editor.putFloat("Longitude",(float) locationStatus.getLongitude());
+        editor.commit();}
+
     private class LocationNoteRenderer extends DefaultClusterRenderer<LocationNote> {
 
         private final IconGenerator mIconGenerator = new IconGenerator(getActivity().getApplicationContext());
@@ -355,5 +364,4 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
             locationList = gson.fromJson(result,Location[].class);
         }
     }
-
 }

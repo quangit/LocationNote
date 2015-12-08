@@ -99,23 +99,26 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+       getPositionRecent();
+    }
+
+    public void getPositionRecent(){
         SharedPreferences pre=getSharedPreferences("location", MODE_PRIVATE);
         Latitude = pre.getFloat("Latitude", (float) 16.056);
         Longitude = pre.getFloat("Longitude",(float) 108.208);
         System.out.println("========== display  ==========="+Latitude+" "+Longitude);
     }
-
     @Override
     protected void onPause() {
         super.onPause();
-        Home home= new Home(Latitude,Longitude);
+        /*Home home= new Home(Latitude,Longitude);
         location=home.getLocation();
         if(location!=null){
         SharedPreferences pre=getSharedPreferences("location", MODE_PRIVATE);
         SharedPreferences.Editor editor=pre.edit();
         editor.putFloat("Latitude",(float)location.getLatitude());
         editor.putFloat("Longitude",(float) location.getLongitude());
-        editor.commit();}
+        editor.commit();}*/
     }
 
 
