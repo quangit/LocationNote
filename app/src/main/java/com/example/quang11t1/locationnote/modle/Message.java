@@ -11,13 +11,19 @@ public class Message {
     private String accountByIdReceiver;
     private String content;
     private Date time;
+    private String urlImage;
+    private float longitude;
+    private float latitude;
 
-    public Message(Integer idMessage, String accountByIdSender, String accountByIdReceiver, String content, Date time) {
+    public Message(Integer idMessage, String accountByIdSender, String accountByIdReceiver, String content, Date time,String urlImage,float longitude,float latitude) {
         this.idMessage = idMessage;
         this.accountByIdSender = accountByIdSender;
         this.accountByIdReceiver = accountByIdReceiver;
         this.content = content;
         this.time = time;
+        this.urlImage = urlImage;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public Integer getIdMessage() {
@@ -58,5 +64,29 @@ public class Message {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
+    public float getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(float longitude) {
+        this.longitude = longitude;
+    }
+
+    public float getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(float latitude) {
+        this.latitude = latitude;
     }
 }

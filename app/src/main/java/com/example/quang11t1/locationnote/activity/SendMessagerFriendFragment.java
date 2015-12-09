@@ -370,6 +370,7 @@ public class SendMessagerFriendFragment extends Fragment implements View.OnClick
                             String tam =response.substring(4,response.length()-2);
                             System.out.println(tam);
                             System.out.println(response);
+                            tam= "http://104.155.202.249/LocationNote/Image/getImage?LINK=C:/Image/"+tam;
                             SendMesage sendMesage = new SendMesage(contextMessager, idFriend,tam,Longitude,Latitude, getContext());
                             sendMesage.start();
                             Toast.makeText(getActivity(), contextMessager, Toast.LENGTH_LONG).show();

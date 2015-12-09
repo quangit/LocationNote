@@ -4,6 +4,7 @@ package com.example.quang11t1.locationnote.activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,35 +30,45 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
+
 import com.example.quang11t1.locationnote.R;
 import com.example.quang11t1.locationnote.modle.Location;
 import com.example.quang11t1.locationnote.support.GetJson;
 import com.google.gson.Gson;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class sendMessagerGlobalFragment extends Fragment implements OnClickListener{
-    private  static  final int CAM_REQUEST = 1313;
+public class sendMessagerGlobalFragment extends Fragment implements OnClickListener {
+    private static final int CAM_REQUEST = 1313;
     private static int LOAD_IMAGE_RESULTS = 101;
     ImageButton btnTakePhoto;
     ImageButton btnTakephotofromgallery;
     View rootview;
     ImageView imgViewphoto;
     ImageView imgViewphotofromgallery;
-    String imagepath="";
+    String imagepath = "";
     EditText editText_content;
-    int idAccount=0;
+    int idAccount = 0;
     Handler handler;
-    int idLocal=2;
+    int idLocal = 2;
     List<Location> locationList;
     EditText editText_friend;
+    RequestParams params = new RequestParams();
+    ProgressDialog msgDialog;
+    int idNote;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        msgDialog = new ProgressDialog(getContext());
+        // Set Cancelable as False
+        msgDialog.setCancelable(false);
     }
 
     @Override
@@ -75,23 +87,29 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
         editText_friend.setOnClickListener(this);
         ImageButton imageButton_send = (ImageButton) rootview.findViewById(R.id.imageButton_send);
         imageButton_send.setOnClickListener(this);
-        idAccount=getArguments().getInt("id",0);
-        Toast.makeText(getContext(),""+idAccount,Toast.LENGTH_LONG).show();
+        idAccount = getArguments().getInt("id", 0);
+        Toast.makeText(getContext(), "" + idAccount, Toast.LENGTH_LONG).show();
 
-        handler=new Handler() {
+        handler = new Handler() {
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 int result = msg.arg1;
-                if(result==1){
-                    Toast.makeText(getContext(),"add thanh cong",Toast.LENGTH_SHORT).show();
-                    getActivity().finish();
+                if (result != 0) {
+                    idNote = result;
+                    if (!imagepath.equals("")) {
+                        msgDialog.setMessage("Converting Image to Binary Data");
+                        msgDialog.show();
+                        encodeImagetoString();
+                    } else {
+                        Toast.makeText(getContext(), "add thanh cong" + result, Toast.LENGTH_SHORT).show();
+                        getActivity().finish();
+                    }
                     /*Intent intent=getIntent();
                     intent.putExtra("account", account);
                     setResult(1, intent);
                     finish();*/
-                }
-                else {
-                    Toast.makeText(getContext(),"add Khong thanhj cong",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "add Khong thanhj cong", Toast.LENGTH_SHORT).show();
                 }
                 //Toast.makeText(getApplicationContext(),msg.arg1,Toast.LENGTH_SHORT).show();
             }
@@ -102,12 +120,10 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
     }
 
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(data != null && requestCode !=0 &&resultCode!= 0) {
+        if (data != null && requestCode != 0 && resultCode != 0) {
             if (requestCode == CAM_REQUEST) {
                 Bitmap thumbai12 = (Bitmap) data.getExtras().get("data");
                 imgViewphoto.setImageBitmap(thumbai12);
@@ -120,10 +136,15 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
                 Cursor cursor = getActivity().getContentResolver().query(pickedImage, filePath, null, null, null);
                 cursor.moveToFirst();
                 String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-                imagepath=imagePath;
-                Toast.makeText(getContext(),imagePath,Toast.LENGTH_SHORT).show();
+                imagepath = imagePath;
+                Toast.makeText(getContext(), imagePath, Toast.LENGTH_SHORT).show();
                 // Now we need to set the GUI ImageView data with data read from the picked file.
                 imgViewphotofromgallery.setImageBitmap(BitmapFactory.decodeFile(imagePath));
+
+                String fileNameSegments[] = imagePath.split("/");
+                String fileName = fileNameSegments[fileNameSegments.length - 1];
+                // Put file name in Async Http Post Param which will used in Java web app
+                params.put("filename", fileName);
 
 
                 // At the end remember to close the cursor or you will end with the RuntimeException!
@@ -134,43 +155,40 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.imageButtonGallery)
-        {
+        if (v.getId() == R.id.imageButtonGallery) {
             Toast toast = Toast.makeText(getActivity(), "hdihi", Toast.LENGTH_LONG);
             toast.show();
             Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(i, LOAD_IMAGE_RESULTS);
         }
-        if(v.getId()==R.id.imageButtoncamera){
+        if (v.getId() == R.id.imageButtoncamera) {
             Toast toast = Toast.makeText(getActivity(), "hihi", Toast.LENGTH_LONG);
             toast.show();
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent,CAM_REQUEST);
+            startActivityForResult(cameraIntent, CAM_REQUEST);
         }
-        if(v.getId()==R.id.imageButton_send){
+        if (v.getId() == R.id.imageButton_send) {
 
 
-            if(!imagepath.equals("")){
-
-            }
             String contextMessager = null;
-            if(!editText_content.getText().toString().trim().equals(""))
-            {
-                contextMessager=editText_content.getText().toString();
-                AddNote addNote =new AddNote(contextMessager,idLocal,getContext());
+            if (!editText_content.getText().toString().trim().equals("")) {
+
+                contextMessager = editText_content.getText().toString();
+                AddNote addNote = new AddNote(contextMessager, idLocal, getContext());
                 addNote.start();
-                Toast.makeText(getActivity(),contextMessager, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), contextMessager, Toast.LENGTH_LONG).show();
             }
 
+
         }
-        if(v.getId()==R.id.editText_friend){
+        if (v.getId() == R.id.editText_friend) {
 
             // custom dialog
             final Dialog dialog = new Dialog(getContext());
             dialog.setContentView(R.layout.choose_location_custom);
             dialog.setTitle("Chọn vị trí");
-            ListView listView =(ListView) dialog.findViewById(R.id.listView_location);
-            GetListLocation getListLocation =new GetListLocation(listView);
+            ListView listView = (ListView) dialog.findViewById(R.id.listView_location);
+            GetListLocation getListLocation = new GetListLocation(listView);
             getListLocation.execute("a");
 
             // set the custom dialog components - text, image and button
@@ -190,43 +208,36 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
         }
 
     }
-    public class AddNote extends Thread{
+
+    public class AddNote extends Thread {
 
         String content;
         int idLocation;
         Context context;
-        Gson gson=new Gson();
-        GetJson getJson=new GetJson();
+        Gson gson = new Gson();
+        GetJson getJson = new GetJson();
 
-        public AddNote(String content,int idLocation,Context context)
-        {
-            this.content=content;
-            this.idLocation=idLocation;
-            this.context=context;
+        public AddNote(String content, int idLocation, Context context) {
+            this.content = content;
+            this.idLocation = idLocation;
+            this.context = context;
         }
 
         @Override
         public void run() {
-            String addNote= getString(R.string.link)+"Note/addNote?IDACCOUNT="+idAccount+"&IDLOCATION="+idLocation+"&CONTENT="+content;
+            String addNote = getString(R.string.link) + "Note/addNote?IDACCOUNT=" + idAccount + "&IDLOCATION=" + idLocation + "&CONTENT=" + content;
             String result = getJson.getStringJson(addNote);
-            Message msg=handler.obtainMessage();
+            Message msg = handler.obtainMessage();
 
-            if (result.equals("1"))
-            {
-                msg.arg1=1;
-            }
-            else {
-                //gán giá trị vào cho arg1 để gửi về Main thread
-                msg.arg1=0;
-            }
+            msg.arg1 = Integer.parseInt(result);
             //gửi lại Message này về cho Main Thread
             handler.sendMessage(msg);
         }
     }
 
-    public class GetListLocation extends AsyncTask<String,List<Location>,List<Location>> {
-        Gson gson=new Gson();
-        GetJson getJson=new GetJson();
+    public class GetListLocation extends AsyncTask<String, List<Location>, List<Location>> {
+        Gson gson = new Gson();
+        GetJson getJson = new GetJson();
 
         ListView listView;
 
@@ -242,16 +253,15 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
         @Override
         protected void onPostExecute(List<Location> locations) {
             super.onPostExecute(locations);
-            String []arrayString = new String[locations.size()];
-            locationList=locations;
-            int i=0;
-            for(Location location:locations)
-            {
-                arrayString[i]=location.getLocationName();
+            String[] arrayString = new String[locations.size()];
+            locationList = locations;
+            int i = 0;
+            for (Location location : locations) {
+                arrayString[i] = location.getLocationName();
                 i++;
             }
-            ArrayAdapter<String> adapter=new ArrayAdapter<String>
-                    (getContext(), android.R.layout.simple_list_item_1,arrayString);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                    (getContext(), android.R.layout.simple_list_item_1, arrayString);
             listView.setAdapter(adapter);
 
 
@@ -266,11 +276,158 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
 
         @Override
         protected List<Location> doInBackground(String... params) {
-            String locationslink= getString(R.string.link)+"Location/list?LONGITUDE=108&LATITUDE=16&RADIUS=5";
+            String locationslink = getString(R.string.link) + "Location/list?LONGITUDE=108&LATITUDE=16&RADIUS=5";
             String result = getJson.getStringJson(locationslink);
             System.out.println("chuoi lay ve duoc :" + result);
-            Location[] locationList = gson.fromJson(result,Location[].class);
+            Location[] locationList = gson.fromJson(result, Location[].class);
             return Arrays.asList(locationList);
+        }
+    }
+
+
+    // AsyncTask - To convert Image to String
+    public void encodeImagetoString() {
+        new AsyncTask<Void, Void, String>() {
+
+            protected void onPreExecute() {
+
+            }
+
+            ;
+
+            @Override
+            protected String doInBackground(Void... params) {
+                BitmapFactory.Options options = null;
+                options = new BitmapFactory.Options();
+                options.inSampleSize = 3;
+                Bitmap bitmap = BitmapFactory.decodeFile(imagepath,
+                        options);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                // Must compress the Image to reduce image size to make upload easy
+                bitmap.compress(Bitmap.CompressFormat.PNG, 50, stream);
+                byte[] byte_arr = stream.toByteArray();
+                // Encode Image to String
+                String encodedString = Base64.encodeToString(byte_arr, 0);
+                return encodedString;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                msgDialog.setMessage("Calling Upload");
+                // Put converted Image string into Async Http Post param
+                params.put("image", msg);
+                // Trigger Image upload
+                triggerImageUpload();
+            }
+        }.execute(null, null, null);
+    }
+
+    public void triggerImageUpload() {
+        makeHTTPCall();
+    }
+
+    // http://192.168.2.4:9000/imgupload/upload_image.php
+    // http://192.168.2.4:9999/ImageUploadWebApp/uploadimg.jsp
+    // Make Http call to upload Image to Java server
+    public void makeHTTPCall() {
+        msgDialog.setMessage("Invoking JSP");
+        AsyncHttpClient client = new AsyncHttpClient();
+        // Don't forget to change the IP address to your LAN address. Port no as well.
+        client.post("http://104.155.202.249/ImageUploadWebApp/uploadimg.jsp",
+                params, new AsyncHttpResponseHandler() {
+                    // When the response returned by REST has Http
+                    // response code '200'
+                    @Override
+                    public void onSuccess(String response) {
+                        // Hide Progress Dialog
+                        msgDialog.hide();
+                        Toast.makeText(getContext(), response,
+                                Toast.LENGTH_LONG).show();
+                        String contextMessager = null;
+                        if (!editText_content.getText().toString().trim().equals("")) {
+                            contextMessager = editText_content.getText().toString();
+                            //AddNote addNote =new AddNote(contextMessager,idLocal,getContext());
+                            //addNote.start();
+                            String tam = response.substring(4, response.length() - 2);
+                            System.out.println(tam);
+                            System.out.println(response);
+                            tam = "http://104.155.202.249/LocationNote/Image/getImage?LINK=C:/Image/" + tam;
+                            //SendMesage sendMesage = new SendMesage(contextMessager, idFriend,tam,Longitude,Latitude, getContext());
+                            //sendMesage.start();
+                            new AddImageNote().execute(tam);
+                            Toast.makeText(getActivity(), contextMessager, Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    // When the response returned by REST has Http
+                    // response code other than '200' such as '404',
+                    // '500' or '403' etc
+                    @Override
+                    public void onFailure(int statusCode, Throwable error,
+                                          String content) {
+                        // Hide Progress Dialog
+                        msgDialog.hide();
+                        // When Http response code is '404'
+                        if (statusCode == 404) {
+                            Toast.makeText(getContext(),
+                                    "Requested resource not found",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        // When Http response code is '500'
+                        else if (statusCode == 500) {
+                            Toast.makeText(getContext(),
+                                    "Something went wrong at server end",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        // When Http response code other than 404, 500
+                        else {
+                            Toast.makeText(
+                                    getContext(),
+                                    "Error Occured \n Most Common Error: \n1. Device not connected to Internet\n2. Web App is not deployed in App server\n3. App server is not running\n HTTP Status code : "
+                                            + statusCode, Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    }
+                });
+    }
+
+
+    protected class AddImageNote extends  AsyncTask<String,Void,Boolean>{
+
+        GetJson getJson =new GetJson();
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if(aBoolean) {
+                Toast.makeText(getContext(), "add thanh cong Image", Toast.LENGTH_LONG).show();
+
+            }else {
+                Toast.makeText(getContext(),"add khong thanh cong Image",Toast.LENGTH_LONG).show();
+            }
+            getActivity().finish();
+
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            String link = params[0];
+            String addNote = getString(R.string.link) + "Image/addImageNote?LINK="+link+"&IDNOTE="+idNote;
+            String result = getJson.getStringJson(addNote);
+            if(result.equals("1"))
+            {
+                return true;
+            }
+            return false;
         }
     }
 

@@ -21,7 +21,7 @@
     <string name="title_activity_location_note_list1">LocationNoteList1</string>
     <string name="title_activity_send__messager">Send_Messager</string>
     <string name="tittle_activity_detail">Detail</string>
-    <string name="key_map_google_api">AIzaSyArEzg7BCpvybo-SJU-h7hfsR6gybTkykE</string>
+    <string name="key_map_google_api">AIzaSyAxFC0NQqb0H6hJAK3BrriaN-unDyMpjQY</string>
     <string-array name="maps_type">
         <item >MAP_TYPE_NORMAL</item>
         <item >MAP_TYPE_SATELLITE</item>

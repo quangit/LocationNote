@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
                 if (isLoginValue) {
                     Intent intent = new Intent(getApplicationContext(), Send_Messager.class);
+                    getPositionRecent();
                     intent.putExtra("id", idAccount);
                     intent.putExtra("user", userName);
                     intent.putExtra("long",Longitude);
@@ -284,7 +285,7 @@ public class MainActivity extends AppCompatActivity
             item.setIcon(R.drawable.ic_menu_logout);
 
             navigationView.getMenu().getItem(0).setChecked(true);
-            Bundle bundle = new Bundle();
+            /*Bundle bundle = new Bundle();
             bundle.putInt("id",idAccount);
             bundle.putString("user",userName);
             bundle.putFloat("Longitude", Longitude);
@@ -293,7 +294,7 @@ public class MainActivity extends AppCompatActivity
             Fragment fragment = new Home(Latitude,Longitude);
             Bundle bundle1=new Bundle();
             fragment.setArguments(bundle);
-            displayView(fragment);
+            displayView(fragment);*/
 
         }
 

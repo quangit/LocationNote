@@ -56,9 +56,6 @@ public class Messager extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView_Message.setLayoutManager(linearLayoutManager);*/
 
-        Message message =new Message(1,"awdaw","dawdaw","adwawd",new Date());
-        List<Message> list=new ArrayList<>();
-        list.add(message);
 
 
         //customRecycleMessageAdapter =new CustomRecycleMessageAdapter(list,getContext());
