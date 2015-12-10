@@ -30,7 +30,9 @@ import com.example.quang11t1.locationnote.R;
 
 import com.example.quang11t1.locationnote.modle.Account;
 import com.example.quang11t1.locationnote.modle.Location;
+import com.example.quang11t1.locationnote.modle.customHandler;
 import com.google.android.gms.maps.model.LatLng;
+import com.pushbots.push.Pushbots;
 
 import java.io.InputStream;
 
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Pushbots.sharedInstance().init(this);
+        Pushbots.sharedInstance().setCustomHandler(customHandler.class);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -331,7 +335,7 @@ public class MainActivity extends AppCompatActivity
         MenuItem item = view.getMenu().getItem(6);
         item.setTitle("Đăng nhập");
         item.setIcon(R.drawable.ic_login);
-        Toast.makeText(this,"chua login",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "chua login",Toast.LENGTH_SHORT).show();
         return false;
     }
 
