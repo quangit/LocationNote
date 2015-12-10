@@ -16,11 +16,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quang11t1.locationnote.R;
+import com.example.quang11t1.locationnote.activity.detailNoteActivity;
 import com.example.quang11t1.locationnote.activity.detail_message;
 import com.example.quang11t1.locationnote.modle.LocationNoteInfor;
 import com.example.quang11t1.locationnote.support.GetJson;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -29,15 +31,17 @@ import java.util.ArrayList;
 public class Location_list_Adapter extends ArrayAdapter<LocationNoteInfor> {
     Context mcontext;
 
-    int resource;
+    int idAccount;
     LocationNoteInfor locationNoteInfor;
     TextView userName, locationName, content, numberOfLike, numberOfComment, postTime;
     ImageView iconProfile, imgLike, imgComment;
     ArrayList<LocationNoteInfor> mlistlocationinfor=new ArrayList<LocationNoteInfor>();
-    public Location_list_Adapter(Context context, ArrayList<LocationNoteInfor> objects) {
+    public Location_list_Adapter(Context context, ArrayList<LocationNoteInfor> objects,int idAccount) {
         super(context, R.layout.custom_locationnote_list, objects);
         this.mcontext=context;
         this.mlistlocationinfor=new ArrayList<LocationNoteInfor>(objects);
+        this.idAccount =idAccount;
+
     }
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -63,7 +67,15 @@ public class Location_list_Adapter extends ArrayAdapter<LocationNoteInfor> {
 
         userName.setText(locationNoteInfor.getAccount());
         locationName.setText(locationNoteInfor.getLocation());
-        content.setText(locationNoteInfor.getContent());
+        if(locationNoteInfor.getContent().length()>140){
+            content.setText(locationNoteInfor.getContent().substring(0,139));
+        }else content.setText(locationNoteInfor.getContent());
+        numberOfLike.setText(locationNoteInfor.getNumberOfLike()+"");
+        numberOfComment.setText(locationNoteInfor.getNumberOfComment()+"");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        postTime.setText(sdf.format(locationNoteInfor.getTime()).toString());
+
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,7 +83,8 @@ public class Location_list_Adapter extends ArrayAdapter<LocationNoteInfor> {
                 locationNoteInfor=mlistlocationinfor.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("locationNoteInfo", locationNoteInfor);
-                Intent intent=new Intent(mcontext, detail_message.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                bundle.putInt("id",idAccount);
+                Intent intent=new Intent(mcontext, detailNoteActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("data",bundle);
                 mcontext.startActivity(intent);
             }

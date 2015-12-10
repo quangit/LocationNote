@@ -65,7 +65,7 @@ public class detail_message extends AppCompatActivity {
         txtViewAvartaDetail= (TextView) findViewById(R.id.textViewNameNickDetail);
         txtViewLocationDetail=(TextView) findViewById(R.id.textViewLocationDetail);
         txtViewContentDetail=(TextView) findViewById(R.id.textViewContentDetail);
-       listViewComment = (ListView) findViewById(R.id.listviewComment);
+        listViewComment = (ListView) findViewById(R.id.listviewComment);
        // commentAdapter adapter=new commentAdapter(detail_message.this,arraylistComment);
         //listViewComment.setAdapter(adapter);
         System.out.println("then vien id "+locationNoteInfor.getIdNote());

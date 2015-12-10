@@ -10,10 +10,13 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-feature android:name="android.hardware.location" android:required="true" />
-    <uses-feature android:name="android.hardware.location.gps" android:required="true" />
 
-
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -23,7 +26,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAPRpcCBNjIGtE3dee1MypPaRUOWPyKFqA" />
+            android:value="@string/key_map_google_api" />
 
         <activity
             android:name=".activity.MainActivity"
@@ -35,30 +38,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Login" android:icon="@drawable/default_profile">
+        <activity
+            android:name=".activity.Login"
+            android:icon="@drawable/default_profile">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity">
-            </meta-data>
+                android:value=".activity.MainActivity"></meta-data>
         </activity>
         <activity
             android:name=".activity.LocationNoteList"
             android:label="@string/title_activity_location_note_list1"
             android:theme="@style/AppTheme" />
-        <activity android:name=".activity.detail_message" android:icon="@drawable/default_profile">
+        <activity
+            android:name=".activity.detail_message"
+            android:icon="@drawable/default_profile">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity">
-            </meta-data>
+                android:value=".activity.MainActivity"></meta-data>
         </activity>
         <activity
             android:name=".activity.Send_Messager"
             android:label="@string/title_activity_send__messager"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateVisible|adjustResize">
-
-        </activity>
-
+            android:windowSoftInputMode="stateVisible|adjustResize"></activity>
+        <activity
+            android:name=".activity.detailNoteActivity"
+            android:label="@string/title_activity_detail_note"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

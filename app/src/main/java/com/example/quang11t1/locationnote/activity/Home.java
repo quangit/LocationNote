@@ -56,6 +56,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
     public Location[] locationList;
     GetJson getJson = new GetJson();
+    int idAccount;
     Handler handler;
     LocationManager locationManager;
     GoogleMap map;
@@ -125,6 +126,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
            //     container, false);
         Longitude2 = getArguments().getFloat("Longitude");
         Latitude2 = getArguments().getFloat("Latitude");
+        idAccount =getArguments().getInt("id",0);
         System.out.println("========== Home2===========" + Latitude2 + " " + Longitude2);
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -148,6 +150,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         System.out.println("thong tin chi tiet " + item.getTenDiaDiem() + "  " + item.getSoNote());
         Intent intent = new Intent(getActivity(), LocationNoteList.class);
         intent.putExtra("idLocation",item.getIdLocation());
+        intent.putExtra("id",idAccount);
         startActivity(intent);
         return true;
     }

@@ -43,9 +43,10 @@ public class LocationNoteList extends AppCompatActivity {
     LocationNoteInfor[] locationNoteInforList ;
    // Account[] accountList;
     private android.support.v7.widget.Toolbar toolbar;
-    private ListView recycleView;
+    private ListView listView;
     private Location_list_Adapter locationNoteListAdapter;
     private Location[] locationList;
+    int idAccount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class LocationNoteList extends AppCompatActivity {
 
         Intent intent = getIntent();
         idLocation = intent.getIntExtra("idLocation",0);
+        idAccount=intent.getIntExtra("id",0);
         System.out.println("========= idlocation ======================= :" + idLocation);
 
         /*doStartGetLocationNoteList(idLocation);
@@ -68,10 +70,18 @@ public class LocationNoteList extends AppCompatActivity {
             e.printStackTrace();
         }*/
 
-        recycleView = (ListView)findViewById(R.id.listView_location);
-        GetListNote getListNote =new GetListNote(recycleView);
+        listView = (ListView)findViewById(R.id.listView_location);
+        GetListNote getListNote =new GetListNote(listView);
         getListNote.execute("a");
-        recycleView.setItemsCanFocus(true);
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(getApplicationContext(), detailNoteActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                //intent.putExtra("data",bundle);
+                getApplicationContext().startActivity(intent);
+            }
+        });*/
+        listView.setItemsCanFocus(true);
     }
 
     public ArrayList<LocationNoteInfor> getData(){
@@ -106,7 +116,7 @@ public class LocationNoteList extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<LocationNoteInfor> locationNoteInfors) {
             super.onPostExecute(locationNoteInfors);
-            locationNoteListAdapter = new Location_list_Adapter(getApplicationContext(),getData());
+            locationNoteListAdapter = new Location_list_Adapter(getApplicationContext(),getData(),idAccount);
             listView.setAdapter(locationNoteListAdapter);
         }
 

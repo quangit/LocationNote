@@ -23,10 +23,11 @@
     <string name="tittle_activity_detail">Detail</string>
     <string name="key_map_google_api">AIzaSyAxFC0NQqb0H6hJAK3BrriaN-unDyMpjQY</string>
     <string-array name="maps_type">
-        <item >MAP_TYPE_NORMAL</item>
-        <item >MAP_TYPE_SATELLITE</item>
-        <item >MAP_TYPE_HYBRID</item>
-        <item >MAP_TYPE_TERRAIN</item>
+        <item>MAP_TYPE_NORMAL</item>
+        <item>MAP_TYPE_SATELLITE</item>
+        <item>MAP_TYPE_HYBRID</item>
+        <item>MAP_TYPE_TERRAIN</item>
     </string-array>
+    <string name="title_activity_detail_note">detailNoteActivity</string>
 
 </resources>
