@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -30,24 +31,39 @@ import com.example.quang11t1.locationnote.R;
 
 import com.example.quang11t1.locationnote.modle.Account;
 import com.example.quang11t1.locationnote.modle.Location;
+
+import com.example.quang11t1.locationnote.modle.customHandler;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
+import com.pushbots.push.Pushbots;
+
 
 import java.io.InputStream;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-//Bien
-    int idAccount=0;
+    //Bien
+    int idAccount = 0;
     String userName;
-    boolean isLoginValue=false;
+    boolean isLoginValue = false;
     FloatingActionButton fab;
     android.location.Location location;
-    float Latitude, Longitude;
+    double Latitude, Longitude;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
     //Constructor
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+       Pushbots.sharedInstance().init(this);
+
+        Pushbots.sharedInstance().setCustomHandler(customHandler.class);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -62,8 +78,8 @@ public class MainActivity extends AppCompatActivity
                     getPositionRecent();
                     intent.putExtra("id", idAccount);
                     intent.putExtra("user", userName);
-                    intent.putExtra("long",Longitude);
-                    intent.putExtra("lat",Latitude);
+                    intent.putExtra("long", Longitude);
+                    intent.putExtra("lat", Latitude);
                     startActivity(intent);
                 }
 
@@ -80,38 +96,48 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        SharedPreferences pre=getSharedPreferences("location", MODE_PRIVATE);
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        if (action.equals("message_notification")) {
+            System.out.println("Why?, I don't kno");
+        } else {
+            System.out.println("Why?, I don't know");
+        }
+        SharedPreferences pre = getSharedPreferences("location", MODE_PRIVATE);
         Latitude = pre.getFloat("Latitude", (float) 16.056);
-        Longitude = pre.getFloat("Longitude",(float) 108.208);
+        Longitude = pre.getFloat("Longitude", (float) 108.208);
         // init fragment home
-        Fragment fragment = new Home(Latitude,Longitude);
-        Bundle bundle=new Bundle();
-        bundle.putFloat("Longitude",Longitude);
-        bundle.putFloat("Latitude",Latitude);
+        Fragment fragment = new Home(Latitude, Longitude);
+        Bundle bundle = new Bundle();
+        bundle.putDouble("Longitude", Longitude);
+        bundle.putDouble("Latitude", Latitude);
 
         fragment.setArguments(bundle);
         navigationView.getMenu().getItem(0).setChecked(true);
         displayView(fragment);
         //final TextView textView_User= (TextView) findViewById(R.id.text_UserName);
         //textView_User.setText("adwa");
-         TextView textView =(TextView)  navigationView.findViewById(R.id.text_UserName);
+        TextView textView = (TextView) navigationView.findViewById(R.id.text_UserName);
         //textView.setText("aaaaaaaa");
-        isLoginValue= isLogin(navigationView);
+        isLoginValue = isLogin(navigationView);
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
     }
 
     // Resume
     @Override
     protected void onResume() {
         super.onResume();
-       getPositionRecent();
+        getPositionRecent();
     }
 
-    public void getPositionRecent(){
-        SharedPreferences pre=getSharedPreferences("location", MODE_PRIVATE);
+    public void getPositionRecent() {
+        SharedPreferences pre = getSharedPreferences("location", MODE_PRIVATE);
         Latitude = pre.getFloat("Latitude", (float) 16.056);
-        Longitude = pre.getFloat("Longitude",(float) 108.208);
-        System.out.println("========== display  ==========="+Latitude+" "+Longitude);
+        Longitude = pre.getFloat("Longitude", (float) 108.208);
+        System.out.println("========== display  ===========" + Latitude + " " + Longitude);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -165,29 +191,29 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Bundle bundle = new Bundle();
-        bundle.putInt("id",idAccount);
-        bundle.putString("user",userName);
-        bundle.putFloat("Longitude", Longitude);
-        bundle.putFloat("Latitude", Latitude);
+        bundle.putInt("id", idAccount);
+        bundle.putString("user", userName);
+        bundle.putDouble("Longitude", Longitude);
+        bundle.putDouble("Latitude", Latitude);
         if (id == R.id.nav_home) {
 
             fab.setVisibility(View.VISIBLE);
-            Fragment fragment = new Home(Latitude,Longitude);
-            Bundle bundle1=new Bundle();
+            Fragment fragment = new Home(Latitude, Longitude);
+            Bundle bundle1 = new Bundle();
             fragment.setArguments(bundle);
             displayView(fragment);
         } else if (id == R.id.nav_friend) {
-            if(!isLoginValue) moveLogin();
+            if (!isLoginValue) moveLogin();
             else {
                 //Fragment fragment = new Friend();
                 //
                 fab.setVisibility(View.GONE);
-                FriendFragment fragment =new FriendFragment();
+                FriendFragment fragment = new FriendFragment();
                 fragment.setArguments(bundle);
                 displayView(fragment);
             }
         } else if (id == R.id.nav_messager) {
-            if(!isLoginValue) moveLogin();
+            if (!isLoginValue) moveLogin();
             else {
                 fab.setVisibility(View.VISIBLE);
                 Fragment fragment = new Messager();
@@ -195,25 +221,25 @@ public class MainActivity extends AppCompatActivity
                 displayView(fragment);
             }
         } else if (id == R.id.nav_send_messager) {
-            if(!isLoginValue) moveLogin();
+            if (!isLoginValue) moveLogin();
             else {
                 fab.setVisibility(View.VISIBLE);
-                Fragment fragment =new SendedMessageFragment();
+                Fragment fragment = new SendedMessageFragment();
                 fragment.setArguments(bundle);
                 displayView(fragment);
             }
         } else if (id == R.id.nav_information) {
-           if(!isLoginValue) moveLogin();
+            if (!isLoginValue) moveLogin();
             else {
-               Fragment fragment = new Information();
-               fragment.setArguments(bundle);
-               displayView(fragment);
+                Fragment fragment = new Information();
+                fragment.setArguments(bundle);
+                displayView(fragment);
             }
         } else if (id == R.id.nav_setting) {
 
 
         } else if (id == R.id.nav_logout) {
-           if(!isLoginValue) moveLogin();
+            if (!isLoginValue) moveLogin();
             else Logout();
         }
 
@@ -222,43 +248,43 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    protected void moveLogin()
-    {
-        Intent intent =new Intent(this,Login.class);
+    protected void moveLogin() {
+        Intent intent = new Intent(this, Login.class);
         startActivityForResult(intent, 1);
     }
-    private void Logout(){
-        isLoginValue=false;
+
+    private void Logout() {
+        isLoginValue = false;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         MenuItem item = navigationView.getMenu().getItem(6);
-        TextView textView =(TextView) findViewById(R.id.text_UserName);
+        TextView textView = (TextView) findViewById(R.id.text_UserName);
         textView.setText("");
-        ImageView imageView =(ImageView) findViewById(R.id.imageView_avatar);
+        ImageView imageView = (ImageView) findViewById(R.id.imageView_avatar);
         imageView.setImageResource(R.drawable.ic_account_circle_48dp);
         item.setTitle("Đăng nhập");
         item.setIcon(R.drawable.ic_login);
-        SharedPreferences preferences=getSharedPreferences("inforLogin", MODE_PRIVATE);
-        SharedPreferences.Editor editor=preferences.edit();
+        SharedPreferences preferences = getSharedPreferences("inforLogin", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
-        idAccount=0;
-        userName="";
+        idAccount = 0;
+        userName = "";
         editor.commit();
 
         navigationView.getMenu().getItem(0).setChecked(true);
         Bundle bundle = new Bundle();
-        bundle.putInt("id",idAccount);
-        bundle.putString("user",userName);
-        bundle.putFloat("Longitude", Longitude);
-        bundle.putFloat("Latitude", Latitude);
+        bundle.putInt("id", idAccount);
+        bundle.putString("user", userName);
+        bundle.putDouble("Longitude", Longitude);
+        bundle.putDouble("Latitude", Latitude);
         fab.setVisibility(View.VISIBLE);
-        Fragment fragment = new Home(Latitude,Longitude);
-        Bundle bundle1=new Bundle();
+        Fragment fragment = new Home(Latitude, Longitude);
+        Bundle bundle1 = new Bundle();
         fragment.setArguments(bundle);
         displayView(fragment);
 
-       // Fragment fragment = new Home();
-      //  navigationView.getMenu().getItem(0).setChecked(true);
-       // displayView(fragment);
+        // Fragment fragment = new Home();
+        //  navigationView.getMenu().getItem(0).setChecked(true);
+        // displayView(fragment);
     }
 
     @Override
@@ -266,19 +292,18 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        ImageView imageView_avatar=(ImageView) findViewById(R.id.imageView_avatar);
-        Account account = (Account)data.getSerializableExtra("account");
-        if(account!=null)
-        {
-            TextView textView_User= (TextView) findViewById(R.id.text_UserName);
+        ImageView imageView_avatar = (ImageView) findViewById(R.id.imageView_avatar);
+        Account account = (Account) data.getSerializableExtra("account");
+        if (account != null) {
+            TextView textView_User = (TextView) findViewById(R.id.text_UserName);
             textView_User.setText(account.getUsername());
             ImageView imageView = (ImageView) findViewById(R.id.imageView_avatar);
             //imageView.setImageResource(R.drawable.ic_global);
-            DownloadImageTask downloadImageTask =new DownloadImageTask(imageView);
+            DownloadImageTask downloadImageTask = new DownloadImageTask(imageView);
             downloadImageTask.execute(account.getImage());
-            isLoginValue=true;
-            idAccount =account.getIdAccount();
-            userName=account.getUsername();
+            isLoginValue = true;
+            idAccount = account.getIdAccount();
+            userName = account.getUsername();
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
             MenuItem item = navigationView.getMenu().getItem(6);
             item.setTitle("Đăng xuất");
@@ -288,8 +313,8 @@ public class MainActivity extends AppCompatActivity
             /*Bundle bundle = new Bundle();
             bundle.putInt("id",idAccount);
             bundle.putString("user",userName);
-            bundle.putFloat("Longitude", Longitude);
-            bundle.putFloat("Latitude", Latitude);
+            bundle.putDouble("Longitude", Longitude);
+            bundle.putDouble("Latitude", Latitude);
             fab.setVisibility(View.VISIBLE);
             Fragment fragment = new Home(Latitude,Longitude);
             Bundle bundle1=new Bundle();
@@ -305,33 +330,32 @@ public class MainActivity extends AppCompatActivity
         }catch (Exception e){}*/
 
 
-       // Toast.makeText(this,"----"+account.getUsername(),Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this,"----"+account.getUsername(),Toast.LENGTH_SHORT).show();
     }
 
-    public  boolean isLogin(NavigationView view) {
-        SharedPreferences preferences=getSharedPreferences("inforLogin", MODE_PRIVATE);
+    public boolean isLogin(NavigationView view) {
+        SharedPreferences preferences = getSharedPreferences("inforLogin", MODE_PRIVATE);
         boolean check_remember = preferences.getBoolean("check", false);
         //TextView textView_User= (TextView) findViewById(R.id.text_UserName);
         //view.getMenu().getItem(6).setChecked(true);
-        if(check_remember)
-        {
-            idAccount = preferences.getInt("id",0);
-            userName = preferences.getString("user","");
-            String pass = preferences.getString("pass","");
-            String url = preferences.getString("url","");
-            String email =preferences.getString("email","");
+        if (check_remember) {
+            idAccount = preferences.getInt("id", 0);
+            userName = preferences.getString("user", "");
+            String pass = preferences.getString("pass", "");
+            String url = preferences.getString("url", "");
+            String email = preferences.getString("email", "");
 
 
             MenuItem item = view.getMenu().getItem(6);
             item.setTitle("Đăng xuất");
             item.setIcon(R.drawable.ic_menu_logout);
-            Toast.makeText(this,"da login",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "da login", Toast.LENGTH_SHORT).show();
             return true;
         }
         MenuItem item = view.getMenu().getItem(6);
         item.setTitle("Đăng nhập");
         item.setIcon(R.drawable.ic_login);
-        Toast.makeText(this,"chua login",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "chua login", Toast.LENGTH_SHORT).show();
         return false;
     }
 
@@ -351,6 +375,19 @@ public class MainActivity extends AppCompatActivity
         super.onDestroy();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+
+    }
+
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -362,7 +399,7 @@ public class MainActivity extends AppCompatActivity
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
             try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
+                InputStream in = new URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());

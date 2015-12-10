@@ -18,7 +18,9 @@ android {
         }
     }
 }
+repositories {
 
+}
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -31,4 +33,5 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.4'
     compile 'com.mikhaellopez:circularimageview:2.0.2'
     compile files('lib/android-async-http-1.4.4.jar')
+    compile 'com.pushbots:pushbots-lib:2.0.13@aar'
 }

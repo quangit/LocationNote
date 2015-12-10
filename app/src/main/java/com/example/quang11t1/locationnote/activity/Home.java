@@ -2,6 +2,8 @@ package com.example.quang11t1.locationnote.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,6 +18,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,9 +63,9 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     Handler handler;
     LocationManager locationManager;
     GoogleMap map;
-    android.location.Location locationStatus=null;
+    android.location.Location locationStatus=null,location1,location2;
     LatLng latLngLocation = null;
-    float Latitude, Longitude, Latitude1, Latitude2, Longitude1, Longitude2;
+    double Latitude, Longitude, Latitude1, Latitude2, Longitude1, Longitude2;
     String provider = LocationManager.GPS_PROVIDER;
     int t = 5000; // milliseconds
     int distance = 5; // meters
@@ -79,6 +83,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         @Override
         public void onLocationChanged(android.location.Location location) {
             startDemo();
+            checkMessage(locationStatus.getLatitude(),locationStatus.getLongitude(),Latitude,Longitude);
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -91,7 +96,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     private Gson gson = new Gson();
 
     @SuppressLint("ValidFragment")
-    Home(float Latitude, float Longitude) {
+    Home(double Latitude, double Longitude) {
         this.Latitude = Latitude;
         this.Longitude = Longitude;
         System.out.println("========== Home ===========" + Latitude + " " + Longitude);
@@ -100,8 +105,8 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Longitude1 = getArguments().getFloat("Longitude");
-        Latitude1 = getArguments().getFloat("Latitude");
+        Longitude1 = getArguments().getDouble("Longitude");
+        Latitude1 = getArguments().getDouble("Latitude");
         System.out.println("========== Home1 ===========" + Latitude1 + " " + Longitude1);
         doStart();
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -123,8 +128,8 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        // View rootView = inflater.inflate(R.layout.fragment_home,
            //     container, false);
-        Longitude2 = getArguments().getFloat("Longitude");
-        Latitude2 = getArguments().getFloat("Latitude");
+        Longitude2 = getArguments().getDouble("Longitude");
+        Latitude2 = getArguments().getDouble("Latitude");
         System.out.println("========== Home2===========" + Latitude2 + " " + Longitude2);
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -159,18 +164,20 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
     @Override
     protected void startDemo() {
+        //set map
         map = getMap();
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         map.getUiSettings().setZoomControlsEnabled(true);
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMapToolbarEnabled(true);
         map.setPadding(10,10,10,120);
-
+        //position at the moment
         android.location.Location lastLocation = getLastKnownLocation();
         locationStatus=lastLocation;
         saveStatus();
-        latLngLocation= new LatLng(Latitude,Longitude);
+        latLngLocation= new LatLng(16.048299999999998,108.21299833333333);
        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(16.0678, 108.153), 9.5f));
+        //if the location != null
 
         if(lastLocation != null){
             System.out.println(" "+lastLocation.getLatitude()+" "+lastLocation.getLongitude());
@@ -298,9 +305,26 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         if(locationStatus!=null){
         SharedPreferences pre=this.getActivity().getSharedPreferences("location", getContext().MODE_PRIVATE);
         SharedPreferences.Editor editor=pre.edit();
-        editor.putFloat("Latitude",(float)locationStatus.getLatitude());
+            editor.putFloat("Latitude", (float) locationStatus.getLatitude());
         editor.putFloat("Longitude",(float) locationStatus.getLongitude());
         editor.commit();}}
+
+    public void checkMessage(double latA,double lngA,double latB,double lngB){
+        //location1=locationStatus;
+        location2=new android.location.Location("PointB");
+        location1=new android.location.Location("PointA");
+        location1.setLatitude(latA);
+        location1.setLongitude(lngA);
+        location2.setLatitude(latB);
+        location2.setLongitude(lngB);
+        float distance=location1.distanceTo(location2);
+        if(distance<1000) {
+            System.out.println("khoang cach" + distance+"m");
+        }
+        else{
+            System.out.println("khoang cach" + (distance/1000)+"km");
+        }
+    }
 
     private class LocationNoteRenderer extends DefaultClusterRenderer<LocationNote> {
 

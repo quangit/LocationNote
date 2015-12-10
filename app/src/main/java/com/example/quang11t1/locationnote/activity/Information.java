@@ -42,6 +42,11 @@ public class Information extends Fragment {
         id=bundle.getInt("id");
         username=bundle.getString("user");
         doStartGet();
+        txtViewuserInfor=(TextView) getActivity().findViewById(R.id.txtviewUserInformation);
+        editTextEmail=(TextView) getActivity().findViewById(R.id.editTextEmail);
+        editTextpass=(EditText) getActivity().findViewById(R.id.editTextPass);
+        editTextpass1=(EditText) getActivity().findViewById(R.id.editTextPass1);
+        editTextpass2=(EditText) getActivity().findViewById(R.id.editTextPass2);
     }
 
     @Override
@@ -49,11 +54,7 @@ public class Information extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_new_information, container, false);
-        txtViewuserInfor=(TextView) view.findViewById(R.id.txtviewUserInformation);
-        editTextEmail=(TextView) view.findViewById(R.id.editTextEmail);
-        editTextpass=(EditText) view.findViewById(R.id.editTextPass);
-        editTextpass1=(EditText) view.findViewById(R.id.editTextPass1);
-        editTextpass2=(EditText) view.findViewById(R.id.editTextPass2);
+
         return view;
     }
 
