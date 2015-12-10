@@ -30,7 +30,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyAPRpcCBNjIGtE3dee1MypPaRUOWPyKFqA" />
+            android:value="@string/key_map_google_api" />
 
         <activity
             android:name=".activity.MainActivity"
@@ -69,6 +69,10 @@
             android:windowSoftInputMode="stateVisible|adjustResize">
 
         </activity>
+        <activity
+        android:name=".activity.detailNoteActivity"
+        android:label="@string/title_activity_detail_note"
+        android:theme="@style/AppTheme"></activity>
 
         <receiver
             android:name="com.pushbots.google.gcm.GCMBroadcastReceiver"

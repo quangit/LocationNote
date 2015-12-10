@@ -61,6 +61,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     GoogleMap map;
     android.location.Location locationStatus=null;
     LatLng latLngLocation = null;
+    int idAccount;
     float Latitude, Longitude, Latitude1, Latitude2, Longitude1, Longitude2;
     String provider = LocationManager.GPS_PROVIDER;
     int t = 5000; // milliseconds
@@ -102,6 +103,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         super.onCreate(savedInstanceState);
         Longitude1 = getArguments().getFloat("Longitude");
         Latitude1 = getArguments().getFloat("Latitude");
+
         System.out.println("========== Home1 ===========" + Latitude1 + " " + Longitude1);
         doStart();
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
@@ -125,6 +127,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
            //     container, false);
         Longitude2 = getArguments().getFloat("Longitude");
         Latitude2 = getArguments().getFloat("Latitude");
+        idAccount =getArguments().getInt("id",0);
         System.out.println("========== Home2===========" + Latitude2 + " " + Longitude2);
 
         return super.onCreateView(inflater, container, savedInstanceState);
@@ -148,6 +151,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         System.out.println("thong tin chi tiet " + item.getTenDiaDiem() + "  " + item.getSoNote());
         Intent intent = new Intent(getActivity(), LocationNoteList.class);
         intent.putExtra("idLocation",item.getIdLocation());
+        intent.putExtra("id",idAccount);
         startActivity(intent);
         return true;
     }

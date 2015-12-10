@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Pushbots.sharedInstance().init(this);
-        Pushbots.sharedInstance().setCustomHandler(customHandler.class);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -88,19 +86,20 @@ public class MainActivity extends AppCompatActivity
         Latitude = pre.getFloat("Latitude", (float) 16.056);
         Longitude = pre.getFloat("Longitude",(float) 108.208);
         // init fragment home
+        isLoginValue= isLogin(navigationView);
         Fragment fragment = new Home(Latitude,Longitude);
         Bundle bundle=new Bundle();
         bundle.putFloat("Longitude",Longitude);
         bundle.putFloat("Latitude",Latitude);
+        bundle.putInt("id", idAccount);
 
         fragment.setArguments(bundle);
         navigationView.getMenu().getItem(0).setChecked(true);
         displayView(fragment);
         //final TextView textView_User= (TextView) findViewById(R.id.text_UserName);
         //textView_User.setText("adwa");
-         TextView textView =(TextView)  navigationView.findViewById(R.id.text_UserName);
+        TextView textView =(TextView)  navigationView.findViewById(R.id.text_UserName);
         //textView.setText("aaaaaaaa");
-        isLoginValue= isLogin(navigationView);
     }
 
     // Resume
@@ -270,7 +269,7 @@ public class MainActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
 
-        ImageView imageView_avatar=(ImageView) findViewById(R.id.imageView_avatar);
+        //ImageView imageView_avatar=(ImageView) findViewById(R.id.imageView_avatar);
         Account account = (Account)data.getSerializableExtra("account");
         if(account!=null)
         {
@@ -289,17 +288,15 @@ public class MainActivity extends AppCompatActivity
             item.setIcon(R.drawable.ic_menu_logout);
 
             navigationView.getMenu().getItem(0).setChecked(true);
-            /*Bundle bundle = new Bundle();
+            Bundle bundle = new Bundle();
             bundle.putInt("id",idAccount);
             bundle.putString("user",userName);
             bundle.putFloat("Longitude", Longitude);
             bundle.putFloat("Latitude", Latitude);
             fab.setVisibility(View.VISIBLE);
             Fragment fragment = new Home(Latitude,Longitude);
-            Bundle bundle1=new Bundle();
             fragment.setArguments(bundle);
-            displayView(fragment);*/
-
+            displayView(fragment);
         }
 
         /*try {
