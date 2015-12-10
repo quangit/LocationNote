@@ -62,11 +62,12 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     android.location.Location locationStatus=null;
     LatLng latLngLocation = null;
     int idAccount;
-    float Latitude, Longitude, Latitude1, Latitude2, Longitude1, Longitude2;
+    float Latitude, Longitude, Latitude1, Longitude1;
     String provider = LocationManager.GPS_PROVIDER;
     int t = 5000; // milliseconds
     int distance = 5; // meters
     private ClusterManager<LocationNote> locationNoteClusterManager;
+    //Location Listener
     LocationListener myLocationListener = new LocationListener() {
 
         public void onProviderDisabled(String provider) {
@@ -125,10 +126,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
        // View rootView = inflater.inflate(R.layout.fragment_home,
            //     container, false);
-        Longitude2 = getArguments().getFloat("Longitude");
-        Latitude2 = getArguments().getFloat("Latitude");
         idAccount =getArguments().getInt("id",0);
-        System.out.println("========== Home2===========" + Latitude2 + " " + Longitude2);
 
         return super.onCreateView(inflater, container, savedInstanceState);
 
@@ -247,7 +245,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
                     default:                      idImage=R.drawable.another; break;
 
                 }
-                locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()),idImage));
+                locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), idImage));
 
             }
         }

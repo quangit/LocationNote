@@ -1,4 +1,4 @@
-package com.example.quang11t1.locationnote.activity;
+package com.example.quang11t1.locationnote;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.quang11t1.locationnote.R;
+import com.pushbots.push.Pushbots;
 
 /**
  * Created by luongvien_binhson on 09-Dec-15.
@@ -16,6 +17,7 @@ public class NotificationMessage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.notificationmessage);
         Bundle extras = getIntent().getExtras();
         if(null!=extras&&getIntent().getExtras().containsKey("message")&&getIntent().getExtras().containsKey("author")){

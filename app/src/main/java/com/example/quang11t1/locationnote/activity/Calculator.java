@@ -1,19 +1,19 @@
 package com.example.quang11t1.locationnote.activity;
 
+import android.location.Location;
+
 /**
  * Created by luongvien_binhson on 10-Dec-15.
  */
 public class Calculator {
-    private static final int earthRadius = 6371;
     public static float calculateDistance(float lat1, float lon1, float lat2, float lon2)
     {
-        float dLat = (float) Math.toRadians(lat2 - lat1);
-        float dLon = (float) Math.toRadians(lon2 - lon1);
-        float a =
-                (float) (Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(Math.toRadians(lat1))
-                        * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2));
-        float c = (float) (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-        float d = earthRadius * c;
-        return d;
+        Location location1=new Location("Point1");
+        Location location2=new Location("Point2");
+        location1.setLatitude(lat1);
+        location1.setLongitude(lon1);
+        location2.setLatitude(lat2);
+        location2.setLongitude(lon2);
+        return location1.distanceTo(location2);
     }
 }

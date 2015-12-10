@@ -41,12 +41,12 @@ public class Information extends Fragment {
         Bundle bundle =this.getArguments();
         id=bundle.getInt("id");
         username=bundle.getString("user");
-        doStartGet();
         txtViewuserInfor=(TextView) getActivity().findViewById(R.id.txtviewUserInformation);
         editTextEmail=(TextView) getActivity().findViewById(R.id.editTextEmail);
         editTextpass=(EditText) getActivity().findViewById(R.id.editTextPass);
         editTextpass1=(EditText) getActivity().findViewById(R.id.editTextPass1);
         editTextpass2=(EditText) getActivity().findViewById(R.id.editTextPass2);
+        doStartGet();
     }
 
     @Override
@@ -74,21 +74,18 @@ public class Information extends Fragment {
 
         @Override
         public void run() {
-
-
-
-
                 String getInforAccount = context.getString(R.string.link)+"login/user?USERNAME="+username;
                 String inforAccount = getJson.getStringJson(getInforAccount);
             System.out.println("h" + inforAccount);
-                Account account = gson.fromJson(inforAccount,Account.class);
-          try {
-              txtViewuserInfor.setText(account.getUsername());
-              editTextEmail.setText(account.getEmail());
-          }
-          catch (Exception e){
-              System.out.println("lol"+account.getUsername()+account.getEmail());
-          }
+            Account account=new Account();
+            account = gson.fromJson(inforAccount,Account.class);
+           try{
+                txtViewuserInfor.setText(account.getUsername());
+                editTextEmail.setText(account.getEmail());
+            }
+           catch(Exception e){
+
+           }
         }
     }
 }
