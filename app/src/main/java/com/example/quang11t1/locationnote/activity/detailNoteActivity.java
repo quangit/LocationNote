@@ -108,8 +108,6 @@ public class detailNoteActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(statusFloating ==0){
                     linearLayoutComment.setVisibility(View.VISIBLE);
-
-
                 }
                 if(statusFloating == 1){
                     String contentComment =editTextComment.getText().toString();

@@ -228,20 +228,27 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
         if(locationList != null) {
             for (Location location : locationList) {
-                System.out.println(" lay du lieu chuyen qua ban do lan :");
-                if (location.getTypelocation().equals("Nha Hang")) {
-                    System.out.println(" nha hang :");
-                    locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.bell));
-                    System.out.println(" nha hang === :");
-                } else {
-                    if (location.getTypelocation().equals("Cafe")) {
-                        System.out.println(" ca fe :");
-                        locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.tea));
-                        System.out.println(" ca fe === :");
-                    } else {
-                        locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), R.drawable.muffin));
-                    }
+                int idImage;
+                switch (location.getTypelocation()){
+                    case "Bai Tam":               idImage=R.drawable.beach; break;
+                    case "Cafe":                  idImage=R.drawable.tea; break;
+                    case "Cong Vien":             idImage=R.drawable.park; break;
+                    case "Cua Hang":              idImage=R.drawable.shopping; break;
+                    case "Cua Hang Thoi Trang":   idImage=R.drawable.fashion; break;
+                    case "Khach San":             idImage=R.drawable.hotel; break;
+                    case "Ngan Hang":             idImage=R.drawable.bank; break;
+                    case "Nha Hang":              idImage=R.drawable.bell; break;
+                    case "Quan Game":             idImage=R.drawable.controller; break;
+                    case "Quan Hang Rong":        idImage=R.drawable.noodles; break;
+                    case "Quan Nhau":             idImage=R.drawable.beer; break;
+                    case "Rap Chieu Phim":        idImage=R.drawable.movie; break;
+                    case "Tram Xe Bus":           idImage=R.drawable.bus; break;
+                    case "Truong Hoc":            idImage=R.drawable.school; break;
+                    default:                      idImage=R.drawable.another; break;
+
                 }
+                locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()),idImage));
+
             }
         }
         else{
