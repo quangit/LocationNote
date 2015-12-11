@@ -112,7 +112,7 @@ public class SendMessagerFriendFragment extends Fragment implements View.OnClick
                     setResult(1, intent);
                     finish();*/
                 } else {
-                    Toast.makeText(getContext(), "add Khong thanhj cong", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "add Khong thanh cong", Toast.LENGTH_SHORT).show();
                 }
                 //Toast.makeText(getApplicationContext(),msg.arg1,Toast.LENGTH_SHORT).show();
             }
@@ -171,7 +171,7 @@ public class SendMessagerFriendFragment extends Fragment implements View.OnClick
 
 
             if (!imagepath.equals("")) {
-                msgDialog.setMessage("Converting Image to Binary Data");
+                msgDialog.setMessage("Sending...");
                 msgDialog.show();
                 // Convert image to String using Base64
                 encodeImagetoString();

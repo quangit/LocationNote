@@ -192,8 +192,10 @@ public class detailNoteActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            GetContentImage getContentImage =new GetContentImage(imageView,context);
-            getContentImage.execute(s);
+            if(s!="") {
+                GetContentImage getContentImage = new GetContentImage(imageView, context);
+                getContentImage.execute(s);
+            }
         }
 
         @Override
@@ -207,6 +209,7 @@ public class detailNoteActivity extends AppCompatActivity {
             String link = getString(R.string.link) + "Image/getImageNote?IDNOTE="+idNote;
             String result = getJson.getStringJson(link);
             ImageNote imageNote = gson.fromJson(result,ImageNote.class);
+            if(imageNote == null) return "";
             return imageNote.getUrlImage();
         }
     }

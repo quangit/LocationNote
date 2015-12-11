@@ -62,7 +62,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     android.location.Location locationStatus=null;
     LatLng latLngLocation = null;
     int idAccount;
-    float Latitude, Longitude, Latitude1, Longitude1;
+    float Latitude, Longitude, Latitude1, Longitude1,lastLongitude,lastLatitude;
     String provider = LocationManager.GPS_PROVIDER;
     int t = 5000; // milliseconds
     int distance = 5; // meters
@@ -81,6 +81,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
         @Override
         public void onLocationChanged(android.location.Location location) {
+            //locationStatus =location;
             startDemo();
         }
 
@@ -100,8 +101,24 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     Home(float Latitude, float Longitude) {
         this.Latitude = Latitude;
         this.Longitude = Longitude;
+        //lastLatitude =Latitude;
+        //lastLongitude =Longitude;
         System.out.println("========== Home ===========" + Latitude + " " + Longitude);
     }
+
+    private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
+        @Override
+        public void onMyLocationChange(android.location.Location location) {
+            LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+            locationStatus =location;
+            saveStatus();
+            //map.addMarker(new MarkerOptions().position(loc));
+            if(map != null){
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f));
+                Toast.makeText(getContext(),"wadaw",Toast.LENGTH_LONG).show();
+            }
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,7 +148,6 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
        // View rootView = inflater.inflate(R.layout.fragment_home,
            //     container, false);
         idAccount =getArguments().getInt("id",0);
-
         return super.onCreateView(inflater, container, savedInstanceState);
 
     }
@@ -167,15 +183,18 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     protected void startDemo() {
         map = getMap();
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        map.getUiSettings().setZoomControlsEnabled(true);
+       // map.getUiSettings().setZoomControlsEnabled(true);
         map.setMyLocationEnabled(true);
         map.getUiSettings().setMapToolbarEnabled(true);
-        map.setPadding(10,10,10,120);
+        map.setPadding(10, 10, 10, 10);
 
         android.location.Location lastLocation = getLastKnownLocation();
-        locationStatus=lastLocation;
-        saveStatus();
+        //locationStatus=lastLocation;
+        //saveStatus();
         latLngLocation= new LatLng(Latitude,Longitude);
+       // Latitude = (float)lastLocation.getLatitude();
+       // Longitude =(float) lastLocation.getLongitude();
+
        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(16.0678, 108.153), 9.5f));
 
         if(lastLocation != null){
@@ -222,20 +241,36 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         locationNoteClusterManager.setOnClusterInfoWindowClickListener(this);
         locationNoteClusterManager.setOnClusterItemClickListener(this);
         locationNoteClusterManager.setOnClusterItemInfoWindowClickListener(this);
-         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+        map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition cameraPosition) {
                 locationNoteClusterManager.onCameraChange(cameraPosition);
-                latLngLocation=cameraPosition.target;
-                System.out.println("Toa do camera:" +latLngLocation.latitude+" "+latLngLocation.longitude);
+                latLngLocation = cameraPosition.target;
+
+                double subLongitude, subLatitude;
+                subLatitude = Math.abs(latLngLocation.latitude - lastLatitude);
+                subLongitude = Math.abs(latLngLocation.longitude - lastLongitude);
+                System.out.println("Toa do camera:" + subLatitude + " " + subLongitude);
+                if ((subLatitude > 0.05) || (subLongitude > 0.05)) {
+                    lastLongitude = (float) latLngLocation.longitude;
+                    lastLatitude = (float) latLngLocation.latitude;
+                    GetListLocation getListLocation = new GetListLocation();
+                    getListLocation.execute();
+                    System.out.println("-------------------------Loai lai ban do");
+                }
             }
-        });
+         });
+
         addItems();
         locationNoteClusterManager.cluster();
+        map.setOnMyLocationChangeListener(myLocationChangeListener);
     }
+
+
 
     private void addItems() {
 
+        locationNoteClusterManager.clearItems();
         if(locationList != null) {
             for (Location location : locationList) {
                 int idImage;
@@ -257,17 +292,21 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
                     default:                      idImage=R.drawable.another; break;
 
                 }
-                locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getNumberOfNote(), position(location.getLatitude(), location.getLongitude()), idImage));
+                locationNoteClusterManager.addItem(new LocationNote(location.getIdLocation(), location.getLocationName(), location.getLocationName(), position(location.getLatitude(), location.getLongitude()), idImage));
 
             }
         }
         else{
-            locationNoteClusterManager.addItem(new LocationNote(10000, "Molly 1", 10, position(),R.drawable.tea));
-            locationNoteClusterManager.addItem(new LocationNote(10001, "Hoan My 1", 10, position(),R.drawable.muffin));
-            locationNoteClusterManager.addItem(new LocationNote(10002, "Phi Lu 1", 10, position(), R.drawable.bell));
+
 
         }
 
+    }
+
+    public  void removeCluster(){
+        locationNoteClusterManager.clearItems();
+        addItems();
+        locationNoteClusterManager.cluster();
     }
 
     private LatLng position() {
@@ -286,6 +325,8 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     {
         GetLocationList getLocationList =new GetLocationList(getActivity());
         getLocationList.start();
+
+
     }
 
     private android.location.Location getLastKnownLocation() {
@@ -380,10 +421,37 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
         @Override
         public void run() {
-            String locationslink= getString(R.string.link)+"Location/list?LONGITUDE=108&LATITUDE=16&RADIUS=5";
+            String locationslink= getString(R.string.link)+"Location/list?LONGITUDE="+Longitude+"&LATITUDE="+Latitude+"&RADIUS=0.1";
             String result = getJson.getStringJson(locationslink);
             System.out.println("chuoi lay ve duoc :"+result);
             locationList = gson.fromJson(result,Location[].class);
+        }
+    }
+
+    public class GetListLocation extends AsyncTask<Void,Void,Location[]>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Location[] locations) {
+            super.onPostExecute(locations);
+            removeCluster();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected Location[] doInBackground(Void... params) {
+            String locationslink= getString(R.string.link)+"Location/list?LONGITUDE="+lastLongitude+"&LATITUDE="+lastLatitude+"&RADIUS=0.1";
+            String result = getJson.getStringJson(locationslink);
+            System.out.println("chuoi lay ve duoc :"+result);
+            locationList = gson.fromJson(result,Location[].class);
+            return locationList;
         }
     }
 }

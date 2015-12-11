@@ -57,6 +57,7 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
     int idAccount = 0;
     Handler handler;
     int idLocal = 2;
+    float Longitude,Latitude;
     List<Location> locationList;
     EditText editText_friend;
     RequestParams params = new RequestParams();
@@ -88,6 +89,8 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
         ImageButton imageButton_send = (ImageButton) rootview.findViewById(R.id.imageButton_send);
         imageButton_send.setOnClickListener(this);
         idAccount = getArguments().getInt("id", 0);
+        Longitude =getArguments().getFloat("long",0);
+        Latitude =getArguments().getFloat("lat",0);
         Toast.makeText(getContext(), "" + idAccount, Toast.LENGTH_LONG).show();
 
         handler = new Handler() {
@@ -97,7 +100,7 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
                 if (result != 0) {
                     idNote = result;
                     if (!imagepath.equals("")) {
-                        msgDialog.setMessage("Converting Image to Binary Data");
+                        msgDialog.setMessage("Sending...");
                         msgDialog.show();
                         encodeImagetoString();
                     } else {
@@ -276,7 +279,7 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
 
         @Override
         protected List<Location> doInBackground(String... params) {
-            String locationslink = getString(R.string.link) + "Location/list?LONGITUDE=108&LATITUDE=16&RADIUS=5";
+            String locationslink = getString(R.string.link) + "Location/list?LONGITUDE="+Longitude+"&LATITUDE="+Latitude+"&RADIUS=0.005";
             String result = getJson.getStringJson(locationslink);
             System.out.println("chuoi lay ve duoc :" + result);
             Location[] locationList = gson.fromJson(result, Location[].class);

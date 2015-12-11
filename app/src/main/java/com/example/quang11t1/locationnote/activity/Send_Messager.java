@@ -4,6 +4,7 @@ package com.example.quang11t1.locationnote.activity;
 import android.app.ActionBar;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -63,6 +64,7 @@ public class Send_Messager extends AppCompatActivity  {
             @Override
             public void onItemSelected(AdapterView<?> adapter, View v,
                                        int position, long id) {
+                getPositionRecent();
                 Bundle bundle = new Bundle();
                 bundle.putInt("id",idAccount);
                 bundle.putString("user",userName);
@@ -90,6 +92,13 @@ public class Send_Messager extends AppCompatActivity  {
 
 
 
+    }
+
+    public void getPositionRecent(){
+        SharedPreferences pre=getSharedPreferences("location", MODE_PRIVATE);
+        Latitude = pre.getFloat("Latitude", (float) 16.056);
+        Longitude = pre.getFloat("Longitude",(float) 108.208);
+        System.out.println("========== display  ==========="+Latitude+" "+Longitude);
     }
 
 

@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
                     intent.putExtra("long",Longitude);
                     intent.putExtra("lat",Latitude);
                     startActivity(intent);
-                }
+                }else moveLogin();
 
             }
         });
@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity
         bundle.putFloat("Latitude",Latitude);
         bundle.putInt("id", idAccount);
 
+        setTitle("Trang Chu");
         fragment.setArguments(bundle);
         navigationView.getMenu().getItem(0).setChecked(true);
         displayView(fragment);
@@ -182,6 +183,7 @@ public class MainActivity extends AppCompatActivity
             Bundle bundle1=new Bundle();
             fragment.setArguments(bundle);
             displayView(fragment);
+            setTitle("Trang Chu");
         } else if (id == R.id.nav_friend) {
             if(!isLoginValue) moveLogin();
             else {
@@ -191,6 +193,7 @@ public class MainActivity extends AppCompatActivity
                 FriendFragment fragment =new FriendFragment();
                 fragment.setArguments(bundle);
                 displayView(fragment);
+                setTitle("Ban Be");
             }
         } else if (id == R.id.nav_messager) {
             if(!isLoginValue) moveLogin();
@@ -199,6 +202,7 @@ public class MainActivity extends AppCompatActivity
                 Fragment fragment = new Messager();
                 fragment.setArguments(bundle);
                 displayView(fragment);
+                setTitle("Hop Tin Nhan");
             }
         } else if (id == R.id.nav_send_messager) {
             if(!isLoginValue) moveLogin();
@@ -207,6 +211,7 @@ public class MainActivity extends AppCompatActivity
                 Fragment fragment =new SendedMessageFragment();
                 fragment.setArguments(bundle);
                 displayView(fragment);
+                setTitle("Tin Nhan Da Gui");
             }
         } else if (id == R.id.nav_information) {
            if(!isLoginValue) moveLogin();
@@ -214,6 +219,7 @@ public class MainActivity extends AppCompatActivity
                Fragment fragment = new Information();
                fragment.setArguments(bundle);
                displayView(fragment);
+               setTitle("Thong Tin Ca Nhan");
             }
         } else if (id == R.id.nav_setting) {
 
@@ -261,7 +267,7 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle1=new Bundle();
         fragment.setArguments(bundle);
         displayView(fragment);
-
+        setTitle("Trang Chu");
        // Fragment fragment = new Home();
       //  navigationView.getMenu().getItem(0).setChecked(true);
        // displayView(fragment);
@@ -296,6 +302,7 @@ public class MainActivity extends AppCompatActivity
             bundle.putString("user",userName);
             bundle.putFloat("Longitude", Longitude);
             bundle.putFloat("Latitude", Latitude);
+            setTitle("Trang Chu");
             fab.setVisibility(View.VISIBLE);
             Fragment fragment = new Home(Latitude,Longitude);
             fragment.setArguments(bundle);

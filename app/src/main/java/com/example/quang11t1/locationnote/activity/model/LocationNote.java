@@ -7,11 +7,11 @@ import com.google.maps.android.clustering.ClusterItem;
 public class LocationNote implements ClusterItem {
     int idLocation;
     private String tenDiaDiem;
-    private long soNote;
+    private String soNote;
     private LatLng viTri;
     private int anhDiaDiem;
 
-    public LocationNote(int idLocation, String tenDiaDiem, long soNote, LatLng viTri, int anhDiaDiem) {
+    public LocationNote(int idLocation, String tenDiaDiem, String soNote, LatLng viTri, int anhDiaDiem) {
         this.idLocation = idLocation;
         this.tenDiaDiem = tenDiaDiem;
         this.soNote = soNote;
@@ -43,11 +43,11 @@ public class LocationNote implements ClusterItem {
         this.tenDiaDiem = tenDiaDiem;
     }
 
-    public long getSoNote() {
+    public String getSoNote() {
         return soNote;
     }
 
-    public void setSoNote(long soNote) {
+    public void setSoNote(String soNote) {
         this.soNote = soNote;
     }
 
