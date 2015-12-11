@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.quang11t1.locationnote.NotificationMessage;
 import com.pushbots.push.PBNotificationIntent;
 import com.pushbots.push.Pushbots;
 import com.pushbots.push.utils.PBConstants;
@@ -47,10 +48,12 @@ public class customHandler extends BroadcastReceiver
             //Start lanuch Activity
             String packageName = context.getPackageName();
             Intent resultIntent = new Intent(context.getPackageManager().getLaunchIntentForPackage(packageName));
-            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
+            resultIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            Intent intent1=new Intent(context,NotificationMessage.class);
             resultIntent.putExtras(intent.getBundleExtra("pushData"));
-            Pushbots.sharedInstance().startActivity(resultIntent);
+            intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent1.putExtras(intent.getBundleExtra("pushData"));
+            Pushbots.sharedInstance().startActivity(intent1);
 
             // Handle Push Message when received
         }else if(action.equals(PBConstants.EVENT_MSG_RECEIVE)){

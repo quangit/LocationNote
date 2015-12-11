@@ -68,6 +68,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     int distance = 5; // meters
     private ClusterManager<LocationNote> locationNoteClusterManager;
     //Location Listener
+
     LocationListener myLocationListener = new LocationListener() {
 
         public void onProviderDisabled(String provider) {
@@ -92,6 +93,9 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
     private Random mRandom = new Random(1984);
     private Gson gson = new Gson();
 
+    public Home(){
+
+    }
     @SuppressLint("ValidFragment")
     Home(float Latitude, float Longitude) {
         this.Latitude = Latitude;
@@ -218,6 +222,14 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         locationNoteClusterManager.setOnClusterInfoWindowClickListener(this);
         locationNoteClusterManager.setOnClusterItemClickListener(this);
         locationNoteClusterManager.setOnClusterItemInfoWindowClickListener(this);
+         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                locationNoteClusterManager.onCameraChange(cameraPosition);
+                latLngLocation=cameraPosition.target;
+                System.out.println("Toa do camera:" +latLngLocation.latitude+" "+latLngLocation.longitude);
+            }
+        });
         addItems();
         locationNoteClusterManager.cluster();
     }

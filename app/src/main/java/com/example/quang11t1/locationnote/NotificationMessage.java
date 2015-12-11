@@ -3,11 +3,13 @@ package com.example.quang11t1.locationnote;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.quang11t1.locationnote.R;
+import com.example.quang11t1.locationnote.modle.customHandler;
 import com.pushbots.push.Pushbots;
 
 /**
@@ -17,11 +19,14 @@ public class NotificationMessage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarNotification);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayShowHomeEnabled(true);
         setContentView(R.layout.notificationmessage);
         Bundle extras = getIntent().getExtras();
         if(null!=extras&&getIntent().getExtras().containsKey("message")&&getIntent().getExtras().containsKey("author")){
-            TextView message=(TextView) findViewById(R.id.textViewNotificaitonMessageAuthor);
+            TextView message=(TextView) findViewById(R.id.textViewNotificaitonMessageText);
             TextView author= (TextView) findViewById(R.id.textViewNotificaitonMessageAuthor);
             message.setText(extras.getString("message"));
             author.setText(extras.getString("author"));

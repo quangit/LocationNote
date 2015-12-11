@@ -28,24 +28,19 @@ import java.util.List;
  * Created by luongvien_binhson on 24-Nov-15.
  */
 public class Information extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    TextView txtViewuserInfor,editTextEmail;
-    EditText editTextpass,editTextpass1,editTextpass2;
+
+    TextView txtViewuserInfor,txtViewTextEmail;
+   // EditText editTextpass,editTextpass1,editTextpass2;
     GetJson getJson =new GetJson();
     int id;
     String username;
+    String user="",email="";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle =this.getArguments();
         id=bundle.getInt("id");
         username=bundle.getString("user");
-        txtViewuserInfor=(TextView) getActivity().findViewById(R.id.txtviewUserInformation);
-        editTextEmail=(TextView) getActivity().findViewById(R.id.editTextEmail);
-        editTextpass=(EditText) getActivity().findViewById(R.id.editTextPass);
-        editTextpass1=(EditText) getActivity().findViewById(R.id.editTextPass1);
-        editTextpass2=(EditText) getActivity().findViewById(R.id.editTextPass2);
         doStartGet();
     }
 
@@ -54,7 +49,8 @@ public class Information extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_new_information, container, false);
-
+        txtViewuserInfor=(TextView) view.findViewById(R.id.txtviewUserInformation);
+        txtViewTextEmail=(TextView) view.findViewById(R.id.textViewTextEmail);
         return view;
     }
 
@@ -77,15 +73,17 @@ public class Information extends Fragment {
                 String getInforAccount = context.getString(R.string.link)+"login/user?USERNAME="+username;
                 String inforAccount = getJson.getStringJson(getInforAccount);
             System.out.println("h" + inforAccount);
-            Account account=new Account();
-            account = gson.fromJson(inforAccount,Account.class);
-           try{
-                txtViewuserInfor.setText(account.getUsername());
-                editTextEmail.setText(account.getEmail());
-            }
-           catch(Exception e){
+            ;
+            Account account = gson.fromJson(inforAccount, Account.class);
 
-           }
+            try{
+            user=account.getUsername();
+            email=account.getEmail();}
+            catch (NullPointerException e){
+                System.out.println(""+e);
+            }
+           // txtViewuserInfor.setText(user);
+          //  txtViewTextEmail.setText(email);
         }
     }
 }

@@ -52,7 +52,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //Pushbots.sharedInstance().init(this);
+       // Pushbots.sharedInstance().setCustomHandler(customHandler.class);
+        Pushbots.sharedInstance().init(this);
+        Pushbots.sharedInstance().setCustomHandler(customHandler.class);
         fab = (FloatingActionButton) findViewById(R.id.fab_send_messager);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
