@@ -216,126 +216,126 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
             imageView401.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView401.getDrawable());
+                    addImageBetweentext(imageView401.getDrawable(),":'(");
                     dialog.cancel();
                 }
             });
             imageView402.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView402.getDrawable());
+                    addImageBetweentext(imageView402.getDrawable(),":')");
                     dialog.cancel();
                 }
             });
             imageView403.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView403.getDrawable());
+                    addImageBetweentext(imageView403.getDrawable(),"-_-");
                     dialog.cancel();
                 }
             });
             imageView404.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView404.getDrawable());
+                    addImageBetweentext(imageView404.getDrawable(),":==");
                     dialog.cancel();
                 }
             });
             imageView405.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView405.getDrawable());
+                    addImageBetweentext(imageView405.getDrawable(),"-:_");
                     dialog.cancel();
                 }
             });
             imageView406.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView406.getDrawable());
+                    addImageBetweentext(imageView406.getDrawable(),">_<");
                     dialog.cancel();
                 }
             });
             imageView407.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView407.getDrawable());
+                    addImageBetweentext(imageView407.getDrawable(),">-<");
                     dialog.cancel();
                 }
             });
             imageView408.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView408.getDrawable());
+                    addImageBetweentext(imageView408.getDrawable(),"-:(");
                     dialog.cancel();
                 }
             });
             imageView409.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView409.getDrawable());
+                    addImageBetweentext(imageView409.getDrawable(),":p");
                     dialog.cancel();
                 }
             });
             imageView410.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView410.getDrawable());
+                    addImageBetweentext(imageView410.getDrawable(),"x_x");
                     dialog.cancel();
                 }
             });
             imageView411.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView411.getDrawable());
+                    addImageBetweentext(imageView411.getDrawable(),"I_I");
                     dialog.cancel();
                 }
             });
             imageView412.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView412.getDrawable());
+                    addImageBetweentext(imageView412.getDrawable(),"):(");
                     dialog.cancel();
                 }
             });
             imageView413.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView413.getDrawable());
+                    addImageBetweentext(imageView413.getDrawable(),"':(");
                     dialog.cancel();
                 }
             });
             imageView414.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView414.getDrawable());
+                    addImageBetweentext(imageView414.getDrawable(),"^_^");
                     dialog.cancel();
                 }
             });
             imageView415.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView415.getDrawable());
+                    addImageBetweentext(imageView415.getDrawable(),":D");
                     dialog.cancel();
                 }
             });
             imageView416.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView416.getDrawable());
+                    addImageBetweentext(imageView416.getDrawable(),":('");
                     dialog.cancel();
                 }
             });
             imageView417.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView417.getDrawable());
+                    addImageBetweentext(imageView417.getDrawable(),":>)");
                     dialog.cancel();
                 }
             });
             imageView418.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    addImageBetweentext(imageView418.getDrawable());
+                    addImageBetweentext(imageView418.getDrawable(),":>'");
                     dialog.cancel();
                 }
             });
@@ -474,15 +474,15 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
                 });
     }
 
-    private void addImageBetweentext(Drawable drawable) {
+    private void addImageBetweentext(Drawable drawable, String text) {
         drawable .setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
 
         int selectionCursor = editText_content.getSelectionStart();
-        editText_content.getText().insert(selectionCursor, ".");
+        editText_content.getText().insert(selectionCursor, text);
         selectionCursor = editText_content.getSelectionStart();
 
         SpannableStringBuilder builder = new SpannableStringBuilder(editText_content.getText());
-        builder.setSpan(new ImageSpan(drawable), selectionCursor - ".".length(), selectionCursor, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new ImageSpan(drawable), selectionCursor - text.length(), selectionCursor, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         editText_content.setText(builder);
         editText_content.setSelection(selectionCursor);
     }
