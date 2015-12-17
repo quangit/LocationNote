@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,6 +19,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,7 +52,7 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
     private static final int CAM_REQUEST = 1313;
     private static int LOAD_IMAGE_RESULTS = 101;
     ImageButton btnTakePhoto;
-    ImageButton btnTakephotofromgallery;
+    ImageButton btnTakephotofromgallery,btnEmoticons;
     View rootview;
     ImageView imgViewphoto;
     ImageView imgViewphotofromgallery;
@@ -78,10 +82,12 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
         rootview = inflater.inflate(R.layout.fragment_send_messager_global, container, false);
         btnTakePhoto = (ImageButton) rootview.findViewById(R.id.imageButtoncamera);
         btnTakephotofromgallery = (ImageButton) rootview.findViewById(R.id.imageButtonGallery);
+        btnEmoticons=(ImageButton) rootview.findViewById(R.id.imageButtonenomotion);
         imgViewphoto = (ImageView) rootview.findViewById(R.id.imgviewPhoto);
         imgViewphotofromgallery = (ImageView) rootview.findViewById(R.id.imgviewPhotofromgallery);
         btnTakePhoto.setOnClickListener(this);
         btnTakephotofromgallery.setOnClickListener(this);
+        btnEmoticons.setOnClickListener(this);
         editText_content = (EditText) rootview.findViewById(R.id.editText_context);
         editText_friend = (EditText) rootview.findViewById(R.id.editText_friend);
 
@@ -181,8 +187,158 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
                 addNote.start();
                 Toast.makeText(getActivity(), contextMessager, Toast.LENGTH_LONG).show();
             }
+        }
+        if(v.getId()==R.id.imageButtonenomotion){
+            final Dialog dialog = new Dialog(getContext());
+            dialog.setContentView(R.layout.choose_emoticons);
+            dialog.setTitle("Chon emoticons");
+            dialog.show();
+            final ImageView imageView401=(ImageView) dialog.findViewById(R.id.imageButtone401);
+            final ImageView imageView402=(ImageView) dialog.findViewById(R.id.imageButtone402);
+            final ImageView imageView403=(ImageView) dialog.findViewById(R.id.imageButtone403);
+            final ImageView imageView404=(ImageView) dialog.findViewById(R.id.imageButtone404);
+            final ImageView imageView405=(ImageView) dialog.findViewById(R.id.imageButtone405);
+            final ImageView imageView406=(ImageView) dialog.findViewById(R.id.imageButtone406);
+            final ImageView imageView407=(ImageView) dialog.findViewById(R.id.imageButtone407);
+            final ImageView imageView408=(ImageView) dialog.findViewById(R.id.imageButtone408);
+            final ImageView imageView409=(ImageView) dialog.findViewById(R.id.imageButtone409);
+            final ImageView imageView410=(ImageView) dialog.findViewById(R.id.imageButtone410);
+            final ImageView imageView411=(ImageView) dialog.findViewById(R.id.imageButtone411);
+            final ImageView imageView412=(ImageView) dialog.findViewById(R.id.imageButtone412);
+            final ImageView imageView413=(ImageView) dialog.findViewById(R.id.imageButtone413);
+            final ImageView imageView414=(ImageView) dialog.findViewById(R.id.imageButtone414);
+            final ImageView imageView415=(ImageView) dialog.findViewById(R.id.imageButtone415);
+            final ImageView imageView416=(ImageView) dialog.findViewById(R.id.imageButtone416);
+            final ImageView imageView417=(ImageView) dialog.findViewById(R.id.imageButtone417);
+            final ImageView imageView418=(ImageView) dialog.findViewById(R.id.imageButtone418);
 
-
+            dialog.show();
+            imageView401.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView401.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView402.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView402.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView403.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView403.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView404.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView404.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView405.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView405.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView406.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView406.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView407.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView407.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView408.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView408.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView409.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView409.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView410.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView410.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView411.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView411.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView412.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView412.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView413.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView413.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView414.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView414.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView415.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView415.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView416.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView416.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView417.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView417.getDrawable());
+                    dialog.cancel();
+                }
+            });
+            imageView418.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addImageBetweentext(imageView418.getDrawable());
+                    dialog.cancel();
+                }
+            });
         }
         if (v.getId() == R.id.editText_friend) {
 
@@ -211,82 +367,6 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
         }
 
     }
-
-    public class AddNote extends Thread {
-
-        String content;
-        int idLocation;
-        Context context;
-        Gson gson = new Gson();
-        GetJson getJson = new GetJson();
-
-        public AddNote(String content, int idLocation, Context context) {
-            this.content = content;
-            this.idLocation = idLocation;
-            this.context = context;
-        }
-
-        @Override
-        public void run() {
-            String addNote = getString(R.string.link) + "Note/addNote?IDACCOUNT=" + idAccount + "&IDLOCATION=" + idLocation + "&CONTENT=" + content;
-            String result = getJson.getStringJson(addNote);
-            Message msg = handler.obtainMessage();
-
-            msg.arg1 = Integer.parseInt(result);
-            //gửi lại Message này về cho Main Thread
-            handler.sendMessage(msg);
-        }
-    }
-
-    public class GetListLocation extends AsyncTask<String, List<Location>, List<Location>> {
-        Gson gson = new Gson();
-        GetJson getJson = new GetJson();
-
-        ListView listView;
-
-        public GetListLocation(ListView listView) {
-            this.listView = listView;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(List<Location> locations) {
-            super.onPostExecute(locations);
-            String[] arrayString = new String[locations.size()];
-            locationList = locations;
-            int i = 0;
-            for (Location location : locations) {
-                arrayString[i] = location.getLocationName();
-                i++;
-            }
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                    (getContext(), android.R.layout.simple_list_item_1, arrayString);
-            listView.setAdapter(adapter);
-
-
-        }
-
-        @Override
-        protected void onProgressUpdate(List<Location>... values) {
-            super.onProgressUpdate(values);
-
-
-        }
-
-        @Override
-        protected List<Location> doInBackground(String... params) {
-            String locationslink = getString(R.string.link) + "Location/list?LONGITUDE="+Longitude+"&LATITUDE="+Latitude+"&RADIUS=0.005";
-            String result = getJson.getStringJson(locationslink);
-            System.out.println("chuoi lay ve duoc :" + result);
-            Location[] locationList = gson.fromJson(result, Location[].class);
-            return Arrays.asList(locationList);
-        }
-    }
-
 
     // AsyncTask - To convert Image to String
     public void encodeImagetoString() {
@@ -394,6 +474,93 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
                 });
     }
 
+    private void addImageBetweentext(Drawable drawable) {
+        drawable .setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+
+        int selectionCursor = editText_content.getSelectionStart();
+        editText_content.getText().insert(selectionCursor, ".");
+        selectionCursor = editText_content.getSelectionStart();
+
+        SpannableStringBuilder builder = new SpannableStringBuilder(editText_content.getText());
+        builder.setSpan(new ImageSpan(drawable), selectionCursor - ".".length(), selectionCursor, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        editText_content.setText(builder);
+        editText_content.setSelection(selectionCursor);
+    }
+
+    public class AddNote extends Thread {
+
+        String content;
+        int idLocation;
+        Context context;
+        Gson gson = new Gson();
+        GetJson getJson = new GetJson();
+
+        public AddNote(String content, int idLocation, Context context) {
+            this.content = content;
+            this.idLocation = idLocation;
+            this.context = context;
+        }
+
+        @Override
+        public void run() {
+            String addNote = getString(R.string.link) + "Note/addNote?IDACCOUNT=" + idAccount + "&IDLOCATION=" + idLocation + "&CONTENT=" + content;
+            String result = getJson.getStringJson(addNote);
+            Message msg = handler.obtainMessage();
+
+            msg.arg1 = Integer.parseInt(result);
+            //gửi lại Message này về cho Main Thread
+            handler.sendMessage(msg);
+        }
+    }
+
+    public class GetListLocation extends AsyncTask<String, List<Location>, List<Location>> {
+        Gson gson = new Gson();
+        GetJson getJson = new GetJson();
+
+        ListView listView;
+
+        public GetListLocation(ListView listView) {
+            this.listView = listView;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(List<Location> locations) {
+            super.onPostExecute(locations);
+            String[] arrayString = new String[locations.size()];
+            locationList = locations;
+            int i = 0;
+            for (Location location : locations) {
+                arrayString[i] = location.getLocationName();
+                i++;
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                    (getContext(), android.R.layout.simple_list_item_1, arrayString);
+            listView.setAdapter(adapter);
+
+
+        }
+
+        @Override
+        protected void onProgressUpdate(List<Location>... values) {
+            super.onProgressUpdate(values);
+
+
+        }
+
+        @Override
+        protected List<Location> doInBackground(String... params) {
+            String locationslink = getString(R.string.link) + "Location/list?LONGITUDE="+Longitude+"&LATITUDE="+Latitude+"&RADIUS=0.005";
+            String result = getJson.getStringJson(locationslink);
+            System.out.println("chuoi lay ve duoc :" + result);
+            Location[] locationList = gson.fromJson(result, Location[].class);
+            return Arrays.asList(locationList);
+        }
+    }
 
     protected class AddImageNote extends  AsyncTask<String,Void,Boolean>{
 
@@ -433,6 +600,4 @@ public class sendMessagerGlobalFragment extends Fragment implements OnClickListe
             return false;
         }
     }
-
-
 }

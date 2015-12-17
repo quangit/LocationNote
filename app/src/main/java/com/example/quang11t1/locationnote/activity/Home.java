@@ -105,7 +105,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
         //lastLongitude =Longitude;
         System.out.println("========== Home ===========" + Latitude + " " + Longitude);
     }
-
+/*
     private GoogleMap.OnMyLocationChangeListener myLocationChangeListener = new GoogleMap.OnMyLocationChangeListener() {
         @Override
         public void onMyLocationChange(android.location.Location location) {
@@ -119,7 +119,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
             }
         }
     };
-
+*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -263,7 +263,7 @@ public class Home extends MapBase implements ClusterManager.OnClusterClickListen
 
         addItems();
         locationNoteClusterManager.cluster();
-        map.setOnMyLocationChangeListener(myLocationChangeListener);
+        //map.setOnMyLocationChangeListener(myLocationChangeListener);
     }
 
 

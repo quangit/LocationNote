@@ -1,5 +1,7 @@
 package com.example.quang11t1.locationnote.activity;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -12,6 +14,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -35,6 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.pushbots.push.Pushbots;
 
 import java.io.InputStream;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -67,8 +72,8 @@ public class MainActivity extends AppCompatActivity
                     getPositionRecent();
                     intent.putExtra("id", idAccount);
                     intent.putExtra("user", userName);
-                    intent.putExtra("long",Longitude);
-                    intent.putExtra("lat",Latitude);
+                    intent.putExtra("long", Longitude);
+                    intent.putExtra("lat", Latitude);
                     startActivity(intent);
                 }else moveLogin();
 
@@ -104,9 +109,62 @@ public class MainActivity extends AppCompatActivity
         //textView_User.setText("adwa");
         TextView textView =(TextView)  navigationView.findViewById(R.id.text_UserName);
         //textView.setText("aaaaaaaa");
+       // new Thread(new task()).start();
     }
+/*
+    class task implements Runnable{
 
-    // Resume
+        @Override
+        public void run() {
+            for(int i=0;i<4;i++){
+                try{
+                    //random time to sleep
+                    Random randomGenerator = new Random();
+                    int randomInt = randomGenerator.nextInt(1);
+                    Thread.sleep(1000*60);
+                    // display notification
+                    getNotification();
+
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+    }
+*/
+    /*
+    private void getNotification(){
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.launcher_icon)
+                        .setContentTitle("My notification")
+                        .setContentText("Hello World!");
+// Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        mBuilder.setAutoCancel(true);
+
+// The stack builder object will contain an artificial back stack for the
+// started Activity.
+// This ensures that navigating backward from the Activity leads out of
+// your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+// Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(MainActivity.class);
+// Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(this.NOTIFICATION_SERVICE);
+// mId allows you to update the notification later on.
+        mNotificationManager.notify(101, mBuilder.build());
+*/    // Resume
     @Override
     protected void onResume() {
         super.onResume();
